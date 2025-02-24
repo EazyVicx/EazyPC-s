@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Web</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            overflow-x: hidden; /* Prevents horizontal scrollbar */
+        }
+
+        .section {
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background-size: cover; /* Cover the entire section */
+            background-position: center; /* Center the background */
+            transition: opacity 1s ease-in-out; /* Smooth opacity transition */
+            opacity: 1;
+        }
+
+        .section.fade-out {
+            opacity: 0;
+        }
+
+        .section h2 {
+            font-size: 3em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .overlay { /* For dark overlays over images*/
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+        }
+
+        /* Example of how to style different sections */
+        #section1 {
+            background-image: url(C:\Users\minec\Desktop\PC Web Folder\1.JPG');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+
+        }
+
+        #section2 {
+            background-image: url('your-image2.jpg');
+        }
+
+        #section3 {
+            background-image: url('your-image3.jpg');
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="section1" class="section">
+        <div class="overlay"></div>
+        <h2>Welcome!</h2>
+    </div>
+
+    <div id="section2" class="section">
+        <div class="overlay"></div>
+        <h2>Explore</h2>
+    </div>
+
+    <div id="section3" class="section">
+        <div class="overlay"></div>
+        <h2>Contact Us</h2>
+    </div>
+
+    <p>EazyPC's We Make it Cheap For You!</p>
+
+    <script>
+        const sections = document.querySelectorAll('.section');
+        let currentSection = 0;
+
+        function scrollHandler(event) {
+            if (event.deltaY > 0) { // Scrolling down
+                if (currentSection < sections.length - 1) {
+                    sections[currentSection].classList.add('fade-out');
+                    setTimeout(() => {
+                        sections[currentSection].style.display = 'none';
+                        currentSection++;
+                        sections[currentSection].style.display = 'flex';
+                        sections[currentSection].classList.remove('fade-out');
+                    }, 1000); // Wait for transition
+                }
+            } else { // Scrolling up
+                if (currentSection > 0) {
+                    sections[currentSection].classList.add('fade-out');
+                    setTimeout(() => {
+                        sections[currentSection].style.display = 'none';
+                        currentSection--;
+                        sections[currentSection].style.display = 'flex';
+                        sections[currentSection].classList.remove('fade-out');
+                    }, 1000);
+                }
+            }
+        }
+
+        window.addEventListener('wheel', scrollHandler);
+
+        //Initial display fix.
+        for (let i = 1; i < sections.length; i++) {
+          sections[i].style.display = 'none';
+        }
+
+    </script>
+
+</body>
+</html>
