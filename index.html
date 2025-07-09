@@ -12,12 +12,14 @@
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow-x: hidden;
+      overflow-y: hidden;
       background-color: #13002b;
       opacity: 1;
       transition: opacity 1s ease;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      scroll-behavior: smooth;
     }
 
     body.loaded {
@@ -71,6 +73,7 @@
       background-color: rgba(86, 6, 148, 0.8);
       backdrop-filter: blur(5px);
       padding: 10px 15px;
+      height: 60px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -118,17 +121,19 @@
     /* Section Wrapper */
     .section-wrapper {
       flex: 1;
-      padding-top: 70px;
       overflow-y: scroll;
-      scroll-snap-type: y proximity;
+      scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
+      height: calc(100vh - 60px);
+      scroll-padding-top: 60px;
     }
 
     /* Section Styles */
     .section {
       position: relative;
       scroll-snap-align: start;
+      min-height: calc(100vh - 60px);
       height: 100vh;
       width: 100%;
       display: flex;
@@ -196,6 +201,8 @@
     /* Footer Styles */
     footer {
       scroll-snap-align: start;
+      min-height: calc(100vh - 60px)
+      display: flex;
       background-color: rgb(46, 5, 128);
       color: white;
       padding: 20px 0;
