@@ -154,25 +154,26 @@
 
     .contact-form input, 
     .contact-form textarea {
-      background: rgba(255, 255, 255, 0.15);
-      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 8px;
       padding: 12px;
       font-size: 1em;
-      color: white;
+      color: #e0e0e0;
       outline: none;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
 
     .contact-form input::placeholder, 
     .contact-form textarea::placeholder {
-      color: #ccccff;
+      color: #a0a0a0;
     }
 
     .contact-form input:focus, 
     .contact-form textarea:focus {
       background: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 0 8px rgba(86, 45, 200, 0.5);
+      box-shadow: 0 0 8px rgba(86, 45, 200, 0.7);
+      border-color: rgba(86, 45, 200, 0.7);
     }
 
     .contact-form button {
