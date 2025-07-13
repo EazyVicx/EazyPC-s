@@ -160,6 +160,84 @@
             color: #ec03fc; /* Bright accent color for headings */
             text-align: center;
         }
+        /* Styling for the component options themselves */
+        .options-container {
+            display: flex;
+            flex-wrap: wrap; /* Allows options to wrap to the next line */
+            gap: 15px; /* Space between options */
+            justify-content: center; /* Center the options within the container */
+            margin-top: 20px;
+        }
+
+        .component-option {
+            background: rgba(255, 255, 255, 0.05); /* Slightly transparent background for each option */
+            border: 1px solid rgba(86, 45, 200, 0.3); /* Subtle purple border */
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            flex: 1 1 calc(50% - 15px); /* Two columns layout, accounting for gap */
+            max-width: calc(50% - 15px); /* Ensure max width for two columns */
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+
+        .component-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(86, 45, 200, 0.6);
+            box-shadow: 0 0 10px rgba(86, 45, 200, 0.4);
+        }
+
+        .component-option input[type="radio"] {
+            margin-right: 10px;
+            /* Custom radio button styles (optional) */
+            -webkit-appearance: none; /* Hide default radio button */
+            -moz-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ec03fc; /* Accent border color */
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0; /* Prevent it from shrinking */
+        }
+
+        .component-option input[type="radio"]:checked {
+            background-color: #ec03fc; /* Accent fill color when checked */
+            border-color: #ec03fc; /* Accent border color when checked */
+        }
+
+        /* Inner circle for checked state */
+        .component-option input[type="radio"]:checked::before {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 10px;
+            background-color: white; /* White dot inside when checked */
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .component-option label {
+            flex-grow: 1; /* Allows label to take remaining space */
+            cursor: pointer;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        /* Responsive adjustments for options */
+        @media (max-width: 768px) {
+            .component-option {
+                flex: 1 1 100%; /* Single column layout on smaller screens */
+                max-width: 100%;
+            }
+        }
 
         /* Footer (copy from existing) */
         footer {
@@ -213,15 +291,63 @@
         <nav>
             <a href="index.html">Home</a>
             <a href="Contact-Us.html">Contact Us!</a>
-        </nav>
+            <a href="build-your-pc.html">Build Your PC</a> </nav>
     </header>
 
     <div class="builder-container">
         <h1>Build Your Dream PC</h1>
 
         <form id="pc-build-form" action="YOUR_FORMSPREE_URL_HERE" method="POST">
+            <div id="cpu-selection" class="component-section">
+                <h3>Choose your CPU</h3>
+                <div class="options-container">
+                    </div>
+            </div>
+
+            <div id="gpu-selection" class="component-section">
+                <h3>Choose your GPU</h3>
+                <div class="options-container">
+                    </div>
+            </div>
+
+            <div id="motherboard-selection" class="component-section">
+                <h3>Choose your Motherboard</h3>
+                <div class="options-container">
+                    </div>
+            </div>
+
+            <div id="ram-selection" class="component-section">
+                <h3>Choose your RAM</h3>
+                <div class="options-container">
+                    </div>
+            </div>
+
+            <div id="storage-selection" class="component-section">
+                <h3>Choose your Storage</h3>
+                <div class="options-container">
+                    </div>
+            </div>
+
+            <div id="psu-selection" class="component-section">
+                <h3>Choose your Power Supply</h3>
+                <div class="options-container">
+                    </div>
+            </div>
+
+            <div id="case-selection" class="component-section">
+                <h3>Choose your Case</h3>
+                <div class="options-container">
+                    </div>
+            </div>
+
             <input type="hidden" name="CPU" id="selected-cpu">
             <input type="hidden" name="GPU" id="selected-gpu">
+            <input type="hidden" name="Motherboard" id="selected-motherboard">
+            <input type="hidden" name="RAM" id="selected-ram">
+            <input type="hidden" name="Storage" id="selected-storage">
+            <input type="hidden" name="PSU" id="selected-psu">
+            <input type="hidden" name="Case" id="selected-case">
+
             <input type="text" name="_gotcha" style="display:none;" /> <div class="component-section" style="text-align: center;">
                 <h3>Total Price: $<span id="total-price">0.00</span></h3>
                 <button type="submit" style="
@@ -258,6 +384,120 @@
     </footer>
 
     <script>
+        // --- Component Data - MUST BE DEFINED FIRST ---
+        const components = {
+            cpu: [
+                { id: 'cpu-i5-14600k', name: 'Intel Core i5-14600K', price: 320.00, socket: 'LGA1700' },
+                { id: 'cpu-i7-14700k', name: 'Intel Core i7-14700K', price: 380.00, socket: 'LGA1700' },
+                { id: 'cpu-r7-7800x3d', name: 'AMD Ryzen 7 7800X3D', price: 360.00, socket: 'AM5' },
+                { id: 'cpu-r9-7900x', name: 'AMD Ryzen 9 7900X', price: 420.00, socket: 'AM5' }
+            ],
+            gpu: [
+                { id: 'gpu-rtx4070s', name: 'NVIDIA RTX 4070 Super', price: 600.00 },
+                { id: 'gpu-rtx4080s', name: 'NVIDIA RTX 4080 Super', price: 900.00 },
+                { id: 'gpu-rx7800xt', name: 'AMD Radeon RX 7800 XT', price: 500.00 },
+                { id: 'gpu-rx7900xtx', name: 'AMD Radeon RX 7900 XTX', price: 950.00 }
+            ],
+            motherboard: [
+                { id: 'mobo-z790-p', name: 'MSI PRO Z790-P WiFi DDR5', price: 200.00, socket: 'LGA1700', ramType: 'DDR5' },
+                { id: 'mobo-b650e-f', name: 'ASUS ROG STRIX B650E-F GAMING WiFi', price: 250.00, socket: 'AM5', ramType: 'DDR5' }
+            ],
+            ram: [
+                { id: 'ram-ddr5-32-6000', name: 'Corsair Vengeance 32GB (2x16GB) DDR5-6000', price: 100.00, type: 'DDR5' },
+                { id: 'ram-ddr5-64-6000', name: 'G.Skill Trident Z5 RGB 64GB (2x32GB) DDR5-6000', price: 200.00, type: 'DDR5' }
+            ],
+            storage: [
+                { id: 'ssd-nvme-1tb', name: 'Samsung 990 Pro 1TB NVMe SSD', price: 120.00, type: 'NVMe' },
+                { id: 'ssd-sata-2tb', name: 'Crucial MX500 2TB SATA SSD', price: 150.00, type: 'SATA' },
+                { id: 'hdd-4tb', name: 'Seagate Barracuda 4TB HDD', price: 80.00, type: 'HDD' }
+            ],
+            psu: [
+                { id: 'psu-750w', name: 'Corsair RM750e 750W 80+ Gold', price: 90.00, wattage: 750 },
+                { id: 'psu-850w', name: 'NZXT C850 850W 80+ Gold', price: 110.00, wattage: 850 }
+            ],
+            case: [
+                { id: 'case-h5-flow', name: 'NZXT H5 Flow (Black)', price: 90.00 },
+                { id: 'case-lianli-lancool216', name: 'Lian Li Lancool 216 (White)', price: 100.00 }
+            ]
+        };
+
+        // --- Global variables for tracking selections ---
+        let selectedParts = {
+            cpu: null,
+            gpu: null,
+            motherboard: null,
+            ram: null,
+            storage: null,
+            psu: null,
+            case: null
+        };
+
+        let currentTotalPrice = 0;
+
+        // Function to render components
+        function renderComponents() {
+            const componentCategories = Object.keys(components);
+
+            componentCategories.forEach(category => {
+                const container = document.querySelector(`#${category}-selection .options-container`);
+                if (container) {
+                    container.innerHTML = ''; // Clear existing content
+
+                    components[category].forEach(part => {
+                        const optionDiv = document.createElement('div');
+                        optionDiv.classList.add('component-option');
+                        optionDiv.innerHTML = `
+                            <input type="radio" id="${part.id}" name="${category}" value="${part.id}" data-price="${part.price}"
+                                ${part.socket ? `data-socket="${part.socket}"` : ''}
+                                ${part.ramType ? `data-ramtype="${part.ramType}"` : ''}
+                                ${part.wattage ? `data-wattage="${part.wattage}"` : ''}
+                                ${part.type ? `data-type="${part.type}"` : ''}
+                            >
+                            <label for="${part.id}">
+                                ${part.name} - $${part.price.toFixed(2)}
+                                ${part.socket ? ` (Socket: ${part.socket})` : ''}
+                                ${part.ramType ? ` (RAM: ${part.ramType})` : ''}
+                                ${part.wattage ? ` (${part.wattage}W)` : ''}
+                                ${part.type ? ` (${part.type})` : ''}
+                            </label>
+                        `;
+                        container.appendChild(optionDiv);
+                    });
+                }
+            });
+        }
+
+        // Function to update total price
+        function updateTotalPrice() {
+            currentTotalPrice = 0;
+            for (const category in selectedParts) {
+                if (selectedParts[category]) {
+                    currentTotalPrice += selectedParts[category].price;
+                }
+            }
+            document.getElementById('total-price').textContent = currentTotalPrice.toFixed(2);
+        }
+
+        // Function to handle component selection
+        function handleComponentSelection(event) {
+            if (event.target.type === 'radio' && event.target.name in selectedParts) {
+                const selectedRadio = event.target;
+                const category = selectedRadio.name;
+                const partId = selectedRadio.value;
+
+                const selectedPartData = components[category].find(part => part.id === partId);
+
+                if (selectedPartData) {
+                    selectedParts[category] = selectedPartData;
+                    updateTotalPrice();
+
+                    // Update hidden input for form submission
+                    document.getElementById(`selected-${category}`).value = selectedPartData.name;
+                }
+            }
+        }
+
+        // --- Existing Scripts (ensure this new code is above them) ---
         window.addEventListener('load', () => {
             document.body.classList.add('loaded');
         });
@@ -271,6 +511,15 @@
                 const scrollPercent = (scrollTop / scrollHeight) * 100;
                 progressBar.style.width = scrollPercent + '%';
             });
+
+            // Call renderComponents when the DOM is loaded
+            renderComponents();
+
+            // Add event listener for component selections
+            document.querySelector('.builder-container').addEventListener('change', handleComponentSelection);
+
+            // Initial price update (should be 0.00)
+            updateTotalPrice();
         });
     </script>
 </body>
