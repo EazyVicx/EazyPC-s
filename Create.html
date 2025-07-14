@@ -324,6 +324,8 @@
             flex-shrink: 0; /* Prevent shrinking */
             overflow-y: auto; /* Allow scrolling on desktop if filters are numerous */
             padding-bottom: 10px; /* Space at bottom for scrollbar */
+            /* Add this to ensure content inside respects padding and overflow */
+            box-sizing: border-box;
         }
 
         .filter-header {
@@ -346,25 +348,37 @@
             background: rgba(0,0,0,0.3);
         }
         .filter-header .arrow {
+            /* Changed from unicode to CSS-only arrow for better consistency */
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #ec03fc;
+            border-bottom: 2px solid #ec03fc;
+            transform: rotate(45deg); /* Points right by default (desktop) */
             transition: transform 0.3s ease;
+            margin-left: 10px; /* Spacing */
         }
         .filter-header.collapsed .arrow {
-            transform: rotate(-90deg);
+            transform: rotate(-45deg); /* Points down when collapsed on mobile */
         }
+        /* Style for the arrow when expanded on mobile (which means not collapsed) */
+        @media (max-width: 768px) {
+            .filter-header:not(.collapsed) .arrow {
+                transform: rotate(135deg); /* Points up when expanded on mobile */
+            }
+        }
+
 
         .filter-content {
             padding: 15px;
-            max-height: 0; /* Start hidden */
-            overflow: hidden;
+            max-height: none; /* Default to fully open on desktop */
+            overflow: visible; /* Default to visible on desktop */
             transition: max-height 0.3s ease-out, padding 0.3s ease-out;
             border-bottom-left-radius: 8px;
             border-bottom-right-radius: 8px;
+            box-sizing: border-box; /* Ensure padding is included */
         }
-        .filter-content.active {
-            max-height: 500px; /* Arbitrary large value for expansion */
-            padding-top: 15px;
-            padding-bottom: 15px;
-        }
+        /* No .active for desktop as it's always "active" */
 
         .filter-group {
             margin-bottom: 15px;
@@ -422,7 +436,7 @@
         #modal-options-container {
             display: flex;
             flex-direction: column; /* Stack options vertically */
-            gap: 10px;
+            gap: 15px; /* Increased gap between component options */
             overflow-y: auto; /* THIS IS THE CRITICAL SCROLLING ELEMENT */
             flex: 1; /* Allow list to grow and shrink */
             padding-right: 5px; /* Prevent scrollbar from overlapping content */
@@ -643,6 +657,31 @@
                 border: none; /* No border on sidebar */
             }
 
+            /* Mobile-specific filter accordion styling */
+            .filter-header {
+                border-radius: 8px; /* Rounded corners for the entire header on mobile */
+                border-bottom: none; /* No bottom border as filter content is hidden */
+            }
+            .filter-header.collapsed {
+                border-bottom-left-radius: 8px; /* Ensure full border radius when collapsed */
+                border-bottom-right-radius: 8px;
+            }
+
+            .filter-content {
+                max-height: 0; /* Start hidden on mobile */
+                padding: 0 15px; /* Padding for content when active */
+                overflow: hidden; /* Crucial for hiding content */
+                transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+                background: rgba(255, 255, 255, 0.05); /* Background for the expanded content */
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+            .filter-content.active {
+                max-height: 1000px; /* Arbitrary large value for expansion - adjusted */
+                padding: 15px; /* Restore padding when active */
+                overflow-y: auto; /* Allow filters to scroll if they're very long */
+            }
+
             #modal-options-container {
                 /* On mobile, this will still scroll, but the modal-body can also scroll */
                 flex: 1; /* Allow it to grow, but min-height will ensure visibility */
@@ -794,7 +833,7 @@
                 <div class="filter-sidebar">
                     <div class="filter-header collapsed" data-target="modal-filters">
                         <h4>Filters</h4>
-                        <span class="arrow">&#9660;</span> </div>
+                        <span class="arrow"></span> </div>
                     <div id="modal-filters" class="filter-content">
                         </div>
                 </div>
@@ -891,8 +930,8 @@
         const modal = document.getElementById('component-selection-modal');
         const closeButton = document.querySelector('.close-button');
         const modalTitle = document.getElementById('modal-title');
-        const filterHeader = document.querySelector('.filter-header'); // New: Filter Header
-        const filterArrow = document.querySelector('.filter-header .arrow'); // New: Filter Arrow
+        const filterHeader = document.querySelector('.filter-header');
+        const filterArrow = document.querySelector('.filter-header .arrow');
         const modalFiltersContainer = document.getElementById('modal-filters');
         const modalOptionsContainer = document.getElementById('modal-options-container');
         const modalSearchInput = document.getElementById('modal-search');
@@ -1281,10 +1320,9 @@
 
         // 6. Filter accordion toggle listener
         filterHeader.addEventListener('click', () => {
-            if (window.innerWidth <= 768) { // Only toggle on mobile
-                filterHeader.classList.toggle('collapsed');
-                modalFiltersContainer.classList.toggle('active');
-            }
+            // The accordion behavior is now always toggled by JS, CSS media query handles initial state
+            filterHeader.classList.toggle('collapsed');
+            modalFiltersContainer.classList.toggle('active');
         });
 
         // --- Initial Setup / Page Load ---
