@@ -100,7 +100,7 @@
             width: 100%;
             height: 100%;
             background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(86, 45, 200, 0.05) 1px, rgba(86, 45, 200, 0.05) 2px),
-                                repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(86, 45, 200, 0.05) 1px, rgba(86, 45, 200, 0.05) 2px);
+                                 repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(86, 45, 200, 0.05) 1px, rgba(86, 45, 200, 0.05) 2px);
             opacity: 0.4;
             z-index: 1;
         }
@@ -879,7 +879,8 @@
                 <div class="filter-sidebar">
                     <div class="filter-header collapsed" data-target="modal-filters">
                         <h4>Filters</h4>
-                        <span class="arrow"></span> </div>
+                        <span class="arrow"></span>
+                    </div>
                     <div id="modal-filters" class="filter-content">
                         </div>
                 </div>
@@ -894,426 +895,412 @@
 
     <footer>
         <div>
-            <a href="https://youtube.com/@EazyVicx" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
-                @EazyVicx
+            <a href="https://www.youtube.com/@EazyVicx" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/YouTube_social_white_square_%282017%29.svg" alt="YouTube"> @EazyVicx
             </a>
-            |
-            <a href="https://youtube.com/@CDren" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
-                @CDren8345
+            <a href="https://discord.com/" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Discord_logo.svg" alt="Discord"> Discord
+            </a>
+            <a href="mailto:info@eazypc.com">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Mail_font_awesome.svg" alt="Email"> info@eazypc.com
             </a>
         </div>
-        <div style="font-size: 12px; opacity: 0.7;">
-            Copyright to be formed.
-        </div>
+        <p>&copy; 2024 EazyPC. All rights reserved.</p>
     </footer>
 
     <script>
-        // --- Component Data - MUST BE DEFINED FIRST ---
         const components = {
-            cpu: [ // Corrected: started array with '['
-                { id: 'cpu-i9-14900k', name: 'Intel Core i9-14900K', price: 438.00, socket: 'LGA1700', generation: '14th Gen', cores: 24, clock: 6.0 },
-                { id: 'cpu-i9-14900kf', name: 'Intel Core i9-14900KF', price: 429.00, socket: 'LGA1700', generation: '14th Gen', cores: 24, clock: 6.0 }, // Corrected: added ':' after price
-                { id: 'cpu-i5-14600k', name: 'Intel Core i5-14600K', price: 320.00, socket: 'LGA1700', generation: '14th Gen', cores: 14, clock: 5.3 },
-                { id: 'cpu-i5-13600K', name: 'Intel Core i5-13600K', price: 265.00, socket: 'LGA1700', generation: '13th Gen', cores: 14, clock: 5.1 },
-                { id: 'cpu-i5-13600kf', name: 'Intel Core i5-13600KF', price: 189.00, socket: 'LGA1700', generation: '13th Gen', cores: 14, clock: 5.1 },
-                { id: 'cpu-i5-13500', name: 'Intel Core i5-13500', price: 220.00, socket: 'LGA1700', generation: '13th Gen', cores: 14, clock: 4.8 },
-                { id: 'cpu-i5-13400', name: 'Intel Core i5-13400', price: 160.00, socket: 'LGA1700', generation: '13th Gen', cores: 10, clock: 4.6 },
-                { id: 'cpu-i5-13400F', name: 'Intel Core i5-13400F', price: 134.00, socket: 'LGA1700', generation: '13th Gen', cores: 10, clock: 4.6 },
-                { id: 'cpu-i3-13100', name: 'Intel Core i3-13100', price: 120.00, socket: 'LGA1700', generation: '13th Gen', cores: 4, clock: 4.5 },
-                { id: 'cpu-ryzen-7-7800x3d', name: 'AMD Ryzen 7 7800X3D', price: 349.00, socket: 'AM5', cores: 8, clock: 5.0 },
-                { id: 'cpu-ryzen-5-7600x', name: 'AMD Ryzen 5 7600X', price: 219.00, socket: 'AM5', cores: 6, clock: 5.3 },
-                { id: 'cpu-ryzen-5-7600', name: 'AMD Ryzen 5 7600', price: 199.00, socket: 'AM5', cores: 6, clock: 5.1 },
-                { id: 'cpu-ryzen-9-7950x3d', name: 'AMD Ryzen 9 7950X3D', price: 589.00, socket: 'AM5', cores: 16, clock: 5.7 },
-                { id: 'cpu-ryzen-9-7900x3d', name: 'AMD Ryzen 9 7900X3D', price: 429.00, socket: 'AM5', cores: 12, clock: 5.6 },
-                { id: 'cpu-ryzen-5-5600', name: 'AMD Ryzen 5 5600', price: 129.00, socket: 'AM4', cores: 6, clock: 4.4 },
-                { id: 'cpu-ryzen-7-5800x3d', name: 'AMD Ryzen 7 5800X3D', price: 279.00, socket: 'AM4', cores: 8, clock: 4.5 },
+            cpu: [
+                { id: 'cpu-intel-i9-14900k', name: 'Intel Core i9-14900K', price: 589.99, socket: 'LGA1700', generation: '14th Gen', cores: 24, threads: 32, tdp: 125, integratedGraphics: true },
+                { id: 'cpu-intel-i7-14700k', name: 'Intel Core i7-14700K', price: 399.99, socket: 'LGA1700', generation: '14th Gen', cores: 20, threads: 28, tdp: 125, integratedGraphics: true },
+                { id: 'cpu-intel-i5-14600k', name: 'Intel Core i5-14600K', price: 299.99, socket: 'LGA1700', generation: '14th Gen', cores: 14, threads: 20, tdp: 125, integratedGraphics: true },
+                { id: 'cpu-amd-ryzen-9-7950x3d', name: 'AMD Ryzen 9 7950X3D', price: 689.99, socket: 'AM5', generation: 'Zen 4', cores: 16, threads: 32, tdp: 120, integratedGraphics: false },
+                { id: 'cpu-amd-ryzen-7-7800x3d', name: 'AMD Ryzen 7 7800X3D', price: 369.99, socket: 'AM5', generation: 'Zen 4', cores: 8, threads: 16, tdp: 120, integratedGraphics: false },
+                { id: 'cpu-amd-ryzen-5-7600x', name: 'AMD Ryzen 5 7600X', price: 249.99, socket: 'AM5', generation: 'Zen 4', cores: 6, threads: 12, tdp: 105, integratedGraphics: false }
             ],
             motherboard: [
-                { id: 'mb-z790-prime-a', name: 'ASUS PRIME Z790-A WIFI', price: 280.00, socket: 'LGA1700', chipset: 'Z790', ram_slots: 4, ram_type: 'DDR5' },
-                { id: 'mb-z790-aorus-elite', name: 'Gigabyte Z790 AORUS ELITE AX', price: 250.00, socket: 'LGA1700', chipset: 'Z790', ram_slots: 4, ram_type: 'DDR5' },
-                { id: 'mb-b760-strix', name: 'ASUS ROG STRIX B760-A GAMING WIFI', price: 210.00, socket: 'LGA1700', chipset: 'B760', ram_slots: 4, ram_type: 'DDR5' },
-                { id: 'mb-b650-gaming-x', name: 'Gigabyte B650 Gaming X AX', price: 180.00, socket: 'AM5', chipset: 'B650', ram_slots: 4, ram_type: 'DDR5' },
-                { id: 'mb-x670e-carbon', name: 'MSI MPG X670E CARBON WIFI', price: 350.00, socket: 'AM5', chipset: 'X670E', ram_slots: 4, ram_type: 'DDR5' },
-                { id: 'mb-b550-plus', name: 'ASUS TUF GAMING B550-PLUS WIFI II', price: 140.00, socket: 'AM4', chipset: 'B550', ram_slots: 4, ram_type: 'DDR4' },
-                { id: 'mb-x570-unify', name: 'MSI MEG X570 UNIFY', price: 200.00, socket: 'AM4', chipset: 'X570', ram_slots: 4, ram_type: 'DDR4' },
+                { id: 'mobo-asus-z790', name: 'Asus ROG Strix Z790-E Gaming WiFi II', price: 489.99, socket: 'LGA1700', chipset: 'Z790', formFactor: 'ATX', ramSlots: 4, maxRam: 128, ramType: 'DDR5' },
+                { id: 'mobo-msi-z790', name: 'MSI MAG Z790 TOMAHAWK WIFI', price: 289.99, socket: 'LGA1700', chipset: 'Z790', formFactor: 'ATX', ramSlots: 4, maxRam: 128, ramType: 'DDR5' },
+                { id: 'mobo-gigabyte-z790', name: 'Gigabyte Z790 AORUS ELITE AX', price: 259.99, socket: 'LGA1700', chipset: 'Z790', formFactor: 'ATX', ramSlots: 4, maxRam: 128, ramType: 'DDR5' },
+                { id: 'mobo-asus-x670e', name: 'Asus ROG Crosshair X670E Hero', price: 649.99, socket: 'AM5', chipset: 'X670E', formFactor: 'ATX', ramSlots: 4, maxRam: 128, ramType: 'DDR5' },
+                { id: 'mobo-msi-x670e', name: 'MSI MPG X670E CARBON WIFI', price: 439.99, socket: 'AM5', chipset: 'X670E', formFactor: 'ATX', ramSlots: 4, maxRam: 128, ramType: 'DDR5' },
+                { id: 'mobo-gigabyte-b650', name: 'Gigabyte B650 AORUS ELITE AX', price: 219.99, socket: 'AM5', chipset: 'B650', formFactor: 'ATX', ramSlots: 4, maxRam: 128, ramType: 'DDR5' }
             ],
             ram: [
-                { id: 'ram-ddr5-32gb-6000', name: 'Corsair Vengeance RGB 32GB (2x16GB) DDR5 6000MHz CL30', price: 110.00, capacity_gb: 32, type: 'DDR5', speed_mhz: 6000, cas_latency: 30, modules: 2 },
-                { id: 'ram-ddr5-32gb-6400', name: 'G.Skill Trident Z5 RGB 32GB (2x16GB) DDR5 6400MHz CL32', price: 125.00, capacity_gb: 32, type: 'DDR5', speed_mhz: 6400, cas_latency: 32, modules: 2 },
-                { id: 'ram-ddr5-64gb-6000', name: 'Kingston Fury Beast 64GB (2x32GB) DDR5 6000MHz CL36', price: 200.00, capacity_gb: 64, type: 'DDR5', speed_mhz: 6000, cas_latency: 36, modules: 2 },
-                { id: 'ram-ddr4-16gb-3200', name: 'TeamGroup T-Force Vulcan Z 16GB (2x8GB) DDR4 3200MHz CL16', price: 45.00, capacity_gb: 16, type: 'DDR4', speed_mhz: 3200, cas_latency: 16, modules: 2 },
-                { id: 'ram-ddr4-32gb-3600', name: 'G.Skill Ripjaws V 32GB (2x16GB) DDR4 3600MHz CL18', price: 75.00, capacity_gb: 32, type: 'DDR4', speed_mhz: 3600, cas_latency: 18, modules: 2 },
+                { id: 'ram-ddr5-6000-cl30-32gb', name: 'G.Skill Trident Z5 RGB 32GB (2 x 16GB) DDR5-6000 CL30', price: 119.99, type: 'DDR5', capacityGB: 32, speedMHz: 6000, casLatency: 30, kit: 2 },
+                { id: 'ram-ddr5-6400-cl32-32gb', name: 'Corsair Vengeance RGB 32GB (2 x 16GB) DDR5-6400 CL32', price: 129.99, type: 'DDR5', capacityGB: 32, speedMHz: 6400, casLatency: 32, kit: 2 },
+                { id: 'ram-ddr5-7200-cl34-32gb', name: 'Kingston Fury Beast RGB 32GB (2 x 16GB) DDR5-7200 CL34', price: 169.99, type: 'DDR5', capacityGB: 32, speedMHz: 7200, casLatency: 34, kit: 2 },
+                { id: 'ram-ddr5-6000-cl30-64gb', name: 'G.Skill Trident Z5 RGB 64GB (2 x 32GB) DDR5-6000 CL30', price: 219.99, type: 'DDR5', capacityGB: 64, speedMHz: 6000, casLatency: 30, kit: 2 }
             ],
             gpu: [
-                { id: 'gpu-rtx-4090', name: 'NVIDIA GeForce RTX 4090', price: 1599.00, vram_gb: 24, chipset: 'NVIDIA', series: 'RTX 40 Series' },
-                { id: 'gpu-rtx-4080s', name: 'NVIDIA GeForce RTX 4080 Super', price: 999.00, vram_gb: 16, chipset: 'NVIDIA', series: 'RTX 40 Series' },
-                { id: 'gpu-rtx-4070ti-s', name: 'NVIDIA GeForce RTX 4070 Ti Super', price: 799.00, vram_gb: 16, chipset: 'NVIDIA', series: 'RTX 40 Series' },
-                { id: 'gpu-rtx-4070s', name: 'NVIDIA GeForce RTX 4070 Super', price: 599.00, vram_gb: 12, chipset: 'NVIDIA', series: 'RTX 40 Series' },
-                { id: 'gpu-rx-7900xtx', name: 'AMD Radeon RX 7900 XTX', price: 949.00, vram_gb: 24, chipset: 'AMD', series: 'RX 7000 Series' },
-                { id: 'gpu-rx-7900xt', name: 'AMD Radeon RX 7900 XT', price: 749.00, vram_gb: 20, chipset: 'AMD', series: 'RX 7000 Series' },
-                { id: 'gpu-rx-7800xt', name: 'AMD Radeon RX 7800 XT', price: 499.00, vram_gb: 16, chipset: 'AMD', series: 'RX 7000 Series' },
-                { id: 'gpu-rtx-3060', name: 'NVIDIA GeForce RTX 3060', price: 289.00, vram_gb: 12, chipset: 'NVIDIA', series: 'RTX 30 Series' },
+                { id: 'gpu-rtx4090', name: 'NVIDIA GeForce RTX 4090', price: 1599.99, chipset: 'RTX 4090', memoryGB: 24, memoryType: 'GDDR6X', tdp: 450 },
+                { id: 'gpu-rtx4080s', name: 'NVIDIA GeForce RTX 4080 Super', price: 999.99, chipset: 'RTX 4080 Super', memoryGB: 16, memoryType: 'GDDR6X', tdp: 320 },
+                { id: 'gpu-rtx4070s', name: 'NVIDIA GeForce RTX 4070 Super', price: 599.99, chipset: 'RTX 4070 Super', memoryGB: 12, memoryType: 'GDDR6X', tdp: 220 },
+                { id: 'gpu-rx7900xtx', name: 'AMD Radeon RX 7900 XTX', price: 949.99, chipset: 'RX 7900 XTX', memoryGB: 24, memoryType: 'GDDR6', tdp: 355 },
+                { id: 'gpu-rx7800xt', name: 'AMD Radeon RX 7800 XT', price: 499.99, chipset: 'RX 7800 XT', memoryGB: 16, memoryType: 'GDDR6', tdp: 263 }
             ],
             storage: [
-                { id: 'ssd-2tb-nvme-gen4', name: 'Crucial P5 Plus 2TB NVMe SSD (Gen4)', price: 120.00, capacity_gb: 2000, type: 'NVMe SSD', interface: 'PCIe Gen4' },
-                { id: 'ssd-1tb-nvme-gen4', name: 'Samsung 980 Pro 1TB NVMe SSD (Gen4)', price: 90.00, capacity_gb: 1000, type: 'NVMe SSD', interface: 'PCIe Gen4' },
-                { id: 'ssd-4tb-nvme-gen4', name: 'WD_BLACK SN850X 4TB NVMe SSD (Gen4)', price: 280.00, capacity_gb: 4000, type: 'NVMe SSD', interface: 'PCIe Gen4' },
-                { id: 'hdd-2tb-7200rpm', name: 'Seagate Barracuda 2TB HDD 7200RPM', price: 55.00, capacity_gb: 2000, type: 'HDD', interface: 'SATA' },
-                { id: 'ssd-1tb-sata', name: 'Crucial MX500 1TB SATA SSD', price: 70.00, capacity_gb: 1000, type: 'SATA SSD', interface: 'SATA' },
+                { id: 'ssd-samsung-990pro-1tb', name: 'Samsung 990 Pro 1TB NVMe PCIe 4.0 SSD', price: 109.99, type: 'NVMe SSD', capacityGB: 1000, interface: 'PCIe 4.0' },
+                { id: 'ssd-samsung-990pro-2tb', name: 'Samsung 990 Pro 2TB NVMe PCIe 4.0 SSD', price: 189.99, type: 'NVMe SSD', capacityGB: 2000, interface: 'PCIe 4.0' },
+                { id: 'ssd-western-digital-sn850x-1tb', name: 'Western Digital Black SN850X 1TB NVMe PCIe 4.0 SSD', price: 99.99, type: 'NVMe SSD', capacityGB: 1000, interface: 'PCIe 4.0' },
+                { id: 'ssd-western-digital-sn850x-2tb', name: 'Western Digital Black SN850X 2TB NVMe PCIe 4.0 SSD', price: 169.99, type: 'NVMe SSD', capacityGB: 2000, interface: 'PCIe 4.0' },
+                { id: 'hdd-seagate-barracuda-2tb', name: 'Seagate Barracuda Compute 2TB 3.5" 7200 RPM HDD', price: 64.99, type: 'HDD', capacityGB: 2000, interface: 'SATA III' }
             ],
             psu: [
-                { id: 'psu-850w-gold', name: 'Corsair RM850e (2023) 850W 80+ Gold', price: 110.00, wattage: 850, efficiency: '80+ Gold', modular: true },
-                { id: 'psu-1000w-gold', name: 'Seasonic Focus GX-1000 1000W 80+ Gold', price: 160.00, wattage: 1000, efficiency: '80+ Gold', modular: true },
-                { id: 'psu-750w-bronze', name: 'EVGA 750 N1 750W 80+ Bronze', price: 70.00, wattage: 750, efficiency: '80+ Bronze', modular: false },
-                { id: 'psu-1200w-platinum', name: 'Corsair HX1200 Platinum 1200W 80+ Platinum', price: 250.00, wattage: 1200, efficiency: '80+ Platinum', modular: true },
+                { id: 'psu-corsair-rm1000e', name: 'Corsair RM1000e (2023) 1000W 80+ Gold Fully Modular', price: 149.99, wattage: 1000, efficiency: '80+ Gold', modularity: 'Fully Modular' },
+                { id: 'psu-seasonic-focus-gx-850', name: 'Seasonic FOCUS Plus Gold 850W 80+ Gold Fully Modular', price: 119.99, wattage: 850, efficiency: '80+ Gold', modularity: 'Fully Modular' },
+                { id: 'psu-msi-mpg-a850g', name: 'MSI MPG A850G PCIE5 850W 80+ Gold Fully Modular', price: 109.99, wattage: 850, efficiency: '80+ Gold', modularity: 'Fully Modular' },
+                { id: 'psu-thermaltake-toughpower-gf3-1200', name: 'Thermaltake Toughpower GF3 1200W 80+ Gold Fully Modular', price: 199.99, wattage: 1200, efficiency: '80+ Gold', modularity: 'Fully Modular' }
             ],
             case: [
-                { id: 'case-lian-li-lancool216', name: 'Lian Li Lancool 216', price: 100.00, type: 'Mid Tower', color: 'Black', features: ['High Airflow', 'RGB Fans'] },
-                { id: 'case-nzxt-h5-flow', name: 'NZXT H5 Flow', price: 90.00, type: 'Mid Tower', color: 'White', features: ['Compact', 'Good Airflow'] },
-                { id: 'case-fractal-north', name: 'Fractal Design North', price: 140.00, type: 'Mid Tower', color: 'Charcoal Black', features: ['Wood Accent', 'Stylish'] },
-                { id: 'case-corsair-4000d', name: 'Corsair 4000D Airflow', price: 80.00, type: 'Mid Tower', color: 'Black', features: ['Great Airflow', 'Cable Management'] },
+                { id: 'case-lian-li-o11-dynamic-evo', name: 'Lian Li O11 Dynamic EVO (Black)', price: 179.99, formFactorSupport: ['ATX', 'Micro ATX', 'Mini ITX'], maxGPULength: 422, color: 'Black', type: 'Mid Tower' },
+                { id: 'case-nzxt-h9-flow', name: 'NZXT H9 Flow (White)', price: 159.99, formFactorSupport: ['ATX', 'Micro ATX', 'Mini ITX'], maxGPULength: 435, color: 'White', type: 'Mid Tower' },
+                { id: 'case-fractal-design-north', name: 'Fractal Design North (Charcoal Black)', price: 139.99, formFactorSupport: ['ATX', 'Micro ATX', 'Mini ITX'], maxGPULength: 355, color: 'Charcoal Black', type: 'Mid Tower' },
+                { id: 'case-corsair-4000d-airflow', name: 'Corsair 4000D Airflow (Black)', price: 99.99, formFactorSupport: ['ATX', 'Micro ATX', 'Mini ITX'], maxGPULength: 360, color: 'Black', type: 'Mid Tower' }
             ]
         };
 
-        const selectedComponents = {};
-        let currentCategory = '';
+        const selectedComponents = {
+            cpu: null,
+            motherboard: null,
+            ram: null,
+            gpu: null,
+            storage: null,
+            psu: null,
+            case: null
+        };
+
+        const componentDisplayElements = {
+            cpu: document.getElementById('display-cpu'),
+            motherboard: document.getElementById('display-motherboard'),
+            ram: document.getElementById('display-ram'),
+            gpu: document.getElementById('display-gpu'),
+            storage: document.getElementById('display-storage'),
+            psu: document.getElementById('display-psu'),
+            case: document.getElementById('display-case')
+        };
+
+        const hiddenInputElements = {
+            cpu: document.getElementById('selected-cpu-hidden'),
+            motherboard: document.getElementById('selected-motherboard-hidden'),
+            ram: document.getElementById('selected-ram-hidden'),
+            gpu: document.getElementById('selected-gpu-hidden'),
+            storage: document.getElementById('selected-storage-hidden'),
+            psu: document.getElementById('selected-psu-hidden'),
+            case: document.getElementById('selected-case-hidden')
+        };
+
+        const categoryButtons = {
+            cpu: document.querySelector('button[data-category="cpu"]'),
+            motherboard: document.querySelector('button[data-category="motherboard"]'),
+            ram: document.querySelector('button[data-category="ram"]'),
+            gpu: document.querySelector('button[data-category="gpu"]'),
+            storage: document.querySelector('button[data-category="storage"]'),
+            psu: document.querySelector('button[data-category="psu"]'),
+            case: document.querySelector('button[data-category="case"]')
+        };
 
         const modal = document.getElementById('component-selection-modal');
         const modalTitle = document.getElementById('modal-title');
         const modalOptionsContainer = document.getElementById('modal-options-container');
-        const modalSearch = document.getElementById('modal-search');
-        const closeButton = document.querySelector('.close-button');
-        const filterSidebar = document.querySelector('.filter-sidebar');
-        const filterHeader = document.querySelector('.filter-header');
-        const filterContent = document.getElementById('modal-filters');
+        const modalSearchInput = document.getElementById('modal-search');
+        const modalFiltersContainer = document.getElementById('modal-filters');
+        let currentCategory = ''; // To keep track of which category modal is open
 
-        // Function to update progress bar
-        function updateProgressBar() {
-            const totalSections = document.querySelectorAll('.component-section').length;
-            let filledSections = 0;
-            for (const category in selectedComponents) {
-                if (selectedComponents[category] && Object.keys(selectedComponents[category]).length > 0) {
-                    filledSections++;
-                }
+        document.querySelectorAll('.open-selection-modal').forEach(button => {
+            button.addEventListener('click', function() {
+                currentCategory = this.dataset.category;
+                modalTitle.textContent = `Select ${currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1)}`;
+                modal.classList.add('is-active');
+                modalSearchInput.value = ''; // Clear search on modal open
+                renderOptions(currentCategory);
+                renderFilters(currentCategory);
+            });
+        });
+
+        document.querySelector('.close-button').addEventListener('click', () => {
+            modal.classList.remove('is-active');
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+                modal.classList.remove('is-active');
             }
-            const progress = (filledSections / totalSections) * 100;
-            document.getElementById('progress-bar').style.width = `${progress}%`;
+        });
+
+        modalSearchInput.addEventListener('input', () => {
+            renderOptions(currentCategory);
+        });
+
+        function updateDisplay(category, component) {
+            const displayDiv = componentDisplayElements[category];
+            const nameSpan = displayDiv.querySelector('span:first-child');
+            const priceSpan = displayDiv.querySelector('.price-display');
+
+            if (component) {
+                nameSpan.textContent = component.name;
+                priceSpan.textContent = `$${component.price.toFixed(2)}`;
+                hiddenInputElements[category].value = component.name; // Set hidden input value
+            } else {
+                nameSpan.textContent = `No ${category.charAt(0).toUpperCase() + category.slice(1)} Selected`;
+                priceSpan.textContent = '';
+                hiddenInputElements[category].value = ''; // Clear hidden input value
+            }
+            updateTotalPrice();
+            updateProgressBar();
+            updateCategoryButtonStates();
         }
 
-        // Function to update total price
         function updateTotalPrice() {
             let total = 0;
             for (const category in selectedComponents) {
-                if (selectedComponents[category] && selectedComponents[category].price) {
+                if (selectedComponents[category]) {
                     total += selectedComponents[category].price;
                 }
             }
             document.getElementById('total-price').textContent = total.toFixed(2);
         }
 
-        // Function to enable/disable subsequent category buttons based on compatibility
+        function updateProgressBar() {
+            const totalSections = Object.keys(selectedComponents).length;
+            let filledSections = 0;
+            for (const category in selectedComponents) {
+                if (selectedComponents[category]) {
+                    filledSections++;
+                }
+            }
+            const progress = (filledSections / totalSections) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+        }
+
         function updateCategoryButtonStates() {
             // Motherboard depends on CPU
-            const cpuSelected = selectedComponents['cpu'];
-            const motherboardButton = document.querySelector('button[data-category="motherboard"]');
-            if (cpuSelected) {
-                motherboardButton.disabled = false;
+            if (selectedComponents.cpu) {
+                categoryButtons.motherboard.disabled = false;
+                categoryButtons.motherboard.textContent = selectedComponents.motherboard ? 'Change Motherboard' : 'Choose Motherboard';
             } else {
-                motherboardButton.disabled = true;
-                // If CPU is deselected, clear motherboard and subsequent components
-                if (selectedComponents['motherboard']) {
-                    selectedComponents['motherboard'] = null;
-                    document.getElementById('display-motherboard').innerHTML = `<span>No Motherboard Selected</span><span class="price-display"></span>`;
-                    document.getElementById('selected-motherboard-hidden').value = '';
-                }
-                document.querySelector('button[data-category="ram"]').disabled = true;
-                if (selectedComponents['ram']) {
-                    selectedComponents['ram'] = null;
-                    document.getElementById('display-ram').innerHTML = `<span>No RAM Selected</span><span class="price-display"></span>`;
-                    document.getElementById('selected-ram-hidden').value = '';
-                }
+                selectedComponents.motherboard = null; // Deselect if CPU is removed
+                updateDisplay('motherboard', null);
+                categoryButtons.motherboard.disabled = true;
+                categoryButtons.motherboard.textContent = 'Choose Motherboard';
             }
 
             // RAM depends on Motherboard
-            const motherboardSelected = selectedComponents['motherboard'];
-            const ramButton = document.querySelector('button[data-category="ram"]');
-            if (motherboardSelected) {
-                ramButton.disabled = false;
+            if (selectedComponents.motherboard) {
+                categoryButtons.ram.disabled = false;
+                categoryButtons.ram.textContent = selectedComponents.ram ? 'Change RAM' : 'Choose RAM';
             } else {
-                ramButton.disabled = true;
-                if (selectedComponents['ram']) {
-                    selectedComponents['ram'] = null;
-                    document.getElementById('display-ram').innerHTML = `<span>No RAM Selected</span><span class="price-display"></span>`;
-                    document.getElementById('selected-ram-hidden').value = '';
+                selectedComponents.ram = null; // Deselect if Motherboard is removed
+                updateDisplay('ram', null);
+                categoryButtons.ram.disabled = true;
+                categoryButtons.ram.textContent = 'Choose RAM';
+            }
+
+            // General button text update
+            for (const category in categoryButtons) {
+                if (category === 'motherboard' || category === 'ram') continue; // Handled above
+                categoryButtons[category].textContent = selectedComponents[category] ? `Change ${category.charAt(0).toUpperCase() + category.slice(1)}` : `Choose ${category.charAt(0).toUpperCase() + category.slice(1)}`;
+            }
+        }
+
+
+        function getCompatibleMotherboards(cpuSocket) {
+            return components.motherboard.filter(mobo => mobo.socket === cpuSocket);
+        }
+
+        function getCompatibleRAMs(ramType) {
+            return components.ram.filter(ram => ram.type === ramType);
+        }
+
+        function renderOptions(category) {
+            modalOptionsContainer.innerHTML = '';
+            let availableComponents = components[category];
+            const searchTerm = modalSearchInput.value.toLowerCase();
+            const activeFilters = getActiveFilters(category);
+
+            // Apply compatibility filters first
+            if (category === 'motherboard' && selectedComponents.cpu) {
+                availableComponents = getCompatibleMotherboards(selectedComponents.cpu.socket);
+            }
+            if (category === 'ram' && selectedComponents.motherboard) {
+                availableComponents = getCompatibleRAMs(selectedComponents.motherboard.ramType);
+            }
+
+            // Apply search filter
+            if (searchTerm) {
+                availableComponents = availableComponents.filter(comp =>
+                    comp.name.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Apply attribute filters
+            availableComponents = availableComponents.filter(comp => {
+                for (const filterKey in activeFilters) {
+                    if (activeFilters[filterKey].length > 0) {
+                        const compValue = comp[filterKey] ? comp[filterKey].toString().toLowerCase() : '';
+                        if (!activeFilters[filterKey].some(filterVal => compValue.includes(filterVal))) {
+                            return false;
+                        }
+                    }
                 }
+                return true;
+            });
+
+
+            if (availableComponents.length === 0) {
+                modalOptionsContainer.innerHTML = '<p style="text-align: center; color: #ccc;">No components found matching your criteria.</p>';
+                return;
             }
 
-            updateTotalPrice();
-            updateProgressBar();
+            availableComponents.forEach(component => {
+                const optionDiv = document.createElement('div');
+                optionDiv.classList.add('component-option');
+
+                const radioInput = document.createElement('input');
+                radioInput.type = 'radio';
+                radioInput.name = `selected-${category}`;
+                radioInput.id = component.id;
+                radioInput.value = component.id;
+                radioInput.checked = selectedComponents[category] && selectedComponents[category].id === component.id;
+
+                const label = document.createElement('label');
+                label.htmlFor = component.id;
+                label.innerHTML = `
+                    <strong>${component.name}</strong> - $${component.price.toFixed(2)}<br>
+                    ${getComponentDetails(component, category)}
+                `;
+
+                optionDiv.appendChild(radioInput);
+                optionDiv.appendChild(label);
+
+                optionDiv.addEventListener('click', () => {
+                    radioInput.checked = true;
+                    selectedComponents[category] = component;
+                    updateDisplay(category, component);
+                    modal.classList.remove('is-active');
+                });
+
+                modalOptionsContainer.appendChild(optionDiv);
+            });
         }
 
-        // --- Compatibility Functions ---
-        function getCompatibleMotherboards(cpu) {
-            if (!cpu) return [];
-            return components.motherboard.filter(mb => mb.socket === cpu.socket);
-        }
-
-        function getCompatibleRAMs(motherboard) {
-            if (!motherboard) return [];
-            return components.ram.filter(ram => ram.type === motherboard.ram_type);
-        }
-        // End Compatibility Functions
-
-        // Function to dynamically generate filters based on available data for the current category
-        function generateFilters(categoryData) {
-            filterContent.innerHTML = ''; // Clear previous filters
-            const filterableProperties = {};
-
-            // Determine filterable properties (e.g., socket, generation, cores for CPU)
-            if (currentCategory === 'cpu') {
-                filterableProperties.socket = [...new Set(categoryData.map(item => item.socket))].sort();
-                filterableProperties.generation = [...new Set(categoryData.map(item => item.generation))].sort();
-                filterableProperties.cores = [...new Set(categoryData.map(item => item.cores))].sort((a, b) => a - b);
-            } else if (currentCategory === 'motherboard') {
-                filterableProperties.socket = [...new Set(categoryData.map(item => item.socket))].sort();
-                filterableProperties.chipset = [...new Set(categoryData.map(item => item.chipset))].sort();
-                filterableProperties.ram_type = [...new Set(categoryData.map(item => item.ram_type))].sort();
-            } else if (currentCategory === 'ram') {
-                filterableProperties.capacity_gb = [...new Set(categoryData.map(item => item.capacity_gb))].sort((a, b) => a - b);
-                filterableProperties.type = [...new Set(categoryData.map(item => item.type))].sort();
-                filterableProperties.speed_mhz = [...new Set(categoryData.map(item => item.speed_mhz))].sort((a, b) => a - b);
-            } else if (currentCategory === 'gpu') {
-                filterableProperties.chipset = [...new Set(categoryData.map(item => item.chipset))].sort();
-                filterableProperties.vram_gb = [...new Set(categoryData.map(item => item.vram_gb))].sort((a, b) => a - b);
-                filterableProperties.series = [...new Set(categoryData.map(item => item.series))].sort();
-            } else if (currentCategory === 'storage') {
-                filterableProperties.type = [...new Set(categoryData.map(item => item.type))].sort();
-                filterableProperties.interface = [...new Set(categoryData.map(item => item.interface))].sort();
-                filterableProperties.capacity_gb = [...new Set(categoryData.map(item => item.capacity_gb))].sort((a, b) => a - b);
-            } else if (currentCategory === 'psu') {
-                filterableProperties.wattage = [...new Set(categoryData.map(item => item.wattage))].sort((a, b) => a - b);
-                filterableProperties.efficiency = [...new Set(categoryData.map(item => item.efficiency))].sort();
-            } else if (currentCategory === 'case') {
-                filterableProperties.type = [...new Set(categoryData.map(item => item.type))].sort();
-                filterableProperties.color = [...new Set(categoryData.map(item => item.color))].sort();
+        function getComponentDetails(component, category) {
+            switch (category) {
+                case 'cpu':
+                    return `Socket: ${component.socket}, Cores: ${component.cores}, Gen: ${component.generation}`;
+                case 'motherboard':
+                    return `Socket: ${component.socket}, Chipset: ${component.chipset}, RAM Type: ${component.ramType}`;
+                case 'ram':
+                    return `${component.capacityGB}GB ${component.type}-${component.speedMHz} CL${component.casLatency}`;
+                case 'gpu':
+                    return `${component.memoryGB}GB ${component.memoryType}, TDP: ${component.tdp}W`;
+                case 'storage':
+                    return `${component.capacityGB / 1000}TB ${component.type}, Interface: ${component.interface}`;
+                case 'psu':
+                    return `${component.wattage}W ${component.efficiency}, ${component.modularity}`;
+                case 'case':
+                    return `Type: ${component.type}, Color: ${component.color}`;
+                default:
+                    return '';
             }
+        }
 
-            for (const prop in filterableProperties) {
-                if (filterableProperties[prop].length > 0) {
-                    const filterGroup = document.createElement('div');
-                    filterGroup.classList.add('filter-group');
-                    filterGroup.innerHTML = `<h4>${prop.replace(/_/g, ' ').toUpperCase()}</h4>`;
-                    filterableProperties[prop].forEach(value => {
-                        const label = document.createElement('label');
-                        label.innerHTML = `
-                            <input type="checkbox" data-filter-property="${prop}" value="${value}" />
-                            ${value}
-                        `;
-                        filterGroup.appendChild(label);
+
+        function getUniqueFilterValues(category, key) {
+            const allValues = components[category].map(comp => comp[key]).filter(value => value !== undefined);
+            return [...new Set(allValues)].sort(); // Get unique and sort
+        }
+
+        function getFilterAttributes(category) {
+            const filterMaps = {
+                cpu: ['socket', 'generation', 'cores'],
+                motherboard: ['socket', 'chipset', 'formFactor', 'ramType'],
+                ram: ['type', 'capacityGB', 'speedMHz'],
+                gpu: ['chipset', 'memoryGB', 'memoryType'],
+                storage: ['type', 'capacityGB', 'interface'],
+                psu: ['wattage', 'efficiency', 'modularity'],
+                case: ['type', 'color', 'formFactorSupport']
+            };
+            return filterMaps[category] || [];
+        }
+
+
+        function renderFilters(category) {
+            modalFiltersContainer.innerHTML = '';
+            const filterAttributes = getFilterAttributes(category);
+
+            filterAttributes.forEach(attr => {
+                const filterGroup = document.createElement('div');
+                filterGroup.classList.add('filter-group');
+
+                const title = document.createElement('h4');
+                title.textContent = attr.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()); // Format camelCase to readable
+
+                filterGroup.appendChild(title);
+
+                const uniqueValues = getUniqueFilterValues(category, attr);
+
+                // Handle nested arrays like 'formFactorSupport' in cases
+                if (attr === 'formFactorSupport') {
+                    const nestedValues = new Set();
+                    components[category].forEach(comp => {
+                        if (Array.isArray(comp[attr])) {
+                            comp[attr].forEach(val => nestedValues.add(val));
+                        }
                     });
-                    filterContent.appendChild(filterGroup);
+                    [...nestedValues].sort().forEach(val => {
+                         addCheckbox(filterGroup, attr, val, category);
+                    });
+                } else {
+                    uniqueValues.forEach(val => {
+                        addCheckbox(filterGroup, attr, val, category);
+                    });
                 }
-            }
+                modalFiltersContainer.appendChild(filterGroup);
+            });
 
-            // Add event listeners to new checkboxes
-            filterContent.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            // Add event listeners for new checkboxes
+            modalFiltersContainer.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 checkbox.addEventListener('change', filterAndDisplayOptions);
             });
         }
 
-        // Function to filter and display options in the modal
-        function filterAndDisplayOptions() {
-            modalOptionsContainer.innerHTML = ''; // Clear existing options
-            const searchTerm = modalSearch.value.toLowerCase();
+        function addCheckbox(parent, attr, value, category) {
+             const label = document.createElement('label');
+             const checkbox = document.createElement('input');
+             checkbox.type = 'checkbox';
+             checkbox.value = value.toString().toLowerCase(); // Store value as lowercase string
+             checkbox.dataset.filterKey = attr; // Store attribute name
 
-            let availableComponents = components[currentCategory];
+             label.appendChild(checkbox);
+             label.appendChild(document.createTextNode(value)); // Display original value
+             parent.appendChild(label);
+        }
 
-            // Apply compatibility filters first
-            if (currentCategory === 'motherboard' && selectedComponents['cpu']) {
-                availableComponents = getCompatibleMotherboards(selectedComponents['cpu']);
-            } else if (currentCategory === 'ram' && selectedComponents['motherboard']) {
-                availableComponents = getCompatibleRAMs(selectedComponents['motherboard']);
-            }
 
-            // Get active filters
+        function getActiveFilters(category) {
             const activeFilters = {};
-            filterContent.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
-                const prop = checkbox.dataset.filterProperty;
-                if (!activeFilters[prop]) {
-                    activeFilters[prop] = new Set();
+            modalFiltersContainer.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+                const filterKey = checkbox.dataset.filterKey;
+                if (!activeFilters[filterKey]) {
+                    activeFilters[filterKey] = [];
                 }
-                activeFilters[prop].add(checkbox.value);
+                activeFilters[filterKey].push(checkbox.value);
             });
-
-            const filteredComponents = availableComponents.filter(component => {
-                const matchesSearch = component.name.toLowerCase().includes(searchTerm) ||
-                                      (component.brand && component.brand.toLowerCase().includes(searchTerm)); // Assuming 'brand' for general components
-
-                if (!matchesSearch) return false;
-
-                // Apply dynamic filters
-                for (const prop in activeFilters) {
-                    if (activeFilters[prop].size > 0) { // Only apply if at least one checkbox is checked for this property
-                        let componentValue;
-                        // Special handling for properties that might be numbers in data but strings as filter values
-                        if (['cores', 'capacity_gb', 'speed_mhz', 'vram_gb', 'wattage'].includes(prop)) {
-                            componentValue = String(component[prop]);
-                        } else {
-                            componentValue = component[prop];
-                        }
-
-                        if (!activeFilters[prop].has(componentValue)) {
-                            return false; // Does not match selected filter
-                        }
-                    }
-                }
-                return true; // Passes all filters
-            });
-
-
-            if (filteredComponents.length === 0) {
-                modalOptionsContainer.innerHTML = '<p style="text-align: center; margin-top: 20px;">No components found matching your criteria.</p>';
-                return;
-            }
-
-            filteredComponents.forEach(component => {
-                const optionDiv = document.createElement('div');
-                optionDiv.classList.add('component-option');
-                optionDiv.innerHTML = `
-                    <input type="radio" id="${component.id}" name="selected-component" value="${component.id}" ${selectedComponents[currentCategory]?.id === component.id ? 'checked' : ''}>
-                    <label for="${component.id}">
-                        <strong>${component.name}</strong> - $${component.price.toFixed(2)}
-                        <br>
-                        ${getComponentDetailsHtml(component)}
-                    </label>
-                `;
-                modalOptionsContainer.appendChild(optionDiv);
-
-                // Add event listener to the radio button itself
-                optionDiv.querySelector('input[type="radio"]').addEventListener('change', (event) => {
-                    if (event.target.checked) {
-                        selectComponent(currentCategory, component);
-                        modal.classList.remove('is-active'); // Close modal on selection
-                    }
-                });
-            });
+            return activeFilters;
         }
 
-        // Helper function to format component details for display
-        function getComponentDetailsHtml(component) {
-            let details = [];
-            if (currentCategory === 'cpu') {
-                details.push(`Socket: ${component.socket}`);
-                details.push(`Gen: ${component.generation}`);
-                details.push(`Cores: ${component.cores}`);
-                details.push(`Clock: ${component.clock}GHz`);
-            } else if (currentCategory === 'motherboard') {
-                details.push(`Socket: ${component.socket}`);
-                details.push(`Chipset: ${component.chipset}`);
-                details.push(`RAM Type: ${component.ram_type}`);
-                details.push(`RAM Slots: ${component.ram_slots}`);
-            } else if (currentCategory === 'ram') {
-                details.push(`Capacity: ${component.capacity_gb}GB`);
-                details.push(`Type: ${component.type}`);
-                details.push(`Speed: ${component.speed_mhz}MHz`);
-                details.push(`CL: ${component.cas_latency}`);
-                details.push(`Modules: ${component.modules}`);
-            } else if (currentCategory === 'gpu') {
-                details.push(`VRAM: ${component.vram_gb}GB`);
-                details.push(`Chipset: ${component.chipset}`);
-                details.push(`Series: ${component.series}`);
-            } else if (currentCategory === 'storage') {
-                details.push(`Type: ${component.type}`);
-                details.push(`Interface: ${component.interface}`);
-                details.push(`Capacity: ${component.capacity_gb / 1000}TB`); // Display in TB
-            } else if (currentCategory === 'psu') {
-                details.push(`Wattage: ${component.wattage}W`);
-                details.push(`Efficiency: ${component.efficiency}`);
-                details.push(`Modular: ${component.modular ? 'Yes' : 'No'}`);
-            } else if (currentCategory === 'case') {
-                details.push(`Type: ${component.type}`);
-                details.push(`Color: ${component.color}`);
-                if (component.features && component.features.length > 0) {
-                    details.push(`Features: ${component.features.join(', ')}`);
-                }
-            }
-            return details.join(' | ');
+        function filterAndDisplayOptions() {
+            renderOptions(currentCategory);
         }
-
-        // Function to handle component selection
-        function selectComponent(category, component) {
-            selectedComponents[category] = component;
-
-            const displayElement = document.getElementById(`display-${category}`);
-            const hiddenInputElement = document.getElementById(`selected-${category}-hidden`);
-
-            displayElement.innerHTML = `
-                <span>${component.name}</span>
-                <span class="price-display">$${component.price.toFixed(2)}</span>
-            `;
-            hiddenInputElement.value = component.name; // Store selected component name for form submission
-
-            updateCategoryButtonStates(); // Update button states after selection
-        }
-
-        // Event listeners for opening modals
-        document.querySelectorAll('.open-selection-modal').forEach(button => {
-            button.addEventListener('click', (event) => {
-                currentCategory = event.target.dataset.category;
-                modalTitle.textContent = `Select ${currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1)}`;
-
-                let dataForFiltersAndOptions = components[currentCategory];
-
-                // Apply compatibility filters when opening the modal
-                if (currentCategory === 'motherboard' && selectedComponents['cpu']) {
-                    dataForFiltersAndOptions = getCompatibleMotherboards(selectedComponents['cpu']);
-                    if (dataForFiltersAndOptions.length === 0) {
-                        alert('No compatible motherboards found for your selected CPU.');
-                        return; // Prevent opening modal if no options
-                    }
-                } else if (currentCategory === 'ram' && selectedComponents['motherboard']) {
-                    dataForFiltersAndOptions = getCompatibleRAMs(selectedComponents['motherboard']);
-                     if (dataForFiltersAndOptions.length === 0) {
-                        alert('No compatible RAM found for your selected Motherboard.');
-                        return; // Prevent opening modal if no options
-                    }
-                }
-
-
-                // Reset search and filters when opening a new modal
-                modalSearch.value = '';
-                filterContent.innerHTML = ''; // Clear existing filters
-                filterHeader.classList.add('collapsed'); // Collapse filters by default on open (mobile-first)
-
-
-                generateFilters(dataForFiltersAndOptions); // Generate filters based on the filtered data
-                filterAndDisplayOptions(); // Display filtered options
-
-                modal.classList.add('is-active'); // Show modal
-            });
-        });
-
-        // Event listener for closing modal
-        closeButton.addEventListener('click', () => {
-            modal.classList.remove('is-active');
-        });
-
-        // Close modal when clicking outside of modal-content
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.classList.remove('is-active');
-            }
-        });
-
-        // Event listener for search input
-        modalSearch.addEventListener('input', filterAndDisplayOptions);
 
         // Event listener for filter header (accordion for mobile)
-        filterHeader.addEventListener('click', () => {
-            filterHeader.classList.toggle('collapsed');
-            filterContent.classList.toggle('active');
+        document.querySelectorAll('.filter-header').forEach(header => {
+            header.addEventListener('click', function() {
+                this.classList.toggle('collapsed');
+                const targetId = this.dataset.target;
+                document.getElementById(targetId).classList.toggle('active');
+            });
         });
 
 
