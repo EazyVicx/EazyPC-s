@@ -26,12 +26,6 @@
             opacity: 1;
         }
 
-        /* Class to prevent scrolling when mobile menu is open (if it's a full overlay) */
-        /* If the menu is not full screen, you might not need this unless content shifts */
-        body.no-scroll {
-            overflow: hidden;
-        }
-
         /* Progress Bar */
         #progress-bar-container {
             position: fixed;
@@ -101,8 +95,11 @@
             text-overflow: ellipsis;
         }
 
-        /* Desktop Navigation - Visible by default on desktop, hidden on mobile by media query */
-        #main-nav { /* Target the main nav directly for desktop */
+        /* === DESKTOP NAVIGATION STYLES === */
+        /* By default, this is the desktop view */
+
+        /* Show the main nav (links) on desktop */
+        #main-nav {
             display: flex; /* Display as flex for horizontal links on desktop */
             gap: 6px;
             overflow-x: auto;
@@ -125,16 +122,15 @@
             color: purple;
         }
 
-        /* Hamburger Menu Button - Hidden by default on desktop */
+        /* Hide the hamburger button on desktop */
         .hamburger-menu {
-            display: none; /* Hide hamburger on desktop */
+            display: none;
         }
 
-        /* Mobile Navigation Wrapper - Hidden by default on desktop */
+        /* Hide the mobile navigation wrapper on desktop */
         .nav-wrapper {
-            display: none; /* Hide the mobile nav wrapper on desktop */
+            display: none;
         }
-
 
         /* Section Wrapper */
         .section-wrapper {
@@ -265,7 +261,8 @@
         }
 
         /* ==================================== */
-        /* Responsive Styles for Mobile (Hamburger Menu) */
+        /* MOBILE-SPECIFIC STYLES (Hamburger Menu) */
+        /* Applies when screen width is 600px or less */
         /* ==================================== */
         @media (max-width: 600px) {
             html, body {
@@ -273,12 +270,12 @@
                 -webkit-backdrop-filter: none;
             }
 
-            /* Hide Desktop Nav on Mobile */
-            #main-nav { /* Target the main nav directly */
-                display: none; /* Hide default desktop navigation on mobile */
+            /* Hide the standard desktop navigation links on mobile */
+            #main-nav {
+                display: none;
             }
 
-            /* Hamburger Menu Button - Show on mobile */
+            /* Show the hamburger button on mobile */
             .hamburger-menu {
                 display: flex; /* Show hamburger button on mobile */
                 flex-direction: column;
@@ -327,44 +324,47 @@
                 font-size: 0.6em;
             }
 
-            /* Mobile Navigation Wrapper (the actual menu that slides in) */
+            /* Mobile Navigation Wrapper (the actual dropdown menu) */
             .nav-wrapper {
-                position: absolute; /* Changed from fixed to absolute */
-                top: 60px; /* Start below the header */
+                display: flex; /* Crucial: Make it display flex on mobile so content inside can layout */
+                position: absolute;
+                top: 60px; /* Position right below the header */
                 right: 0; /* Align to the right, next to the hamburger */
-                width: auto; /* Allow width to be determined by content or max-width */
-                min-width: 150px; /* Give it a minimum width */
+                width: auto; /* Let content dictate width */
+                min-width: 180px; /* Minimum width for the dropdown */
                 background-color: #38006b; /* Background of the mobile menu */
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-                max-height: 0; /* Hidden by default - use max-height for content-based height */
-                overflow: hidden; /* Hide overflow content */
-                opacity: 0; /* Fade out effect */
+                max-height: 0; /* Initially hidden with max-height */
+                overflow: hidden; /* Hide content that exceeds max-height */
+                opacity: 0; /* Fade out effect when closed */
                 transition: max-height 0.3s ease-out, opacity 0.3s ease-out; /* Transition max-height */
-                transform: translateY(-10px); /* Slightly move up when hidden */
                 z-index: 999; /* Below header, above main content */
-                display: flex; /* Always display flex so content can be arranged, but use max-height to hide */
-                flex-direction: column; /* Links stacked vertically */
+                flex-direction: column; /* Stack links vertically */
+                align-items: stretch; /* Stretch links to fill wrapper width */
             }
 
             .nav-wrapper.active {
-                max-height: 300px; /* Or a value large enough to contain all your links */
-                                    /* You might need to adjust this value based on your actual content */
-                opacity: 1;
-                transform: translateY(0);
-                /* overflow-y: auto; // Only if menu content can exceed max-height */
+                max-height: 200px; /* Adjust this value: make it large enough to fit all your links */
+                                    /* A good way to find this: open menu, inspect, find nav-wrapper,
+                                       see its computed height, and add a little extra. */
+                opacity: 1; /* Fully visible */
+                /* transform: translateY(0); -- removed as max-height handles the "slide" feel */
+                overflow-y: auto; /* Allow scrolling within the menu if content exceeds max-height */
             }
 
             /* Styles for links inside the mobile menu */
             .nav-wrapper #main-nav {
-                flex-direction: column;
+                /* No need for display:flex here as parent .nav-wrapper is already flex-column */
+                flex-direction: column; /* Ensure links stack vertically */
                 width: 100%; /* Links take full width of the wrapper */
-                padding: 15px 0;
-                gap: 0;
+                padding: 0; /* Reset padding for the UL itself */
+                margin: 0; /* Reset margin for the UL itself */
+                list-style: none; /* Remove bullet points if any */
             }
 
             .nav-wrapper #main-nav a {
                 padding: 12px 20px;
-                text-align: center; /* Center text within each link */
+                text-align: left; /* Align text to the left within the dropdown */
                 font-size: 1.1em;
                 width: 100%;
                 box-sizing: border-box;
@@ -448,12 +448,12 @@
         <footer>
             <div style="margin-bottom: 10px;">
                 <a href="https://youtube.com/@EazyVicx" target="_blank">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2013%29.png" alt="YouTube">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
                     @EazyVicx
                 </a>
                 |
                 <a href="https://youtube.com/@CDren" target="_blank">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2013%29.png" alt="YouTube">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
                     @CDren8345
                 </a>
             </div>
@@ -500,8 +500,6 @@
                 hamburgerMenu.addEventListener('click', function() {
                     hamburgerMenu.classList.toggle('active');
                     mobileNavWrapper.classList.toggle('active');
-                    // Removed body.no-scroll toggle, as full-screen overlay is no longer the default
-                    // You might still need it if the menu content pushes main content, but less likely.
                 });
 
                 // Optional: Close menu when a link inside it is clicked
@@ -511,7 +509,6 @@
                         if (hamburgerMenu.classList.contains('active')) {
                             hamburgerMenu.classList.remove('active');
                             mobileNavWrapper.classList.remove('active');
-                            // Removed body.no-scroll toggle
                         }
                     });
                 });
