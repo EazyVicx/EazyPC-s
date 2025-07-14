@@ -26,15 +26,49 @@
     html, body {
         backdrop-filter: none; /* Disable the filter */
         -webkit-backdrop-filter: none; /* Disable for WebKit browsers (iOS Safari/Chrome) */
+
     }
+         
+        
+    header {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Align items to the left when stacked */
+        padding: 10px 15px; /* Reduce padding */
+    }
+
+    .brand-info {
+        font-size: 1.2em; /* Smaller font size for brand */
+        margin-bottom: 10px; /* Add space below brand info */
+        margin-right: 0; /* Remove right margin when stacked */
+        width: 100%; /* Take full width */
+        text-align: center; /* Center brand text */
+    }
+
+    .brand-info .slogan {
+        font-size: 0.6em; /* Even smaller slogan */
+    }
+
+    header nav {
+        width: 100%; /* Navigation takes full width */
+        justify-content: center; /* Center nav links */
+        gap: 10px; /* Reduce space between nav links */
+        margin-top: 5px; /* Space above nav */
+    }
+
+    header nav a {
+        font-size: 0.9em; /* Smaller font size for nav links */
+        padding: 8px 12px; /* Increase padding to make tap targets larger */
+        background-color: rgba(0, 0, 0, 0.2); /* Add a subtle background for tap area */
+        border-radius: 5px;
+    }
+}
+
     /* You might also consider simplifying other background animations if performance is still an issue */
     /* body {
         animation: none;
         background-size: 100% 100%;
     } */
-}
 
-        }
 
         body.loaded {
             opacity: 1;
