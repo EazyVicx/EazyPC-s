@@ -416,6 +416,8 @@
 
 
         .component-list-wrapper {
+            width: 100%;
+            max-width: 400px;
             flex: 1; /* Takes remaining space */
             display: flex;
             flex-direction: column;
@@ -630,13 +632,14 @@
 
             /* MODAL RESPONSIVE ADJUSTMENTS FOR MOBILE */
             .modal-content {
-                margin: 10px; /* Smaller margin on mobile */
+                margin: 10px auto; /* Smaller margin on mobile */
                 padding: 15px;
                 width: 95%; /* Take up more width */
                 min-height: 85vh; /* Take up more height to reduce internal scrolling */
                 max-height: 95vh; /* Keep it from touching the very top/bottom */
                 box-sizing: border-box; /* Include padding in width/height */
                 overflow-y: auto; /* Allow the *entire modal content* to scroll if everything combined is too long */
+                max-width: 95% 
             }
 
             .modal-body {
@@ -644,10 +647,12 @@
                 overflow: visible; /* Let children manage their own overflow on mobile */
                 flex: none; /* No flex grow/shrink for modal-body on mobile */
                 height: auto; /* Auto height based on content */
+                align-items: center;
             }
 
             .filter-sidebar {
                 width: 100%; /* Full width sidebar on mobile */
+                max-width: 400px;
                 max-height: none; /* No fixed max-height */
                 margin-bottom: 20px;
                 flex-shrink: 1;
