@@ -258,12 +258,13 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-            width: 90%;
+            width: 90%; /* Default width for desktop, adjusted later */
             max-width: 1000px;
             position: relative;
             display: flex;
             flex-direction: column;
-            min-height: 70vh;
+            min-height: 70vh; /* Default height for desktop */
+            max-height: 90vh; /* Max height to prevent it from going full screen on huge monitors */
 
             /* KEY TRANSITION PROPERTIES for the panel itself */
             opacity: 0;
@@ -311,7 +312,7 @@
             display: flex;
             gap: 20px;
             flex: 1; /* Allows it to take remaining height */
-            overflow: hidden; /* Prevent body scrollbar */
+            overflow: hidden; /* Prevent modal-body scrollbar itself */
         }
 
         .filter-sidebar {
@@ -321,7 +322,9 @@
             border-radius: 8px;
             overflow-y: auto; /* Enable scrolling for filters if many */
             flex-shrink: 0; /* Prevent shrinking */
-            max-height: calc(70vh - 100px); /* Adjust based on modal content */
+            /* max-height: calc(70vh - 100px); */ /* Adjusted for modal-content min-height */
+            max-height: 100%; /* Allow sidebar to take full height of modal-body */
+            box-sizing: border-box;
         }
 
         .filter-sidebar h4 {
@@ -352,7 +355,7 @@
             flex: 1; /* Takes remaining space */
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow: hidden; /* Important: Prevents this wrapper from scrolling, allows inner container to scroll */
         }
 
         #modal-search {
@@ -370,8 +373,9 @@
             display: flex;
             flex-direction: column; /* Stack options vertically */
             gap: 10px;
-            overflow-y: auto; /* Enable scrolling for component list */
+            overflow-y: auto; /* THIS IS THE CRITICAL SCROLLING ELEMENT */
             flex: 1; /* Allow list to grow and shrink */
+            padding-right: 5px; /* Prevent scrollbar from overlapping content */
         }
 
         /* Specific styling for options inside modal to be full width */
@@ -560,17 +564,20 @@
                 border-bottom: none;
             }
 
-            /* Modal responsive adjustments for smaller screens */
+            /* MODAL RESPONSIVE ADJUSTMENTS FOR MOBILE */
             .modal-content {
-                margin: 10px auto;
+                margin: 10px; /* Smaller margin on mobile */
                 padding: 15px;
-                width: 95%;
-                min-height: 85vh; /* Larger modal on mobile */
+                width: 95%; /* Take up more width */
+                min-height: 90vh; /* Take up more height to reduce internal scrolling */
+                max-height: 95vh; /* Keep it from touching the very top/bottom */
+                box-sizing: border-box; /* Include padding in width/height */
             }
 
             .modal-body {
                 flex-direction: column; /* Stack sidebar and list vertically */
-                overflow-y: auto; /* Allow entire modal body to scroll */
+                overflow-y: auto; /* ALLOW THE ENTIRE MODAL BODY TO SCROLL IF NECESSARY */
+                flex: 1; /* Ensure it takes available space */
             }
 
             .filter-sidebar {
@@ -578,6 +585,11 @@
                 max-height: none; /* No fixed max-height */
                 margin-bottom: 20px;
                 flex-shrink: 1;
+            }
+
+            #modal-options-container {
+                /* On mobile, this will still scroll, but the modal-body can also scroll */
+                min-height: 200px; /* Ensure some minimum visible height for options */
             }
         }
 
@@ -1220,13 +1232,12 @@
 
             // Close mobile nav when a link is clicked (optional)
             navWrapper.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (hamburger.classList.contains('active')) {
+                    // Prevent immediate close if click is on a descendant (e.g. text inside link)
+                    if (event.target.tagName === 'A') {
                         hamburger.classList.remove('active');
                         navWrapper.classList.remove('active');
                     }
                 });
-            });
         }
 
 
