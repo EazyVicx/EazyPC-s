@@ -11,142 +11,87 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-size: cover;
-            backdrop-filter: blur(5px); /* This is the one causing issues on iOS */
-            -webkit-backdrop-filter: blur(5px); /* Keep vendor prefix for broader compatibility */
+            /* Removed background-size: cover; from here, as it's typically for images, not gradients */
+            /* Removed backdrop-filter from here - it will be applied to the header, not body directly */
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             scroll-behavior: smooth;
-}
-
-/* === NEW: Disable backdrop-filter for smaller screens (e.g., phones/tablets) === */
-@media (max-width: 768px) {
-    html, body {
-        backdrop-filter: none; /* Disable the filter */
-        -webkit-backdrop-filter: none; /* Disable for WebKit browsers (iOS Safari/Chrome) */
-
-    }
-         
-        
-    header {
-        flex-direction: column; /* Stack items vertically */
-        align-items: flex-start; /* Align items to the left when stacked */
-        padding: 10px 15px; /* Reduce padding */
-    }
-
-    .brand-info {
-        font-size: 1.2em; /* Smaller font size for brand */
-        margin-bottom: 10px; /* Add space below brand info */
-        margin-right: 0; /* Remove right margin when stacked */
-        width: 100%; /* Take full width */
-        text-align: center; /* Center brand text */
-    }
-
-    .brand-info .slogan {
-        font-size: 0.8em; /* Even smaller slogan */
-    }
-
-     .hamburger-menu {
-        display: flex; /* Make it visible */
-        flex-direction: column;
-        justify-content: space-around;
-        width: 30px;
-        height: 25px;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        z-index: 1001; /* Ensure it's above the nav-wrapper when opened */
-    }
-
-    .hamburger-menu .bar {
-        width: 100%;
-        height: 3px;
-        background-color: #ec03fc; /* Color of the bars */
-        border-radius: 5px;
-        transition: all 0.3s ease-in-out;
-    }
-
-    /* Animation for closing the hamburger (optional, but nice) */
-    .hamburger-menu.active .bar:nth-child(2) {
-        opacity: 0; /* Middle bar disappears */
-    }
-    .hamburger-menu.active .bar:nth-child(1) {
-        transform: translateY(11px) rotate(45deg); /* Top bar rotates to form 'X' */
-    }
-    .hamburger-menu.active .bar:nth-child(3) {
-        transform: translateY(-11px) rotate(-45deg); /* Bottom bar rotates to form 'X' */
-    }
-
-    /* Nav Wrapper on Mobile */
-    .nav-wrapper {
-        position: absolute;
-        top: 100%; /* Position below the header */
-        left: 0;
-        width: 100%;
-        background-color: #38006b; /* Same as header background */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-        max-height: 0; /* Hidden by default */
-        overflow: hidden; /* Hide overflow content */
-        transition: max-height 0.3s ease-out; /* Smooth slide transition */
-        display: flex; /* Use flex to control alignment of nav */
-        justify-content: center; /* Center nav links horizontally */
-        align-items: flex-start; /* Align nav items to the top */
-        flex-direction: column; /* Stack nav links vertically */
-        z-index: 999; /* Below hamburger, above other content */
-    }
-
-    .nav-wrapper.active {
-        max-height: 300px; /* Adjust based on number of links - should be enough to show all links */
-        /* You can use a more precise height if known, or something like 50vh */
-    }
-
-    /* Navigation links inside the wrapper on mobile */
-    header nav {
-        flex-direction: column; /* Stack links vertically */
-        width: 100%; /* Take full width of wrapper */
-        padding: 15px 0; /* Padding inside the dropdown */
-        gap: 0; /* Remove gap between stacked links */
-    }
-
-    header nav a {
-        padding: 12px 20px; /* Increase tap target size for mobile */
-        text-align: center; /* Center the text in each link */
-        font-size: 1.1em; /* Ensure good readability */
-        width: 100%; /* Make links take full width of nav */
-        box-sizing: border-box; /* Include padding in width calculation */
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
-    }
-    header nav a:last-child {
-        border-bottom: none; /* No border on the last link */
-    }
-}
-
-/* Small adjustments for very small screens if needed, e.g., 400px */
-@media (max-width: 400px) {
-    .brand-info {
-        font-size: 1em;
-    }
-    .brand-info .slogan {
-        font-size: 0.5em;
-    }
-}
-
-    /* You might also consider simplifying other background animations if performance is still an issue */
-    /* body {
-        animation: none;
-        background-size: 100% 100%;
-    } */
-
-
-        body.loaded {
-            opacity: 1;
         }
 
-        /* NEW BACKGROUND FOR THIS PAGE (optional, similar to contact-us but no ID needed yet) */
-        body { /* Applied to the body of this specific page */
+        /* Global Header Styles (apply to all screen sizes unless overridden by media query) */
+        header {
+            background-color: #38006b; /* Consistent dark purple */
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between; /* Space out brand info and hamburger on desktop */
+            align-items: center;
+            position: fixed; /* Keep it fixed at the top */
+            top: 0;
+            width: 100%;
+            box-sizing: border-box; /* Include padding in width */
+            z-index: 1000;
+            backdrop-filter: blur(5px); /* Apply backdrop-filter here for desktop */
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .brand-info {
+            color: #ec03fc;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-shrink: 0;
+            display: flex; /* Make brand-info a flex container */
+            align-items: center;
+            gap: 10px; /* Space between @EazyVicx and slogan */
+        }
+
+        .brand-info .youtube-handle { /* Use a span or adjust p margin */
+            margin: 0; /* Remove default paragraph margin */
+            color: inherit; /* Inherit color from parent */
+        }
+
+        .brand-info .slogan {
+            /* Changed from display: block to inline for desktop layout */
+            display: inline;
+            font-size: 0.7em; /* Original 0.7em, consider 0.8em for readability */
+            font-weight: normal;
+            color: #e0b0ff;
+        }
+
+        /* Hide hamburger by default on desktop */
+        .hamburger-menu {
+            display: none; /* Hidden on desktop */
+        }
+
+        /* Navigation links on desktop */
+        .nav-wrapper {
+            /* No specific styling here for desktop, nav inside it handles layout */
+        }
+
+        header nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px; /* Space between nav links */
+        }
+
+        header nav a {
+            color: #ec03fc;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            white-space: nowrap; /* Prevent link text from wrapping */
+            padding: 5px 0; /* Add some vertical padding for tap target */
+            transition: color 0.3s ease;
+        }
+
+        header nav a:hover,
+        header nav a:focus {
+            color: #ffffff; /* Brighter white on hover */
+        }
+
+        /* Body Background (specific to this page) */
+        body {
             background: linear-gradient(135deg, #0f002b, #1a003d); /* A slightly different dark gradient */
             background-size: 200% 200%;
             animation: gradientShift 5s ease infinite;
@@ -162,7 +107,7 @@
             width: 100%;
             height: 100%;
             background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(86, 45, 200, 0.05) 1px, rgba(86, 45, 200, 0.05) 2px),
-                              repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(86, 45, 200, 0.05) 1px, rgba(86, 45, 200, 0.05) 2px);
+                                repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(86, 45, 200, 0.05) 1px, rgba(86, 45, 200, 0.05) 2px);
             opacity: 0.4; /* Make the lines very subtle */
             z-index: 1;
         }
@@ -173,11 +118,10 @@
             100% { background-position: 0% 50%; }
         }
 
-
-        /* Progress Bar (copy from existing) */
+        /* Progress Bar */
         #progress-bar-container {
             position: fixed;
-            top: 0;
+            top: 0; /* Changed from 0 to align with the fixed header */
             left: 50%;
             transform: translateX(-50%);
             width: 80%;
@@ -187,7 +131,6 @@
             border-radius: 2px;
             overflow: hidden;
         }
-
         #progress-bar {
             height: 100%;
             width: 0%;
@@ -201,47 +144,10 @@
             transition: width 0.25s ease-out;
         }
 
-        /* Header (copy from existing) */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: rgba(86, 6, 148, 0.8);
-            justify-content: space-between;
-            backdrop-filter: blur(5px);
-            padding: 6px 12px;
-            display: flex;
-            position: relative;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            height: 60px;
-            box-sizing: border-box;
-        }
-        .brand-info {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-            color: #ec03fc;
-        }
-
-        header nav a {
-            color: #ec03fc;
-            text-decoration: none;
-            margin-left: 13px;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        header nav a:hover {
-            color: purple;
-        }
-
         /* Main Content Area for PC Builder */
         .builder-container {
             flex: 1; /* Allows it to take up remaining space */
-            padding-top: 100px; /* Space for fixed header */
+            padding-top: 100px; /* Space for fixed header (adjust if header height changes) */
             padding-bottom: 50px;
             display: flex;
             flex-direction: column;
@@ -249,8 +155,8 @@
             justify-content: flex-start; /* Align content to top */
             color: white;
             animation: fadeIn 1s ease forwards;
-            position: relative; /* For z-index stacking if needed */
-            z-index: 2; /* Keep content above pseudo-element background */
+            position: relative;
+            z-index: 2;
         }
 
         @keyframes fadeIn {
@@ -264,45 +170,46 @@
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* Placeholder for sections */
+        /* Component Sections */
         .component-section {
             background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px); /* Keep this filter for component sections */
+            -webkit-backdrop-filter: blur(8px);
             padding: 25px 30px;
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             width: 90%;
-            max-width: 800px; /* Wider for components */
-            margin-bottom: 30px; /* Space between sections */
+            max-width: 800px;
+            margin-bottom: 30px;
         }
 
         .component-section h3 {
             font-size: 1.8em;
             margin-bottom: 20px;
-            color: #ec03fc; /* Bright accent color for headings */
+            color: #ec03fc;
             text-align: center;
         }
-        /* Styling for the component options themselves */
+
         .options-container {
             display: flex;
-            flex-wrap: wrap; /* Allows options to wrap to the next line */
-            gap: 15px; /* Space between options */
-            justify-content: center; /* Center the options within the container */
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
             margin-top: 20px;
         }
 
         .component-option {
-            background: rgba(255, 255, 255, 0.05); /* Slightly transparent background for each option */
-            border: 1px solid rgba(86, 45, 200, 0.3); /* Subtle purple border */
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(86, 45, 200, 0.3);
             border-radius: 8px;
             padding: 15px;
             display: flex;
             align-items: center;
             cursor: pointer;
             transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-            flex: 1 1 calc(50% - 15px); /* Two columns layout, accounting for gap */
-            max-width: calc(50% - 15px); /* Ensure max width for two columns */
-            box-sizing: border-box; /* Include padding and border in element's total width and height */
+            flex: 1 1 calc(50% - 15px);
+            max-width: calc(50% - 15px);
+            box-sizing: border-box;
         }
 
         .component-option:hover {
@@ -313,32 +220,30 @@
 
         .component-option input[type="radio"] {
             margin-right: 10px;
-            /* Custom radio button styles (optional) */
-            -webkit-appearance: none; /* Hide default radio button */
+            -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
             width: 20px;
             height: 20px;
-            border: 2px solid #ec03fc; /* Accent border color */
+            border: 2px solid #ec03fc;
             border-radius: 50%;
             outline: none;
             cursor: pointer;
             position: relative;
-            flex-shrink: 0; /* Prevent it from shrinking */
+            flex-shrink: 0;
         }
 
         .component-option input[type="radio"]:checked {
-            background-color: #ec03fc; /* Accent fill color when checked */
-            border-color: #ec03fc; /* Accent border color when checked */
+            background-color: #ec03fc;
+            border-color: #ec03fc;
         }
 
-        /* Inner circle for checked state */
         .component-option input[type="radio"]:checked::before {
             content: '';
             display: block;
             width: 10px;
             height: 10px;
-            background-color: white; /* White dot inside when checked */
+            background-color: white;
             border-radius: 50%;
             position: absolute;
             top: 50%;
@@ -347,21 +252,14 @@
         }
 
         .component-option label {
-            flex-grow: 1; /* Allows label to take remaining space */
+            flex-grow: 1;
             cursor: pointer;
             font-size: 0.95em;
             line-height: 1.4;
+            color: white; /* Ensure label text is visible against dark backgrounds */
         }
 
-        /* Responsive adjustments for options */
-        @media (max-width: 768px) {
-            .component-option {
-                flex: 1 1 100%; /* Single column layout on smaller screens */
-                max-width: 100%;
-            }
-        }
-
-        /* Footer (copy from existing) */
+        /* Footer */
         footer {
             background-color: rgb(46, 5, 128);
             color: white;
@@ -388,14 +286,121 @@
             color: white;
         }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            .builder-container h1 {
-                font-size: 2.2em;
+        /* --- Media Queries for Mobile Responsiveness --- */
+
+        @media (max-width: 768px) {
+            /* Disable backdrop-filter for html, body background */
+            html, body {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
             }
-            .component-section {
-                padding: 20px;
+
+            /* Show hamburger menu on mobile */
+            .hamburger-menu {
+                display: flex; /* Make it visible */
+                flex-direction: column;
+                justify-content: space-around;
+                width: 30px;
+                height: 25px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                z-index: 1001;
             }
+
+            .hamburger-menu .bar {
+                width: 100%;
+                height: 3px;
+                background-color: #ec03fc; /* Color of the bars */
+                border-radius: 5px;
+                transition: all 0.3s ease-in-out;
+            }
+
+            /* Animation for closing the hamburger */
+            .hamburger-menu.active .bar:nth-child(2) {
+                opacity: 0; /* Middle bar disappears */
+            }
+            .hamburger-menu.active .bar:nth-child(1) {
+                transform: translateY(11px) rotate(45deg); /* Top bar rotates to form 'X' */
+            }
+            .hamburger-menu.active .bar:nth-child(3) {
+                transform: translateY(-11px) rotate(-45deg); /* Bottom bar rotates to form 'X' */
+            }
+
+            /* Header on mobile */
+            header {
+                /* Remove fixed position and backdrop filter from here if you want it only from general rules */
+                /* Re-adjust padding for mobile */
+                padding: 10px 15px;
+            }
+
+            .brand-info {
+                font-size: 1.2em; /* Smaller font size for brand */
+                /* Adjust flex-direction if needed to stack brand components, otherwise keep as row */
+            }
+            .brand-info .slogan {
+                font-size: 0.6em; /* Even smaller slogan */
+            }
+
+            /* Nav Wrapper on Mobile (hidden by default) */
+            .nav-wrapper {
+                position: absolute;
+                top: 100%; /* Position below the header */
+                left: 0;
+                width: 100%;
+                background-color: #38006b; /* Same as header background */
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+                max-height: 0; /* Hidden by default */
+                overflow: hidden; /* Hide overflow content */
+                transition: max-height 0.3s ease-out; /* Smooth slide transition */
+                display: flex; /* Use flex to control alignment of nav */
+                justify-content: center; /* Center nav links horizontally */
+                align-items: flex-start; /* Align nav items to the top */
+                flex-direction: column; /* Stack nav links vertically */
+                z-index: 999; /* Below hamburger, above other content */
+            }
+
+            .nav-wrapper.active {
+                max-height: 300px; /* Adjust based on number of links - should be enough to show all links */
+            }
+
+            /* Hide desktop navigation */
+            header nav {
+                flex-direction: column; /* Stack links vertically */
+                width: 100%; /* Take full width of wrapper */
+                padding: 15px 0; /* Padding inside the dropdown */
+                gap: 0; /* Remove gap between stacked links */
+            }
+
+            header nav a {
+                padding: 12px 20px; /* Increase tap target size for mobile */
+                text-align: center; /* Center the text in each link */
+                font-size: 1.1em; /* Ensure good readability */
+                width: 100%; /* Make links take full width of nav */
+                box-sizing: border-box; /* Include padding in width calculation */
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
+            }
+            header nav a:last-child {
+                border-bottom: none; /* No border on the last link */
+            }
+
+            /* Component options (for 2-column to 1-column conversion) */
+            .component-option {
+                flex: 1 1 100%; /* Single column layout on smaller screens */
+                max-width: 100%;
+            }
+        }
+
+        /* Small adjustments for very small screens if needed, e.g., 400px */
+        @media (max-width: 400px) {
+            .brand-info {
+                font-size: 1em;
+            }
+            .brand-info .slogan {
+                font-size: 0.5em;
+            }
+            /* You might further adjust nav font size or padding here if needed */
         }
     </style>
 </head>
@@ -407,27 +412,23 @@
 
     <header>
         <div class="brand-info">
-            <p class="youtube-handle">@EazyVicx</p>
-            <p class="slogan">Making Custom PCs Eazy For You!</p>
+            <span class="youtube-handle">@EazyVicx</span>
+            <span class="slogan">Making Custom PCs Eazy For You!</span>
         </div>
-         
-        <button class="hamburger-menu" aria-label="Toggle navigation">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-    </button>
 
-    <div class="nav-wrapper">
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="Contact Us.html">Contact Us!</a>
-            <a href="build-your-pc.html">Build Your PC</a>
-        </nav>
-        
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="Contact-Us.html">Contact Us!</a>
-            <a href="build-your-pc.html">Build Your PC</a> </nav>
+        <button class="hamburger-menu" aria-label="Toggle navigation">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <div class="nav-wrapper">
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="Contact Us.html">Contact Us!</a>
+                <a href="build-your-pc.html">Build Your PC</a>
+            </nav>
+        </div>
     </header>
 
     <div class="builder-container">
@@ -535,8 +536,7 @@
                 { id: 'cpu-i5-13500f', name: 'Intel Core i5-13400f', price: 134.00, socket: 'LGA1700' },
                 { id: 'cpu-i7-14700k', name: 'Intel Core i7-14700K', price: 380.00, socket: 'LGA1700' },
                 { id: 'cpu-i7-13700kf', name: 'Intel Core i7-13700KF', price: 299.00, socket: 'LGA1700' },
-
-           { id: 'cpu-r7-7800x3d', name: 'AMD Ryzen 7 7800X3D', price: 360.00, socket: 'AM5' },
+                { id: 'cpu-r7-7800x3d', name: 'AMD Ryzen 7 7800X3D', price: 360.00, socket: 'AM5' },
                 { id: 'cpu-r9-7900x', name: 'AMD Ryzen 9 7900X', price: 420.00, socket: 'AM5' }
             ],
             gpu: [
@@ -644,14 +644,10 @@
             }
         }
 
-        // --- Existing Scripts (ensure this new code is above them) ---
-        window.addEventListener('load', () => {
-            document.body.classList.add('loaded');
-        });
-
+        // --- All DOMContentLoaded related scripts combined ---
         document.addEventListener('DOMContentLoaded', function() {
+            // Progress Bar
             const progressBar = document.getElementById('progress-bar');
-
             window.addEventListener('scroll', () => {
                 const scrollTop = window.scrollY || document.documentElement.scrollTop;
                 const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -659,33 +655,35 @@
                 progressBar.style.width = scrollPercent + '%';
             });
 
-            // Call renderComponents when the DOM is loaded
+            // Component Builder Initialization
             renderComponents();
-
-            // Add event listener for component selections
             document.querySelector('.builder-container').addEventListener('change', handleComponentSelection);
-
-            // Initial price update (should be 0.00)
             updateTotalPrice();
-        });
-         document.addEventListener('DOMContentLoaded', function() {
-        const hamburgerBtn = document.querySelector('.hamburger-menu');
-        const navWrapper = document.querySelector('.nav-wrapper');
-        const navLinks = document.querySelectorAll('.nav-wrapper a'); // Get all nav links
 
-        hamburgerBtn.addEventListener('click', function() {
-            hamburgerBtn.classList.toggle('active');
-            navWrapper.classList.toggle('active');
+            // Hamburger Menu Functionality
+            const hamburgerBtn = document.querySelector('.hamburger-menu');
+            const navWrapper = document.querySelector('.nav-wrapper');
+            const navLinks = document.querySelectorAll('.nav-wrapper a');
+
+            if (hamburgerBtn && navWrapper) { // Check if elements exist before adding listeners
+                hamburgerBtn.addEventListener('click', function() {
+                    hamburgerBtn.classList.toggle('active');
+                    navWrapper.classList.toggle('active');
+                });
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        hamburgerBtn.classList.remove('active');
+                        navWrapper.classList.remove('active');
+                    });
+                });
+            }
         });
 
-        // Optional: Close menu when a link is clicked (useful for single-page apps or smooth scrolls)
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                hamburgerBtn.classList.remove('active');
-                navWrapper.classList.remove('active');
-            });
+        // For body fade-in animation
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
         });
-    });
     </script>
 </body>
 </html>
