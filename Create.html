@@ -230,35 +230,57 @@
             opacity: 0.6;
         }
 
-        /* Modal Styles */
+        /* --- Modal Styles for Pop-Up Transition --- */
+        /* Initial state: Hidden and slightly scaled down */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 2000; /* Sit on top */
-            left: 0;
+            position: fixed;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
-            backdrop-filter: blur(5px); /* Optional: blur background */
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex; /* Use flexbox to center content */
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            padding-top: 60px; /* Space from top */
+
+            /* KEY TRANSITION PROPERTIES for the backdrop */
+            opacity: 0;
+            visibility: hidden; /* Ensures it's not clickable when hidden */
+            transition: opacity 0.3s ease-out, visibility 0.3s;
         }
 
         .modal-content {
             background: linear-gradient(135deg, #1a003d, #0f002b);
             border: 1px solid rgba(86, 45, 200, 0.5);
-            margin: 5% auto; /* 5% from top and centered horizontally */
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-            width: 90%; /* Responsive width */
-            max-width: 1000px; /* Max width */
+            width: 90%;
+            max-width: 1000px;
             position: relative;
             display: flex;
             flex-direction: column;
-            min-height: 70vh; /* Minimum height for scrollability */
+            min-height: 70vh;
+
+            /* KEY TRANSITION PROPERTIES for the panel itself */
+            opacity: 0;
+            transform: scale(0.85); /* Starts smaller */
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+
+        /* State when the modal is active (visible) */
+        .modal.is-active {
+            opacity: 1; /* Fade in backdrop */
+            visibility: visible; /* Make backdrop visible */
+        }
+
+        /* When the backdrop is active, the content inside also becomes active */
+        .modal.is-active .modal-content {
+            opacity: 1; /* Fade in content */
+            transform: scale(1); /* Pop to full size */
         }
 
         .modal-content h2 {
@@ -696,7 +718,7 @@
 
     <div id="component-selection-modal" class="modal">
         <div class="modal-content">
-            <span class="close-button">&times;</span>
+            <span class="close-button">×</span>
             <h2 id="modal-title">Select Component</h2>
             <div class="modal-body">
                 <div class="filter-sidebar">
@@ -811,7 +833,6 @@
          */
         function updateMainDisplay(category, part) {
             const displayDiv = document.getElementById(`display-${category}`);
-            const chooseButton = document.querySelector(`.open-selection-modal[data-category="${category}"]`);
             const hiddenInput = document.getElementById(`selected-${category}-hidden`);
 
             if (part) {
@@ -824,15 +845,8 @@
                 hiddenInput.value = '';
             }
 
-            // Enable/Disable dependent category buttons
-            if (category === 'cpu') {
-                const moboButton = document.querySelector('.open-selection-modal[data-category="motherboard"]');
-                if (moboButton) moboButton.disabled = !part;
-            } else if (category === 'motherboard') {
-                const ramButton = document.querySelector('.open-selection-modal[data-category="ram"]');
-                if (ramButton) ramButton.disabled = !part;
-            }
-            // Add more dependency rules here if needed (e.g., enable PSU/Case after certain parts)
+            // This logic needs to be called after any selection change
+            updateDependencyButtons();
         }
 
         /**
@@ -849,6 +863,25 @@
         }
 
         /**
+         * Updates the disabled state of "Choose..." buttons based on selected parts.
+         */
+        function updateDependencyButtons() {
+            // Motherboard depends on CPU
+            const moboButton = document.querySelector('.open-selection-modal[data-category="motherboard"]');
+            if (moboButton) {
+                moboButton.disabled = !selectedParts.cpu;
+            }
+
+            // RAM depends on Motherboard
+            const ramButton = document.querySelector('.open-selection-modal[data-category="ram"]');
+            if (ramButton) {
+                ramButton.disabled = !selectedParts.motherboard;
+            }
+            // Add other dependencies here if needed
+        }
+
+
+        /**
          * Generates and applies filters based on previously selected components.
          * This is the core compatibility filtering.
          * @param {object} part - The part to check compatibility for.
@@ -858,330 +891,354 @@
         function checkCompatibility(part, category) {
             const selectedCpu = selectedParts.cpu;
             const selectedMotherboard = selectedParts.motherboard;
+            // const selectedRam = selectedParts.ram; // Not currently used for compatibility checks here
+            // const selectedGpu = selectedParts.gpu; // Not currently used for compatibility checks here
+            // const selectedPsu = selectedParts.psu; // Not currently used for compatibility checks here
 
-            if (category === 'motherboard') {
-                return !selectedCpu || part.socket === selectedCpu.socket;
+            switch (category) {
+                case 'motherboard':
+                    // Motherboard must be compatible with selected CPU's socket
+                    if (selectedCpu && part.socket !== selectedCpu.socket) {
+                        return false;
+                    }
+                    break;
+                case 'ram':
+                    // RAM must be compatible with selected Motherboard's RAM type
+                    if (selectedMotherboard && part.type !== selectedMotherboard.ramType) {
+                        return false;
+                    }
+                    break;
+                case 'case':
+                    // Case must support selected Motherboard form factor (if motherboards had formFactor)
+                    // (Assuming all cases support ATX, Micro-ATX, Mini-ITX for now based on your data)
+                    break;
+                case 'psu':
+                    // PSU wattage considerations could go here based on selected GPU/CPU, e.g.:
+                    // if (selectedGpu && selectedGpu.vram >= 16 && part.wattage < 750) return false;
+                    break;
+                // Add more compatibility rules as needed for other components
             }
-            if (category === 'ram') {
-                return !selectedMotherboard || part.type === selectedMotherboard.ramType;
-            }
-            // Add more compatibility rules here as needed (e.g., PSU wattage, Case form factor)
-            return true; // Default to compatible if no specific rule
+            return true;
         }
 
-        /**
-         * Deselects a component and its dependents if they become incompatible.
-         * @param {string} category - The category that just changed.
-         */
-        function deselectIncompatibleDependents(changedCategory) {
-            let reRenderNeeded = false;
-
-            // If CPU changed, check Motherboard and RAM
-            if (changedCategory === 'cpu' && selectedParts.motherboard) {
-                if (!checkCompatibility(selectedParts.motherboard, 'motherboard')) {
-                    selectedParts.motherboard = null;
-                    selectedParts.ram = null; // RAM also becomes incompatible
-                    updateMainDisplay('motherboard', null);
-                    updateMainDisplay('ram', null);
-                    reRenderNeeded = true;
-                }
-            }
-
-            // If Motherboard changed (or became null due to CPU change), check RAM
-            if ((changedCategory === 'motherboard' || reRenderNeeded) && selectedParts.ram) {
-                if (!checkCompatibility(selectedParts.ram, 'ram')) {
-                    selectedParts.ram = null;
-                    updateMainDisplay('ram', null);
-                    reRenderNeeded = true;
-                }
-            }
-
-            if (reRenderNeeded) {
-                updateTotalPrice();
-            }
-        }
 
         /**
-         * Renders component options within the modal, applying all active filters.
-         * @param {string} category - The current category being displayed in the modal.
-         * @param {string} searchTerm - Text from the search input.
+         * Renders component options in the modal, applying search and filters.
          */
-        function renderModalOptions(category, searchTerm = '') {
+        function renderModalOptions() {
             modalOptionsContainer.innerHTML = ''; // Clear previous options
-            let filteredParts = components[category];
+            const category = currentModalCategory;
+            const items = components[category];
+            const searchTerm = modalSearchInput.value.toLowerCase();
 
-            // 1. Apply global compatibility filters (socket, RAM type)
-            filteredParts = filteredParts.filter(part => checkCompatibility(part, category));
-
-            // 2. Apply search term filter
-            if (searchTerm) {
-                const lowerSearchTerm = searchTerm.toLowerCase();
-                filteredParts = filteredParts.filter(part =>
-                    part.name.toLowerCase().includes(lowerSearchTerm)
-                );
+            // Determine available filters based on the current category and its properties
+            const uniqueFilterValues = {};
+            if (category === 'cpu') {
+                uniqueFilterValues.socket = new Set();
+                uniqueFilterValues.generation = new Set();
+                uniqueFilterValues.cores = new Set();
+                uniqueFilterValues.clock = new Set();
+            } else if (category === 'motherboard') {
+                uniqueFilterValues.socket = new Set();
+                uniqueFilterValues.ramType = new Set();
+                uniqueFilterValues.chipset = new Set();
+            } else if (category === 'ram') {
+                uniqueFilterValues.type = new Set();
+                uniqueFilterValues.size = new Set();
+                uniqueFilterValues.speed = new Set();
+            } else if (category === 'gpu') {
+                uniqueFilterValues.brand = new Set();
+                uniqueFilterValues.vram = new Set();
+            } else if (category === 'storage') {
+                uniqueFilterValues.type = new Set();
+                uniqueFilterValues.capacity = new Set();
+            } else if (category === 'psu') {
+                uniqueFilterValues.wattage = new Set();
+                uniqueFilterValues.rating = new Set();
+            } else if (category === 'case') {
+                uniqueFilterValues.formFactor = new Set(); // This is an array, special handling needed
             }
 
-            // 3. Apply detailed modal filters (generation, cores, etc.)
-            for (const filterKey in activeModalFilters) {
-                const selectedFilterValues = activeModalFilters[filterKey];
-                if (selectedFilterValues.length > 0) {
-                    filteredParts = filteredParts.filter(part => {
-                        // Handle different filter types (e.g., array for formFactor, direct match for others)
-                        if (Array.isArray(part[filterKey])) {
-                            return selectedFilterValues.some(val => part[filterKey].includes(val));
-                        }
-                        // Ensure comparison type matches data type
-                        // For numbers (cores, clock, size, speed, wattage, vram, capacity), convert filterValue to number
-                        if (['cores', 'clock', 'size', 'speed', 'wattage', 'vram', 'capacity'].includes(filterKey)) {
-                            return selectedFilterValues.includes(String(part[filterKey])); // Store as strings in filter, compare with string
-                        }
-                        return selectedFilterValues.includes(String(part[filterKey])); // Convert to string for comparison
-                    });
-                }
-            }
+            modalFiltersContainer.innerHTML = ''; // Clear existing filters
 
-
-            if (filteredParts.length === 0) {
-                modalOptionsContainer.innerHTML = '<p style="color: grey; text-align: center; padding: 20px;">No matching components found.</p>';
-                return;
-            }
-
-            filteredParts.forEach(part => {
-                const isSelected = selectedParts[category] && selectedParts[category].id === part.id;
-                const optionDiv = document.createElement('div');
-                optionDiv.classList.add('component-option');
-                optionDiv.dataset.partId = part.id; // Store ID for easy lookup
-
-                // Constructing the label text dynamically for better info
-                let details = [];
-                if (part.socket) details.push(`Socket: ${part.socket}`);
-                if (part.ramType) details.push(`RAM: ${part.ramType}`);
-                if (part.generation) details.push(`Gen: ${part.generation}`);
-                if (part.cores) details.push(`Cores: ${part.cores}`);
-                if (part.clock) details.push(`Clock: ${part.clock}GHz`);
-                if (part.chipset) details.push(`Chipset: ${part.chipset}`);
-                if (part.size) details.push(`Size: ${part.size}GB`);
-                if (part.speed) details.push(`Speed: ${part.speed}MHz`);
-                if (part.brand) details.push(`Brand: ${part.brand}`);
-                if (part.vram) details.push(`VRAM: ${part.vram}GB`);
-                if (part.type && category === 'storage') details.push(`Type: ${part.type}`);
-                if (part.capacity) details.push(`Capacity: ${part.capacity / 1000}TB`); // Assuming capacity in MB for storage
-                if (part.wattage) details.push(`Wattage: ${part.wattage}W`);
-                if (part.rating) details.push(`Rating: ${part.rating}`);
-                // if (part.formFactor) details.push(`Form Factor: ${part.formFactor.join(', ')}`); // If multiple, join them
-
-                const detailsString = details.length > 0 ? ` (${details.join(', ')})` : '';
-
-                optionDiv.innerHTML = `
-                    <input type="radio" id="modal-${part.id}" name="modal-selection" value="${part.id}" ${isSelected ? 'checked' : ''}>
-                    <label for="modal-${part.id}">
-                        ${part.name} - $${part.price.toFixed(2)}${detailsString}
-                    </label>
-                `;
-                modalOptionsContainer.appendChild(optionDiv);
-            });
-        }
-
-        /**
-         * Dynamically generates filter options for the modal sidebar based on the category.
-         * @param {string} category - The component category (e.g., 'cpu').
-         */
-        function generateModalFilters(category) {
-            modalFiltersContainer.innerHTML = '';
-            activeModalFilters = {}; // Reset active filters for new category
-
-            const filterableProperties = {
-                cpu: ['socket', 'generation', 'cores', 'clock'],
-                motherboard: ['socket', 'ramType', 'chipset'],
-                ram: ['type', 'size', 'speed'],
-                gpu: ['brand', 'vram'],
-                storage: ['type', 'capacity'],
-                psu: ['wattage', 'rating'],
-                case: ['formFactor'] // Cases typically filtered by compatible motherboard form factors
-            };
-
-            const propertiesToFilter = filterableProperties[category] || [];
-            const availableFilters = {};
-
-            // Collect all unique values for filterable properties
-            components[category].forEach(part => {
-                propertiesToFilter.forEach(prop => {
-                    if (part[prop] !== undefined) {
-                        if (!availableFilters[prop]) {
-                            availableFilters[prop] = new Set();
-                        }
-                        // Handle array properties (like formFactor)
-                        if (Array.isArray(part[prop])) {
-                            part[prop].forEach(val => availableFilters[prop].add(String(val)));
-                        } else {
-                            availableFilters[prop].add(String(part[prop])); // Store all as strings for consistency
+            // Dynamically generate filter checkboxes
+            for (const item of items) {
+                if (checkCompatibility(item, category)) { // Only add filter options for compatible items
+                    for (const prop in uniqueFilterValues) {
+                        if (item[prop] !== undefined) {
+                            if (Array.isArray(item[prop])) { // Handle array properties like formFactor
+                                item[prop].forEach(val => uniqueFilterValues[prop].add(val));
+                            } else {
+                                uniqueFilterValues[prop].add(item[prop]);
+                            }
                         }
                     }
-                });
-            });
+                }
+            }
 
-            // Render filter groups
-            for (const filterKey of propertiesToFilter) { // Iterate in defined order
-                if (availableFilters[filterKey] && availableFilters[filterKey].size > 0) {
+            for (const prop in uniqueFilterValues) {
+                if (uniqueFilterValues[prop].size > 0) { // Only show filter group if there are options
                     const filterGroupDiv = document.createElement('div');
                     filterGroupDiv.classList.add('filter-group');
+                    filterGroupDiv.innerHTML = `<h4>${prop.charAt(0).toUpperCase() + prop.slice(1)}</h4>`;
 
-                    const label = document.createElement('label');
-                    // Capitalize filter key nicely (e.g., "ramType" -> "RAM Type")
-                    label.textContent = filterKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-                    filterGroupDiv.appendChild(label);
-
-                    const values = Array.from(availableFilters[filterKey]).sort((a, b) => {
-                        // Custom sort for numeric values
-                        if (!isNaN(Number(a)) && !isNaN(Number(b))) {
-                            return Number(a) - Number(b);
+                    const sortedValues = Array.from(uniqueFilterValues[prop]).sort((a, b) => {
+                        // Sort numbers numerically, strings alphabetically
+                        if (typeof a === 'number' && typeof b === 'number') {
+                            return a - b;
                         }
-                        return a.localeCompare(b);
-                    }); // Sort values for consistent display
+                        return String(a).localeCompare(String(b));
+                    });
 
-                    values.forEach(value => {
-                        const checkboxDiv = document.createElement('div');
+                    sortedValues.forEach(value => {
+                        const filterId = `filter-${category}-${prop}-${value}`;
                         const checkbox = document.createElement('input');
                         checkbox.type = 'checkbox';
-                        // Sanitize ID: replace spaces with hyphens, remove special chars
-                        checkbox.id = `filter-${filterKey}-${value.replace(/[^a-zA-Z0-9]/g, '-')}`;
+                        checkbox.id = filterId;
                         checkbox.value = value;
-                        checkbox.dataset.filterKey = filterKey;
-                        // Set checked state if this filter was previously active
-                        if (activeModalFilters[filterKey] && activeModalFilters[filterKey].includes(value)) {
-                            checkbox.checked = true;
-                        }
+                        checkbox.dataset.filterProp = prop;
+                        checkbox.checked = activeModalFilters[prop] && activeModalFilters[prop].includes(String(value)); // Convert to string for consistent comparison
 
-                        const checkboxLabel = document.createElement('label');
-                        checkboxLabel.htmlFor = checkbox.id;
-                        checkboxLabel.textContent = value;
-                        checkboxLabel.style.fontWeight = 'normal'; // Override bold from parent label
+                        const label = document.createElement('label');
+                        label.htmlFor = filterId;
+                        label.textContent = value;
 
-                        checkboxDiv.appendChild(checkbox);
-                        checkboxDiv.appendChild(checkboxLabel);
-                        filterGroupDiv.appendChild(checkboxDiv);
+                        checkbox.addEventListener('change', (e) => {
+                            const filterProp = e.target.dataset.filterProp;
+                            const filterValue = String(e.target.value); // Ensure string for consistency
+
+                            if (!activeModalFilters[filterProp]) {
+                                activeModalFilters[filterProp] = [];
+                            }
+
+                            if (e.target.checked) {
+                                if (!activeModalFilters[filterProp].includes(filterValue)) {
+                                    activeModalFilters[filterProp].push(filterValue);
+                                }
+                            } else {
+                                activeModalFilters[filterProp] = activeModalFilters[filterProp].filter(v => v !== filterValue);
+                                if (activeModalFilters[filterProp].length === 0) {
+                                    delete activeModalFilters[filterProp]; // Remove empty filter array
+                                }
+                            }
+                            renderFilteredOptions(); // Re-render options based on new filters
+                        });
+
+                        filterGroupDiv.appendChild(checkbox);
+                        filterGroupDiv.appendChild(label);
+                        filterGroupDiv.appendChild(document.createElement('br'));
                     });
                     modalFiltersContainer.appendChild(filterGroupDiv);
                 }
             }
+
+            renderFilteredOptions(); // Initial render of options after filters are set up
         }
+
+        /**
+         * Renders component options in the modal, applying search and filters.
+         * Separated from renderModalOptions to allow re-rendering after filter/search changes.
+         */
+        function renderFilteredOptions() {
+            modalOptionsContainer.innerHTML = ''; // Clear previous options
+            const category = currentModalCategory;
+            const items = components[category];
+            const searchTerm = modalSearchInput.value.toLowerCase();
+
+            const fragment = document.createDocumentFragment();
+
+            items.forEach(item => {
+                // Apply search filter
+                const matchesSearch = item.name.toLowerCase().includes(searchTerm);
+                if (!matchesSearch) {
+                    return;
+                }
+
+                // Apply compatibility filter (e.g., CPU socket for Motherboard)
+                if (!checkCompatibility(item, category)) {
+                    return;
+                }
+
+                // Apply dynamic filters from sidebar
+                let matchesAllFilters = true;
+                for (const prop in activeModalFilters) {
+                    const filterValues = activeModalFilters[prop];
+                    if (filterValues.length > 0) {
+                        // If the item has this property and its value (or any of its values if it's an array)
+                        // is NOT in the active filter values, then it doesn't match this filter group.
+                        if (item[prop] === undefined) {
+                            matchesAllFilters = false;
+                            break;
+                        }
+                        if (Array.isArray(item[prop])) {
+                            // For array properties (like case formFactor), check if ANY of its values match
+                            const hasIntersection = item[prop].some(val => filterValues.includes(String(val)));
+                            if (!hasIntersection) {
+                                matchesAllFilters = false;
+                                break;
+                            }
+                        } else if (!filterValues.includes(String(item[prop]))) { // Convert item prop to string for consistent comparison
+                            matchesAllFilters = false;
+                            break;
+                        }
+                    }
+                }
+                if (!matchesAllFilters) {
+                    return;
+                }
+
+                // Create the component option element
+                const optionDiv = document.createElement('div');
+                optionDiv.classList.add('component-option');
+
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `selected-${category}`;
+                input.id = `option-${item.id}`;
+                input.value = item.id;
+                input.checked = selectedParts[category] && selectedParts[category].id === item.id; // Pre-select if already chosen
+
+                const label = document.createElement('label');
+                label.htmlFor = `option-${item.id}`;
+                label.innerHTML = `
+                    <strong>${item.name}</strong> - $${item.price.toFixed(2)}
+                    ${item.socket ? ` (Socket: ${item.socket})` : ''}
+                    ${item.ramType ? ` (RAM Type: ${item.ramType})` : ''}
+                    ${item.size ? ` (${item.size}GB)` : ''}
+                    ${item.speed ? ` (${item.speed}MHz)` : ''}
+                    ${item.vram ? ` (${item.vram}GB VRAM)` : ''}
+                    ${item.capacity ? ` (${item.capacity / 1000}TB)` : ''}
+                    ${item.wattage ? ` (${item.wattage}W)` : ''}
+                    ${item.rating ? ` (${item.rating})` : ''}
+                    ${item.cores ? ` (${item.cores} Cores)` : ''}
+                    ${item.clock ? ` (${item.clock}GHz)` : ''}
+                `;
+
+                // Add click listener to select the option
+                optionDiv.addEventListener('click', () => {
+                    input.checked = true; // Programmatically check the radio button
+                    selectedParts[category] = item;
+                    updateMainDisplay(category, item);
+                    updateTotalPrice();
+                    hideModal(); // Close the modal after selection
+                });
+
+                optionDiv.appendChild(input);
+                optionDiv.appendChild(label);
+                fragment.appendChild(optionDiv);
+            });
+
+            modalOptionsContainer.appendChild(fragment);
+
+            // If no results, display a message
+            if (modalOptionsContainer.children.length === 0) {
+                const noResults = document.createElement('p');
+                noResults.textContent = "No components match your criteria. Try adjusting filters or search.";
+                noResults.style.color = '#ccc';
+                noResults.style.textAlign = 'center';
+                noResults.style.marginTop = '20px';
+                modalOptionsContainer.appendChild(noResults);
+            }
+        }
+
+
+        // --- Modal Display Functions (Modified for transitions) ---
+        function showModal(category) {
+            currentModalCategory = category;
+            modalTitle.textContent = `Select ${category.charAt(0).toUpperCase() + category.slice(1)}`;
+            activeModalFilters = {}; // Reset filters when opening a new category
+            modalSearchInput.value = ''; // Clear search when opening
+
+            renderModalOptions(); // Renders options and filters for the selected category
+
+            // Add the 'is-active' class to trigger CSS transitions
+            modal.classList.add('is-active');
+            // Optional: Prevent body scrolling when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideModal() {
+            // Remove the 'is-active' class to trigger CSS transitions
+            modal.classList.remove('is-active');
+            // Optional: Restore body scrolling
+            document.body.style.overflow = '';
+        }
+
 
         // --- Event Listeners ---
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Progress Bar
-            const progressBar = document.getElementById('progress-bar');
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY || document.documentElement.scrollTop;
-                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrollPercent = (scrollTop / scrollHeight) * 100;
-                progressBar.style.width = scrollPercent + '%';
-            });
-
-            // Initialize all main section displays
-            for (const category in selectedParts) {
-                updateMainDisplay(category, selectedParts[category]);
-            }
-            updateTotalPrice(); // Initial total price update
-
-            // Hamburger Menu Functionality
-            const hamburgerBtn = document.querySelector('.hamburger-menu');
-            const navWrapper = document.querySelector('.nav-wrapper');
-            const navLinks = document.querySelectorAll('.nav-wrapper a');
-
-            if (hamburgerBtn && navWrapper) {
-                hamburgerBtn.addEventListener('click', function() {
-                    hamburgerBtn.classList.toggle('active');
-                    navWrapper.classList.toggle('active');
-                });
-
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        hamburgerBtn.classList.remove('active');
-                        navWrapper.classList.remove('active');
-                    });
-                });
-            }
-
-            // --- Modal Logic ---
-
-            // Open Modal Buttons
-            document.querySelectorAll('.open-selection-modal').forEach(button => {
-                button.addEventListener('click', function() {
-                    currentModalCategory = this.dataset.category;
-                    modalTitle.textContent = `Select your ${currentModalCategory.charAt(0).toUpperCase() + currentModalCategory.slice(1)}`;
-                    generateModalFilters(currentModalCategory); // Generate filters specific to this category
-                    renderModalOptions(currentModalCategory); // Initial render with compatibility filter
-                    modal.style.display = 'block'; // Show the modal
-                    modalSearchInput.value = ''; // Clear search
-                });
-            });
-
-            // Close Modal Button
-            closeButton.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
-
-            // Close modal if click outside content
-            window.addEventListener('click', function(event) {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-
-            // Search input in modal
-            modalSearchInput.addEventListener('input', function() {
-                renderModalOptions(currentModalCategory, this.value);
-            });
-
-            // Filter changes in modal
-            modalFiltersContainer.addEventListener('change', function(event) {
-                if (event.target.type === 'checkbox' && event.target.dataset.filterKey) {
-                    const filterKey = event.target.dataset.filterKey;
-                    const filterValue = event.target.value;
-
-                    if (!activeModalFilters[filterKey]) {
-                        activeModalFilters[filterKey] = [];
-                    }
-
-                    if (event.target.checked) {
-                        activeModalFilters[filterKey].push(filterValue);
-                    } else {
-                        activeModalFilters[filterKey] = activeModalFilters[filterKey].filter(val => val !== filterValue);
-                    }
-                    renderModalOptions(currentModalCategory, modalSearchInput.value); // Re-render with new filters
-                }
-            });
-
-            // Handle selection within the modal
-            modalOptionsContainer.addEventListener('change', function(event) {
-                if (event.target.type === 'radio' && event.target.name === 'modal-selection') {
-                    const partId = event.target.value;
-                    const selectedPart = components[currentModalCategory].find(p => p.id === partId);
-
-                    if (selectedPart) {
-                        // Update selectedParts for the current category
-                        selectedParts[currentModalCategory] = selectedPart;
-                        updateMainDisplay(currentModalCategory, selectedPart); // Update main UI display
-
-                        // Deselect incompatible parts down the chain
-                        deselectIncompatibleDependents(currentModalCategory);
-                    } else {
-                        // If for some reason a part couldn't be found (shouldn't happen with correct IDs)
-                        selectedParts[currentModalCategory] = null;
-                        updateMainDisplay(currentModalCategory, null);
-                        deselectIncompatibleDependents(currentModalCategory);
-                    }
-
-                    updateTotalPrice();
-                    modal.style.display = 'none'; // Close modal after selection
-                }
+        // 1. Open modal buttons
+        document.querySelectorAll('.open-selection-modal').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const category = e.target.dataset.category;
+                showModal(category);
             });
         });
 
-        // For body fade-in animation (optional, was in previous code)
-        window.addEventListener('load', () => {
-            document.body.classList.add('loaded');
+        // 2. Close modal button (inside modal)
+        closeButton.addEventListener('click', hideModal);
+
+        // 3. Close modal when clicking outside of the modal-content
+        modal.addEventListener('click', (e) => {
+            // If the click target is the modal backdrop itself (not a child inside modal-content)
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+
+        // 4. Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('is-active')) {
+                hideModal();
+            }
+        });
+
+        // 5. Search input listener
+        modalSearchInput.addEventListener('input', renderFilteredOptions); // Re-render on search input
+
+        // --- Initial Setup / Page Load ---
+        // Initialize displays and total price on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            for (const category in selectedParts) {
+                updateMainDisplay(category, selectedParts[category]);
+            }
+            updateTotalPrice();
+            updateDependencyButtons(); // Set initial button states
+            setupHamburgerMenu(); // Call the hamburger menu setup
+        });
+
+
+        // --- Hamburger Menu Logic ---
+        function setupHamburgerMenu() {
+            const hamburger = document.querySelector('.hamburger-menu');
+            const navWrapper = document.querySelector('.nav-wrapper');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navWrapper.classList.toggle('active');
+            });
+
+            // Close mobile nav when a link is clicked (optional)
+            navWrapper.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (hamburger.classList.contains('active')) {
+                        hamburger.classList.remove('active');
+                        navWrapper.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+
+        // --- Progress Bar Logic ---
+        window.addEventListener('scroll', () => {
+            const progressBar = document.getElementById('progress-bar');
+            if (!progressBar) return; // Exit if element not found
+
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + "%";
         });
     </script>
 </body>
