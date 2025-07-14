@@ -258,13 +258,14 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-            width: 90%; /* Default width for desktop, adjusted later */
+            width: 90%; /* Default width for desktop */
             max-width: 1000px;
             position: relative;
             display: flex;
             flex-direction: column;
             min-height: 70vh; /* Default height for desktop */
             max-height: 90vh; /* Max height to prevent it from going full screen on huge monitors */
+            overflow: hidden; /* Prevent modal content from scrolling internally unless designed */
 
             /* KEY TRANSITION PROPERTIES for the panel itself */
             opacity: 0;
@@ -312,44 +313,93 @@
             display: flex;
             gap: 20px;
             flex: 1; /* Allows it to take remaining height */
-            overflow: hidden; /* Prevent modal-body scrollbar itself */
+            overflow: hidden; /* Important: prevents modal-body from scrolling, its children will */
         }
 
+        /* Filter Sidebar & Accordion Styling */
         .filter-sidebar {
-            width: 250px; /* Fixed width for sidebar */
+            width: 250px; /* Fixed width for sidebar on desktop */
             background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
             border-radius: 8px;
-            overflow-y: auto; /* Enable scrolling for filters if many */
             flex-shrink: 0; /* Prevent shrinking */
-            /* max-height: calc(70vh - 100px); */ /* Adjusted for modal-content min-height */
-            max-height: 100%; /* Allow sidebar to take full height of modal-body */
-            box-sizing: border-box;
+            overflow-y: auto; /* Allow scrolling on desktop if filters are numerous */
+            padding-bottom: 10px; /* Space at bottom for scrollbar */
         }
 
-        .filter-sidebar h4 {
+        .filter-header {
             color: #ec03fc;
+            font-size: 1.2em;
+            padding: 15px;
             margin-top: 0;
-            margin-bottom: 15px;
+            margin-bottom: 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            transition: background 0.2s ease;
+        }
+        .filter-header:hover {
+            background: rgba(0,0,0,0.3);
+        }
+        .filter-header .arrow {
+            transition: transform 0.3s ease;
+        }
+        .filter-header.collapsed .arrow {
+            transform: rotate(-90deg);
+        }
+
+        .filter-content {
+            padding: 15px;
+            max-height: 0; /* Start hidden */
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        .filter-content.active {
+            max-height: 500px; /* Arbitrary large value for expansion */
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
 
         .filter-group {
             margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+        }
+        .filter-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .filter-group h4 {
+            color: #e0b0ff;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1em;
+            text-transform: uppercase;
         }
 
         .filter-group label {
-            display: block;
+            display: flex; /* Use flex to align checkbox and text */
+            align-items: center;
             color: white !important;
-            margin-bottom: 8px;
-            font-weight: bold;
-            font-size: 0.95em;
+            margin-bottom: 5px;
+            font-weight: normal;
+            font-size: 0.9em;
+            cursor: pointer;
         }
 
         .filter-group input[type="checkbox"] {
-            margin-right: 5px;
+            margin-right: 8px;
+            transform: scale(1.1); /* Slightly larger checkboxes */
         }
+
 
         .component-list-wrapper {
             flex: 1; /* Takes remaining space */
@@ -569,15 +619,17 @@
                 margin: 10px; /* Smaller margin on mobile */
                 padding: 15px;
                 width: 95%; /* Take up more width */
-                min-height: 90vh; /* Take up more height to reduce internal scrolling */
+                min-height: 85vh; /* Take up more height to reduce internal scrolling */
                 max-height: 95vh; /* Keep it from touching the very top/bottom */
                 box-sizing: border-box; /* Include padding in width/height */
+                overflow-y: auto; /* Allow the *entire modal content* to scroll if everything combined is too long */
             }
 
             .modal-body {
                 flex-direction: column; /* Stack sidebar and list vertically */
-                overflow-y: auto; /* ALLOW THE ENTIRE MODAL BODY TO SCROLL IF NECESSARY */
-                flex: 1; /* Ensure it takes available space */
+                overflow: visible; /* Let children manage their own overflow on mobile */
+                flex: none; /* No flex grow/shrink for modal-body on mobile */
+                height: auto; /* Auto height based on content */
             }
 
             .filter-sidebar {
@@ -585,11 +637,17 @@
                 max-height: none; /* No fixed max-height */
                 margin-bottom: 20px;
                 flex-shrink: 1;
+                overflow: visible; /* Manage overflow within filter-content */
+                padding: 0; /* Remove padding from sidebar itself, it's now in filter-header/content */
+                background: none; /* No background on sidebar, just on header/content */
+                border: none; /* No border on sidebar */
             }
 
             #modal-options-container {
                 /* On mobile, this will still scroll, but the modal-body can also scroll */
-                min-height: 200px; /* Ensure some minimum visible height for options */
+                flex: 1; /* Allow it to grow, but min-height will ensure visibility */
+                max-height: 50vh; /* Limit the scrollable area of the list to half the modal height */
+                min-height: 150px; /* Ensure a minimum visible area */
             }
         }
 
@@ -734,8 +792,10 @@
             <h2 id="modal-title">Select Component</h2>
             <div class="modal-body">
                 <div class="filter-sidebar">
-                    <h4>Filters</h4>
-                    <div id="modal-filters">
+                    <div class="filter-header collapsed" data-target="modal-filters">
+                        <h4>Filters</h4>
+                        <span class="arrow">&#9660;</span> </div>
+                    <div id="modal-filters" class="filter-content">
                         </div>
                 </div>
                 <div class="component-list-wrapper">
@@ -831,6 +891,8 @@
         const modal = document.getElementById('component-selection-modal');
         const closeButton = document.querySelector('.close-button');
         const modalTitle = document.getElementById('modal-title');
+        const filterHeader = document.querySelector('.filter-header'); // New: Filter Header
+        const filterArrow = document.querySelector('.filter-header .arrow'); // New: Filter Arrow
         const modalFiltersContainer = document.getElementById('modal-filters');
         const modalOptionsContainer = document.getElementById('modal-options-container');
         const modalSearchInput = document.getElementById('modal-search');
@@ -936,9 +998,12 @@
 
         /**
          * Renders component options in the modal, applying search and filters.
+         * And also generates the filter UI.
          */
         function renderModalOptions() {
             modalOptionsContainer.innerHTML = ''; // Clear previous options
+            modalFiltersContainer.innerHTML = ''; // Clear existing filters for filters content
+
             const category = currentModalCategory;
             const items = components[category];
             const searchTerm = modalSearchInput.value.toLowerCase();
@@ -970,8 +1035,6 @@
             } else if (category === 'case') {
                 uniqueFilterValues.formFactor = new Set(); // This is an array, special handling needed
             }
-
-            modalFiltersContainer.innerHTML = ''; // Clear existing filters
 
             // Dynamically generate filter checkboxes
             for (const item of items) {
@@ -1013,7 +1076,7 @@
 
                         const label = document.createElement('label');
                         label.htmlFor = filterId;
-                        label.textContent = value;
+                        label.innerHTML = `<span>${value}</span>`; // Wrap value in span for better styling flexibility
 
                         checkbox.addEventListener('change', (e) => {
                             const filterProp = e.target.dataset.filterProp;
@@ -1038,7 +1101,6 @@
 
                         filterGroupDiv.appendChild(checkbox);
                         filterGroupDiv.appendChild(label);
-                        filterGroupDiv.appendChild(document.createElement('br'));
                     });
                     modalFiltersContainer.appendChild(filterGroupDiv);
                 }
@@ -1161,6 +1223,15 @@
             activeModalFilters = {}; // Reset filters when opening a new category
             modalSearchInput.value = ''; // Clear search when opening
 
+            // Ensure filters are collapsed on mobile when modal opens
+            if (window.innerWidth <= 768) {
+                filterHeader.classList.add('collapsed');
+                modalFiltersContainer.classList.remove('active');
+            } else {
+                 filterHeader.classList.remove('collapsed'); // Always expanded on desktop
+                 modalFiltersContainer.classList.add('active'); // Ensure content is visible on desktop
+            }
+
             renderModalOptions(); // Renders options and filters for the selected category
 
             // Add the 'is-active' class to trigger CSS transitions
@@ -1208,6 +1279,14 @@
         // 5. Search input listener
         modalSearchInput.addEventListener('input', renderFilteredOptions); // Re-render on search input
 
+        // 6. Filter accordion toggle listener
+        filterHeader.addEventListener('click', () => {
+            if (window.innerWidth <= 768) { // Only toggle on mobile
+                filterHeader.classList.toggle('collapsed');
+                modalFiltersContainer.classList.toggle('active');
+            }
+        });
+
         // --- Initial Setup / Page Load ---
         // Initialize displays and total price on page load
         document.addEventListener('DOMContentLoaded', () => {
@@ -1233,10 +1312,14 @@
             // Close mobile nav when a link is clicked (optional)
             navWrapper.querySelectorAll('a').forEach(link => {
                     // Prevent immediate close if click is on a descendant (e.g. text inside link)
-                    if (event.target.tagName === 'A') {
-                        hamburger.classList.remove('active');
-                        navWrapper.classList.remove('active');
-                    }
+                    link.addEventListener('click', (event) => {
+                        // Check if the clicked element is actually the anchor tag itself or one of its children
+                        // This prevents closing if clicking on whitespace within the nav-wrapper but not directly on an 'a'
+                        if (event.target.closest('a')) {
+                            hamburger.classList.remove('active');
+                            navWrapper.classList.remove('active');
+                        }
+                    });
                 });
         }
 
