@@ -8,8 +8,8 @@
     <style>
         /* Basic Reset */
         html, body {
-             margin: 0;
-             padding: 0;
+            margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-size: cover;
             backdrop-filter: blur(5px); /* This is the one causing issues on iOS */
@@ -45,21 +45,92 @@
     }
 
     .brand-info .slogan {
-        font-size: 0.6em; /* Even smaller slogan */
+        font-size: 0.8em; /* Even smaller slogan */
     }
 
+     .hamburger-menu {
+        display: flex; /* Make it visible */
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 1001; /* Ensure it's above the nav-wrapper when opened */
+    }
+
+    .hamburger-menu .bar {
+        width: 100%;
+        height: 3px;
+        background-color: #ec03fc; /* Color of the bars */
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Animation for closing the hamburger (optional, but nice) */
+    .hamburger-menu.active .bar:nth-child(2) {
+        opacity: 0; /* Middle bar disappears */
+    }
+    .hamburger-menu.active .bar:nth-child(1) {
+        transform: translateY(11px) rotate(45deg); /* Top bar rotates to form 'X' */
+    }
+    .hamburger-menu.active .bar:nth-child(3) {
+        transform: translateY(-11px) rotate(-45deg); /* Bottom bar rotates to form 'X' */
+    }
+
+    /* Nav Wrapper on Mobile */
+    .nav-wrapper {
+        position: absolute;
+        top: 100%; /* Position below the header */
+        left: 0;
+        width: 100%;
+        background-color: #38006b; /* Same as header background */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        max-height: 0; /* Hidden by default */
+        overflow: hidden; /* Hide overflow content */
+        transition: max-height 0.3s ease-out; /* Smooth slide transition */
+        display: flex; /* Use flex to control alignment of nav */
+        justify-content: center; /* Center nav links horizontally */
+        align-items: flex-start; /* Align nav items to the top */
+        flex-direction: column; /* Stack nav links vertically */
+        z-index: 999; /* Below hamburger, above other content */
+    }
+
+    .nav-wrapper.active {
+        max-height: 300px; /* Adjust based on number of links - should be enough to show all links */
+        /* You can use a more precise height if known, or something like 50vh */
+    }
+
+    /* Navigation links inside the wrapper on mobile */
     header nav {
-        width: 100%; /* Navigation takes full width */
-        justify-content: center; /* Center nav links */
-        gap: 10px; /* Reduce space between nav links */
-        margin-top: 5px; /* Space above nav */
+        flex-direction: column; /* Stack links vertically */
+        width: 100%; /* Take full width of wrapper */
+        padding: 15px 0; /* Padding inside the dropdown */
+        gap: 0; /* Remove gap between stacked links */
     }
 
     header nav a {
-        font-size: 0.9em; /* Smaller font size for nav links */
-        padding: 8px 12px; /* Increase padding to make tap targets larger */
-        background-color: rgba(0, 0, 0, 0.2); /* Add a subtle background for tap area */
-        border-radius: 5px;
+        padding: 12px 20px; /* Increase tap target size for mobile */
+        text-align: center; /* Center the text in each link */
+        font-size: 1.1em; /* Ensure good readability */
+        width: 100%; /* Make links take full width of nav */
+        box-sizing: border-box; /* Include padding in width calculation */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
+    }
+    header nav a:last-child {
+        border-bottom: none; /* No border on the last link */
+    }
+}
+
+/* Small adjustments for very small screens if needed, e.g., 400px */
+@media (max-width: 400px) {
+    .brand-info {
+        font-size: 1em;
+    }
+    .brand-info .slogan {
+        font-size: 0.5em;
     }
 }
 
@@ -136,9 +207,11 @@
             top: 0;
             width: 100%;
             background-color: rgba(86, 6, 148, 0.8);
+            justify-content: space-between;
             backdrop-filter: blur(5px);
             padding: 6px 12px;
             display: flex;
+            position: relative;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
@@ -337,6 +410,20 @@
             <p class="youtube-handle">@EazyVicx</p>
             <p class="slogan">Making Custom PCs Eazy For You!</p>
         </div>
+         
+        <button class="hamburger-menu" aria-label="Toggle navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
+
+    <div class="nav-wrapper">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="Contact Us.html">Contact Us!</a>
+            <a href="build-your-pc.html">Build Your PC</a>
+        </nav>
+        
         <nav>
             <a href="index.html">Home</a>
             <a href="Contact-Us.html">Contact Us!</a>
@@ -581,6 +668,24 @@
             // Initial price update (should be 0.00)
             updateTotalPrice();
         });
+         document.addEventListener('DOMContentLoaded', function() {
+        const hamburgerBtn = document.querySelector('.hamburger-menu');
+        const navWrapper = document.querySelector('.nav-wrapper');
+        const navLinks = document.querySelectorAll('.nav-wrapper a'); // Get all nav links
+
+        hamburgerBtn.addEventListener('click', function() {
+            hamburgerBtn.classList.toggle('active');
+            navWrapper.classList.toggle('active');
+        });
+
+        // Optional: Close menu when a link is clicked (useful for single-page apps or smooth scrolls)
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburgerBtn.classList.remove('active');
+                navWrapper.classList.remove('active');
+            });
+        });
+    });
     </script>
 </body>
 </html>
