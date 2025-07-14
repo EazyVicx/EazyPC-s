@@ -26,7 +26,7 @@
       opacity: 1;
     }
     
-  #contact-us { /* Apply this ID to your contact-us page's main container */
+  body { /* Apply this ID to your contact-us page's main container */
     background: linear-gradient(45deg, #1a003d, #2b005e); /* Dark purple gradient */
     background-size: 200% 200%;
     animation: gradientShift 4s ease infinite; /* Subtle animated gradient shift */
@@ -34,7 +34,7 @@
     overflow: hidden; /* Clip the pattern if needed */
 }
 
-  #contact-us::before { /* Pseudo-element for the lines */
+  body::before { /* Pseudo-element for the lines */
     content: "";
     position: absolute;
     top: 0;
