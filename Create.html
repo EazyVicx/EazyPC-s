@@ -241,7 +241,7 @@
             display: flex; /* Use flexbox to center content */
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            z-index: 2000; /* Ensure high z-index for the modal backdrop */
             background-color: rgba(0,0,0,0.8);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
@@ -259,10 +259,10 @@
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
             width: 90%; /* Default width for desktop */
-            max-width: 1000px;
+            max-width: 1200px; /* Increased max-width to allow more horizontal spread */
             position: relative;
-            display: flex;
-            flex-direction: column;
+            display: flex; /* Make modal-content a flex container */
+            flex-direction: column; /* Stack header, body, and potentially footer vertically */
             min-height: 70vh; /* Default height for desktop */
             max-height: 90vh; /* Max height to prevent it from going full screen on huge monitors */
             overflow: hidden; /* Prevent modal content from scrolling internally unless designed */
@@ -294,6 +294,8 @@
 
         .close-button {
             color: #aaa;
+            /* Make sure z-index is higher than modal content, but it's position: absolute, so it should be fine */
+            z-index: 2001; /* Explicitly set higher than modal-content, just in case */
             float: right;
             font-size: 40px;
             font-weight: bold;
@@ -313,19 +315,19 @@
             display: flex;
             gap: 20px;
             flex: 1; /* Allows it to take remaining height */
-            overflow: hidden; /* Important: prevents modal-body from scrolling, its children will */
+            /* Removed overflow: hidden here on desktop, let children manage */
+            /* overflow: hidden; */
         }
 
         /* Filter Sidebar & Accordion Styling */
         .filter-sidebar {
-            width: 250px; /* Fixed width for sidebar on desktop */
+            width: 280px; /* Increased fixed width for sidebar on desktop */
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
             flex-shrink: 0; /* Prevent shrinking */
             overflow-y: auto; /* Allow scrolling on desktop if filters are numerous */
             padding-bottom: 10px; /* Space at bottom for scrollbar */
-            /* Add this to ensure content inside respects padding and overflow */
-            box-sizing: border-box;
+            box-sizing: border-box; /* Ensure padding is included */
         }
 
         .filter-header {
@@ -348,7 +350,6 @@
             background: rgba(0,0,0,0.3);
         }
         .filter-header .arrow {
-            /* Changed from unicode to CSS-only arrow for better consistency */
             display: inline-block;
             width: 10px;
             height: 10px;
@@ -416,8 +417,6 @@
 
 
         .component-list-wrapper {
-            width: 100%;
-            max-width: 400px;
             flex: 1; /* Takes remaining space */
             display: flex;
             flex-direction: column;
@@ -632,66 +631,109 @@
 
             /* MODAL RESPONSIVE ADJUSTMENTS FOR MOBILE */
             .modal-content {
-                margin: 10px auto; /* Smaller margin on mobile */
+                margin: 10px auto; /* Centering the modal horizontally */
                 padding: 15px;
-                width: 95%; /* Take up more width */
-                min-height: 85vh; /* Take up more height to reduce internal scrolling */
-                max-height: 95vh; /* Keep it from touching the very top/bottom */
-                box-sizing: border-box; /* Include padding in width/height */
-                overflow-y: auto; /* Allow the *entire modal content* to scroll if everything combined is too long */
-                max-width: 95% 
+                width: 95%; /* Take up most of the screen width */
+                max-width: 500px; /* Limit max-width even on mobile to prevent stretching on wider tablets */
+                min-height: 85vh;
+                max-height: 95vh;
+                box-sizing: border-box;
+                display: flex; /* Ensure modal-content itself is a flex container */
+                flex-direction: column; /* Stack header, body, and potentially footer vertically */
+                overflow-y: auto; /* Allow the entire modal content to scroll if needed */
+            }
+
+            .modal-content h2 {
+                margin-bottom: 15px; /* Slightly less margin for h2 on mobile */
+                font-size: 1.5em; /* Adjust font size for h2 */
+            }
+
+            .close-button {
+                font-size: 30px; /* Smaller close button */
+                right: 15px;
+                top: 10px;
             }
 
             .modal-body {
-                flex-direction: column; /* Stack sidebar and list vertically */
-                overflow: visible; /* Let children manage their own overflow on mobile */
-                flex: none; /* No flex grow/shrink for modal-body on mobile */
-                height: auto; /* Auto height based on content */
-                align-items: center;
+                display: flex; /* Make modal-body a flex container */
+                flex-direction: column; /* Stack children vertically */
+                gap: 15px; /* Space between sidebar and list */
+                flex: 1; /* Allow modal-body to grow and take available space */
+                overflow: visible; /* Children will manage their own overflow */
+                height: auto; /* Allow height to adjust based on content */
+                align-items: center; /* Center children horizontally (sidebar and list) */
             }
 
             .filter-sidebar {
-                width: 100%; /* Full width sidebar on mobile */
-                max-width: 400px;
-                max-height: none; /* No fixed max-height */
-                margin-bottom: 20px;
-                flex-shrink: 1;
-                overflow: visible; /* Manage overflow within filter-content */
-                padding: 0; /* Remove padding from sidebar itself, it's now in filter-header/content */
-                background: none; /* No background on sidebar, just on header/content */
-                border: none; /* No border on sidebar */
+                width: 100%; /* Make filter sidebar take full width of its parent (.modal-body) */
+                max-width: 450px; /* Optional: Constrain max width for better readability on wider phones/small tablets */
+                margin-bottom: 0; /* No extra margin, gap handles spacing */
+                flex-shrink: 0; /* Prevent shrinking if space is tight */
+                overflow: visible; /* Let filter-content handle its own overflow */
+                padding: 0;
+                background: none; /* No background on the sidebar wrapper itself */
+                border: none;
             }
 
             /* Mobile-specific filter accordion styling */
             .filter-header {
-                border-radius: 8px; /* Rounded corners for the entire header on mobile */
-                border-bottom: none; /* No bottom border as filter content is hidden */
-            }
-            .filter-header.collapsed {
-                border-bottom-left-radius: 8px; /* Ensure full border radius when collapsed */
-                border-bottom-right-radius: 8px;
+                border-radius: 8px;
+                border-bottom: none;
+                padding: 12px 15px; /* Adjust padding for mobile header */
+                font-size: 1.1em; /* Adjust font size */
             }
 
             .filter-content {
-                max-height: 0; /* Start hidden on mobile */
-                padding: 0 15px; /* Padding for content when active */
-                overflow: hidden; /* Crucial for hiding content */
+                max-height: 0;
+                padding: 0 15px; /* Consistent padding when collapsed */
+                overflow: hidden;
                 transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-                background: rgba(255, 255, 255, 0.05); /* Background for the expanded content */
+                background: rgba(255, 255, 255, 0.05);
                 border-bottom-left-radius: 8px;
                 border-bottom-right-radius: 8px;
             }
             .filter-content.active {
-                max-height: 1000px; /* Arbitrary large value for expansion - adjusted */
-                padding: 15px; /* Restore padding when active */
-                overflow-y: auto; /* Allow filters to scroll if they're very long */
+                max-height: 500px; /* Max height for filter content when expanded */
+                padding: 15px; /* Padding when active */
+                overflow-y: auto; /* Allow filters to scroll if too many */
+            }
+
+            .component-list-wrapper {
+                width: 100%; /* Make component list take full width of its parent (.modal-body) */
+                max-width: 450px; /* Optional: Constrain max width for better readability */
+                flex: 1; /* Allow it to grow to fill space */
+                display: flex;
+                flex-direction: column;
+                overflow: hidden; /* Important: Prevents this wrapper from scrolling, allows inner container to scroll */
+            }
+
+            #modal-search {
+                margin-bottom: 10px; /* Less margin below search bar */
+                padding: 8px; /* Slightly smaller padding */
+                font-size: 0.9em; /* Adjust font size */
             }
 
             #modal-options-container {
-                /* On mobile, this will still scroll, but the modal-body can also scroll */
-                flex: 1; /* Allow it to grow, but min-height will ensure visibility */
-                max-height: 50vh; /* Limit the scrollable area of the list to half the modal height */
-                min-height: 150px; /* Ensure a minimum visible area */
+                gap: 10px; /* Smaller gap between options on mobile */
+                overflow-y: auto; /* This is the main scrolling area for the list */
+                flex: 1; /* Allows the list to take remaining height */
+                padding-right: 5px; /* Keep scrollbar from overlapping */
+                min-height: 100px; /* Ensure a minimum height for the list */
+            }
+
+            .modal-options-container .component-option {
+                padding: 12px; /* Smaller padding for options on mobile */
+                font-size: 0.85em; /* Smaller font size for component options */
+            }
+
+            .modal-options-container .component-option input[type="radio"] {
+                width: 18px; /* Smaller radio buttons */
+                height: 18px;
+            }
+
+            .modal-options-container .component-option input[type="radio"]:checked::before {
+                width: 8px; /* Smaller inner dot */
+                height: 8px;
             }
         }
 
@@ -871,9 +913,9 @@
     <script>
         // --- Component Data - MUST BE DEFINED FIRST ---
         const components = {
-            cpu: .6
+            cpu: [ // Corrected: started array with '['
                 { id: 'cpu-i9-14900k', name: 'Intel Core i9-14900K', price: 438.00, socket: 'LGA1700', generation: '14th Gen', cores: 24, clock: 6.0 },
-                { id: 'cpu-i9-14900kf', name: 'Intel Core i9-14900KF', price 429.00, socket: 'LGA1700', generation: '14th Gen', cores: 24, clock: 6.0 }, 
+                { id: 'cpu-i9-14900kf', name: 'Intel Core i9-14900KF', price: 429.00, socket: 'LGA1700', generation: '14th Gen', cores: 24, clock: 6.0 }, // Corrected: added ':' after price
                 { id: 'cpu-i5-14600k', name: 'Intel Core i5-14600K', price: 320.00, socket: 'LGA1700', generation: '14th Gen', cores: 14, clock: 5.3 },
                 { id: 'cpu-i5-13600K', name: 'Intel Core i5-13600K', price: 265.00, socket: 'LGA1700', generation: '13th Gen', cores: 14, clock: 5.1 },
                 { id: 'cpu-i5-13600kf', name: 'Intel Core i5-13600KF', price: 189.00, socket: 'LGA1700', generation: '13th Gen', cores: 14, clock: 5.1 },
@@ -881,503 +923,427 @@
                 { id: 'cpu-i5-13400', name: 'Intel Core i5-13400', price: 160.00, socket: 'LGA1700', generation: '13th Gen', cores: 10, clock: 4.6 },
                 { id: 'cpu-i5-13400F', name: 'Intel Core i5-13400F', price: 134.00, socket: 'LGA1700', generation: '13th Gen', cores: 10, clock: 4.6 },
                 { id: 'cpu-i3-13100', name: 'Intel Core i3-13100', price: 120.00, socket: 'LGA1700', generation: '13th Gen', cores: 4, clock: 4.5 },
-                { id: 'cpu-i3-13100F', name: 'Intel Core i3-13100F', price: 82.00, socket: 'LGA1700', generation: '13th Gen', cores: 4, clock: 4.5 },
-                { id: 'cpu-i7-14700k', name: 'Intel Core i7-14700K', price: 380.00, socket: 'LGA1700', generation: '14th Gen', cores: 20, clock: 5.5 },
-                { id: 'cpu-i7-13700kf', name: 'Intel Core i7-13700KF', price: 299.00, socket: 'LGA1700', generation: '13th Gen', cores: 16, clock: 5.4 },
-
-                { id: 'cpu-r7-7800x3d', name: 'AMD Ryzen 7 7800X3D', price: 360.00, socket: 'AM5', generation: 'Zen 4', cores: 8, clock: 5.0 },
-                { id: 'cpu-r9-7900x', name: 'AMD Ryzen 9 7900X', price: 420.00, socket: 'AM5', generation: 'Zen 4', cores: 12, clock: 5.6 }
+                { id: 'cpu-ryzen-7-7800x3d', name: 'AMD Ryzen 7 7800X3D', price: 349.00, socket: 'AM5', cores: 8, clock: 5.0 },
+                { id: 'cpu-ryzen-5-7600x', name: 'AMD Ryzen 5 7600X', price: 219.00, socket: 'AM5', cores: 6, clock: 5.3 },
+                { id: 'cpu-ryzen-5-7600', name: 'AMD Ryzen 5 7600', price: 199.00, socket: 'AM5', cores: 6, clock: 5.1 },
+                { id: 'cpu-ryzen-9-7950x3d', name: 'AMD Ryzen 9 7950X3D', price: 589.00, socket: 'AM5', cores: 16, clock: 5.7 },
+                { id: 'cpu-ryzen-9-7900x3d', name: 'AMD Ryzen 9 7900X3D', price: 429.00, socket: 'AM5', cores: 12, clock: 5.6 },
+                { id: 'cpu-ryzen-5-5600', name: 'AMD Ryzen 5 5600', price: 129.00, socket: 'AM4', cores: 6, clock: 4.4 },
+                { id: 'cpu-ryzen-7-5800x3d', name: 'AMD Ryzen 7 5800X3D', price: 279.00, socket: 'AM4', cores: 8, clock: 4.5 },
             ],
             motherboard: [
-                { id: 'mobo-z790-p', name: 'MSI PRO Z790-P WiFi', price: 200.00, socket: 'LGA1700', ramType: 'DDR5', chipset: 'Z790' },
-                { id: 'mobo-b650e-f', name: 'ASUS ROG STRIX B650E-F GAMING WiFi', price: 250.00, socket: 'AM5', ramType: 'DDR5', chipset: 'B650E' }
+                { id: 'mb-z790-prime-a', name: 'ASUS PRIME Z790-A WIFI', price: 280.00, socket: 'LGA1700', chipset: 'Z790', ram_slots: 4, ram_type: 'DDR5' },
+                { id: 'mb-z790-aorus-elite', name: 'Gigabyte Z790 AORUS ELITE AX', price: 250.00, socket: 'LGA1700', chipset: 'Z790', ram_slots: 4, ram_type: 'DDR5' },
+                { id: 'mb-b760-strix', name: 'ASUS ROG STRIX B760-A GAMING WIFI', price: 210.00, socket: 'LGA1700', chipset: 'B760', ram_slots: 4, ram_type: 'DDR5' },
+                { id: 'mb-b650-gaming-x', name: 'Gigabyte B650 Gaming X AX', price: 180.00, socket: 'AM5', chipset: 'B650', ram_slots: 4, ram_type: 'DDR5' },
+                { id: 'mb-x670e-carbon', name: 'MSI MPG X670E CARBON WIFI', price: 350.00, socket: 'AM5', chipset: 'X670E', ram_slots: 4, ram_type: 'DDR5' },
+                { id: 'mb-b550-plus', name: 'ASUS TUF GAMING B550-PLUS WIFI II', price: 140.00, socket: 'AM4', chipset: 'B550', ram_slots: 4, ram_type: 'DDR4' },
+                { id: 'mb-x570-unify', name: 'MSI MEG X570 UNIFY', price: 200.00, socket: 'AM4', chipset: 'X570', ram_slots: 4, ram_type: 'DDR4' },
             ],
             ram: [
-                { id: 'ram-ddr5-32-6000', name: 'Corsair Vengeance 32GB (2x16GB) DDR5-6000', price: 100.00, type: 'DDR5', size: 32, speed: 6000 },
-                { id: 'ram-ddr5-64-6000', name: 'G.Skill Trident Z5 RGB 64GB (2x32GB) DDR5-6000', price: 200.00, type: 'DDR5', size: 64, speed: 6000 }
+                { id: 'ram-ddr5-32gb-6000', name: 'Corsair Vengeance RGB 32GB (2x16GB) DDR5 6000MHz CL30', price: 110.00, capacity_gb: 32, type: 'DDR5', speed_mhz: 6000, cas_latency: 30, modules: 2 },
+                { id: 'ram-ddr5-32gb-6400', name: 'G.Skill Trident Z5 RGB 32GB (2x16GB) DDR5 6400MHz CL32', price: 125.00, capacity_gb: 32, type: 'DDR5', speed_mhz: 6400, cas_latency: 32, modules: 2 },
+                { id: 'ram-ddr5-64gb-6000', name: 'Kingston Fury Beast 64GB (2x32GB) DDR5 6000MHz CL36', price: 200.00, capacity_gb: 64, type: 'DDR5', speed_mhz: 6000, cas_latency: 36, modules: 2 },
+                { id: 'ram-ddr4-16gb-3200', name: 'TeamGroup T-Force Vulcan Z 16GB (2x8GB) DDR4 3200MHz CL16', price: 45.00, capacity_gb: 16, type: 'DDR4', speed_mhz: 3200, cas_latency: 16, modules: 2 },
+                { id: 'ram-ddr4-32gb-3600', name: 'G.Skill Ripjaws V 32GB (2x16GB) DDR4 3600MHz CL18', price: 75.00, capacity_gb: 32, type: 'DDR4', speed_mhz: 3600, cas_latency: 18, modules: 2 },
             ],
             gpu: [
-                { id: 'gpu-rtx4070s', name: 'NVIDIA RTX 4070 Super', price: 600.00, brand: 'NVIDIA', vram: 12 },
-                { id: 'gpu-rtx4080s', name: 'NVIDIA RTX 4080 Super', price: 900.00, brand: 'NVIDIA', vram: 16 },
-                { id: 'gpu-rx7800xt', name: 'AMD Radeon RX 7800 XT', price: 500.00, brand: 'AMD', vram: 16 },
-                { id: 'gpu-rx7900xtx', name: 'AMD Radeon RX 7900 XTX', price: 950.00, brand: 'AMD', vram: 24 }
+                { id: 'gpu-rtx-4090', name: 'NVIDIA GeForce RTX 4090', price: 1599.00, vram_gb: 24, chipset: 'NVIDIA', series: 'RTX 40 Series' },
+                { id: 'gpu-rtx-4080s', name: 'NVIDIA GeForce RTX 4080 Super', price: 999.00, vram_gb: 16, chipset: 'NVIDIA', series: 'RTX 40 Series' },
+                { id: 'gpu-rtx-4070ti-s', name: 'NVIDIA GeForce RTX 4070 Ti Super', price: 799.00, vram_gb: 16, chipset: 'NVIDIA', series: 'RTX 40 Series' },
+                { id: 'gpu-rtx-4070s', name: 'NVIDIA GeForce RTX 4070 Super', price: 599.00, vram_gb: 12, chipset: 'NVIDIA', series: 'RTX 40 Series' },
+                { id: 'gpu-rx-7900xtx', name: 'AMD Radeon RX 7900 XTX', price: 949.00, vram_gb: 24, chipset: 'AMD', series: 'RX 7000 Series' },
+                { id: 'gpu-rx-7900xt', name: 'AMD Radeon RX 7900 XT', price: 749.00, vram_gb: 20, chipset: 'AMD', series: 'RX 7000 Series' },
+                { id: 'gpu-rx-7800xt', name: 'AMD Radeon RX 7800 XT', price: 499.00, vram_gb: 16, chipset: 'AMD', series: 'RX 7000 Series' },
+                { id: 'gpu-rtx-3060', name: 'NVIDIA GeForce RTX 3060', price: 289.00, vram_gb: 12, chipset: 'NVIDIA', series: 'RTX 30 Series' },
             ],
             storage: [
-                { id: 'ssd-nvme-1tb', name: 'Samsung 990 Pro 1TB NVMe SSD', price: 120.00, type: 'NVMe', capacity: 1000 },
-                { id: 'ssd-sata-2tb', name: 'Crucial MX500 2TB SATA SSD', price: 150.00, type: 'SATA', capacity: 2000 },
-                { id: 'hdd-4tb', name: 'Seagate Barracuda 4TB HDD', price: 80.00, type: 'HDD', capacity: 4000 }
+                { id: 'ssd-2tb-nvme-gen4', name: 'Crucial P5 Plus 2TB NVMe SSD (Gen4)', price: 120.00, capacity_gb: 2000, type: 'NVMe SSD', interface: 'PCIe Gen4' },
+                { id: 'ssd-1tb-nvme-gen4', name: 'Samsung 980 Pro 1TB NVMe SSD (Gen4)', price: 90.00, capacity_gb: 1000, type: 'NVMe SSD', interface: 'PCIe Gen4' },
+                { id: 'ssd-4tb-nvme-gen4', name: 'WD_BLACK SN850X 4TB NVMe SSD (Gen4)', price: 280.00, capacity_gb: 4000, type: 'NVMe SSD', interface: 'PCIe Gen4' },
+                { id: 'hdd-2tb-7200rpm', name: 'Seagate Barracuda 2TB HDD 7200RPM', price: 55.00, capacity_gb: 2000, type: 'HDD', interface: 'SATA' },
+                { id: 'ssd-1tb-sata', name: 'Crucial MX500 1TB SATA SSD', price: 70.00, capacity_gb: 1000, type: 'SATA SSD', interface: 'SATA' },
             ],
             psu: [
-                { id: 'psu-750w', name: 'Corsair RM750e 750W 80+ Gold', price: 90.00, wattage: 750, rating: 'Gold' },
-                { id: 'psu-850w', name: 'NZXT C850 850W 80+ Gold', price: 110.00, wattage: 850, rating: 'Gold' }
+                { id: 'psu-850w-gold', name: 'Corsair RM850e (2023) 850W 80+ Gold', price: 110.00, wattage: 850, efficiency: '80+ Gold', modular: true },
+                { id: 'psu-1000w-gold', name: 'Seasonic Focus GX-1000 1000W 80+ Gold', price: 160.00, wattage: 1000, efficiency: '80+ Gold', modular: true },
+                { id: 'psu-750w-bronze', name: 'EVGA 750 N1 750W 80+ Bronze', price: 70.00, wattage: 750, efficiency: '80+ Bronze', modular: false },
+                { id: 'psu-1200w-platinum', name: 'Corsair HX1200 Platinum 1200W 80+ Platinum', price: 250.00, wattage: 1200, efficiency: '80+ Platinum', modular: true },
             ],
             case: [
-                { id: 'case-h5-flow', name: 'NZXT H5 Flow (Black)', price: 90.00, formFactor: ['ATX', 'Micro-ATX', 'Mini-ITX'] },
-                { id: 'case-lianli-lancool216', name: 'Lian Li Lancool 216 (White)', price: 100.00, formFactor: ['ATX', 'Micro-ATX', 'Mini-ITX'] }
+                { id: 'case-lian-li-lancool216', name: 'Lian Li Lancool 216', price: 100.00, type: 'Mid Tower', color: 'Black', features: ['High Airflow', 'RGB Fans'] },
+                { id: 'case-nzxt-h5-flow', name: 'NZXT H5 Flow', price: 90.00, type: 'Mid Tower', color: 'White', features: ['Compact', 'Good Airflow'] },
+                { id: 'case-fractal-north', name: 'Fractal Design North', price: 140.00, type: 'Mid Tower', color: 'Charcoal Black', features: ['Wood Accent', 'Stylish'] },
+                { id: 'case-corsair-4000d', name: 'Corsair 4000D Airflow', price: 80.00, type: 'Mid Tower', color: 'Black', features: ['Great Airflow', 'Cable Management'] },
             ]
         };
 
-        // --- Global variables for tracking selections and modal state ---
-        let selectedParts = {
-            cpu: null,
-            motherboard: null,
-            ram: null,
-            gpu: null,
-            storage: null,
-            psu: null,
-            case: null
-        };
+        const selectedComponents = {};
+        let currentCategory = '';
 
-        let currentTotalPrice = 0;
-        let currentModalCategory = null; // Tracks which category is currently being selected in the modal
-        let activeModalFilters = {}; // Stores the active filters for the current modal category
-
-        // --- DOM Elements ---
         const modal = document.getElementById('component-selection-modal');
-        const closeButton = document.querySelector('.close-button');
         const modalTitle = document.getElementById('modal-title');
-        const filterHeader = document.querySelector('.filter-header');
-        const filterArrow = document.querySelector('.filter-header .arrow');
-        const modalFiltersContainer = document.getElementById('modal-filters');
         const modalOptionsContainer = document.getElementById('modal-options-container');
-        const modalSearchInput = document.getElementById('modal-search');
-        const totalCostDisplay = document.getElementById('total-price');
+        const modalSearch = document.getElementById('modal-search');
+        const closeButton = document.querySelector('.close-button');
+        const filterSidebar = document.querySelector('.filter-sidebar');
+        const filterHeader = document.querySelector('.filter-header');
+        const filterContent = document.getElementById('modal-filters');
 
-        // --- Helper Functions ---
-
-        /**
-         * Updates the display in the main builder section for a selected component.
-         * @param {string} category - The component category (e.g., 'cpu', 'motherboard').
-         * @param {object|null} part - The selected part object, or null if nothing selected.
-         */
-        function updateMainDisplay(category, part) {
-            const displayDiv = document.getElementById(`display-${category}`);
-            const hiddenInput = document.getElementById(`selected-${category}-hidden`);
-
-            if (part) {
-                displayDiv.querySelector('span:first-child').textContent = part.name;
-                displayDiv.querySelector('.price-display').textContent = `$${part.price.toFixed(2)}`;
-                hiddenInput.value = part.name;
-            } else {
-                displayDiv.querySelector('span:first-child').textContent = `No ${category.charAt(0).toUpperCase() + category.slice(1)} Selected`;
-                displayDiv.querySelector('.price-display').textContent = '';
-                hiddenInput.value = '';
-            }
-
-            // This logic needs to be called after any selection change
-            updateDependencyButtons();
-        }
-
-        /**
-         * Updates the total price displayed.
-         */
-        function updateTotalPrice() {
-            currentTotalPrice = 0;
-            for (const category in selectedParts) {
-                if (selectedParts[category]) {
-                    currentTotalPrice += selectedParts[category].price;
+        // Function to update progress bar
+        function updateProgressBar() {
+            const totalSections = document.querySelectorAll('.component-section').length;
+            let filledSections = 0;
+            for (const category in selectedComponents) {
+                if (selectedComponents[category] && Object.keys(selectedComponents[category]).length > 0) {
+                    filledSections++;
                 }
             }
-            totalCostDisplay.textContent = currentTotalPrice.toFixed(2);
+            const progress = (filledSections / totalSections) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
         }
 
-        /**
-         * Updates the disabled state of "Choose..." buttons based on selected parts.
-         */
-        function updateDependencyButtons() {
+        // Function to update total price
+        function updateTotalPrice() {
+            let total = 0;
+            for (const category in selectedComponents) {
+                if (selectedComponents[category] && selectedComponents[category].price) {
+                    total += selectedComponents[category].price;
+                }
+            }
+            document.getElementById('total-price').textContent = total.toFixed(2);
+        }
+
+        // Function to enable/disable subsequent category buttons based on compatibility
+        function updateCategoryButtonStates() {
             // Motherboard depends on CPU
-            const moboButton = document.querySelector('.open-selection-modal[data-category="motherboard"]');
-            if (moboButton) {
-                moboButton.disabled = !selectedParts.cpu;
+            const cpuSelected = selectedComponents['cpu'];
+            const motherboardButton = document.querySelector('button[data-category="motherboard"]');
+            if (cpuSelected) {
+                motherboardButton.disabled = false;
+            } else {
+                motherboardButton.disabled = true;
+                // If CPU is deselected, clear motherboard and subsequent components
+                if (selectedComponents['motherboard']) {
+                    selectedComponents['motherboard'] = null;
+                    document.getElementById('display-motherboard').innerHTML = `<span>No Motherboard Selected</span><span class="price-display"></span>`;
+                    document.getElementById('selected-motherboard-hidden').value = '';
+                }
+                document.querySelector('button[data-category="ram"]').disabled = true;
+                if (selectedComponents['ram']) {
+                    selectedComponents['ram'] = null;
+                    document.getElementById('display-ram').innerHTML = `<span>No RAM Selected</span><span class="price-display"></span>`;
+                    document.getElementById('selected-ram-hidden').value = '';
+                }
             }
 
             // RAM depends on Motherboard
-            const ramButton = document.querySelector('.open-selection-modal[data-category="ram"]');
-            if (ramButton) {
-                ramButton.disabled = !selectedParts.motherboard;
-            }
-            // Add other dependencies here if needed
-        }
-
-
-        /**
-         * Generates and applies filters based on previously selected components.
-         * This is the core compatibility filtering.
-         * @param {object} part - The part to check compatibility for.
-         * @param {string} category - The category of the part.
-         * @returns {boolean} True if the part is compatible, false otherwise.
-         */
-        function checkCompatibility(part, category) {
-            const selectedCpu = selectedParts.cpu;
-            const selectedMotherboard = selectedParts.motherboard;
-            // const selectedRam = selectedParts.ram; // Not currently used for compatibility checks here
-            // const selectedGpu = selectedParts.gpu; // Not currently used for compatibility checks here
-            // const selectedPsu = selectedParts.psu; // Not currently used for compatibility checks here
-
-            switch (category) {
-                case 'motherboard':
-                    // Motherboard must be compatible with selected CPU's socket
-                    if (selectedCpu && part.socket !== selectedCpu.socket) {
-                        return false;
-                    }
-                    break;
-                case 'ram':
-                    // RAM must be compatible with selected Motherboard's RAM type
-                    if (selectedMotherboard && part.type !== selectedMotherboard.ramType) {
-                        return false;
-                    }
-                    break;
-                case 'case':
-                    // Case must support selected Motherboard form factor (if motherboards had formFactor)
-                    // (Assuming all cases support ATX, Micro-ATX, Mini-ITX for now based on your data)
-                    break;
-                case 'psu':
-                    // PSU wattage considerations could go here based on selected GPU/CPU, e.g.:
-                    // if (selectedGpu && selectedGpu.vram >= 16 && part.wattage < 750) return false;
-                    break;
-                // Add more compatibility rules as needed for other components
-            }
-            return true;
-        }
-
-
-        /**
-         * Renders component options in the modal, applying search and filters.
-         * And also generates the filter UI.
-         */
-        function renderModalOptions() {
-            modalOptionsContainer.innerHTML = ''; // Clear previous options
-            modalFiltersContainer.innerHTML = ''; // Clear existing filters for filters content
-
-            const category = currentModalCategory;
-            const items = components[category];
-            const searchTerm = modalSearchInput.value.toLowerCase();
-
-            // Determine available filters based on the current category and its properties
-            const uniqueFilterValues = {};
-            if (category === 'cpu') {
-                uniqueFilterValues.socket = new Set();
-                uniqueFilterValues.generation = new Set();
-                uniqueFilterValues.cores = new Set();
-                uniqueFilterValues.clock = new Set();
-            } else if (category === 'motherboard') {
-                uniqueFilterValues.socket = new Set();
-                uniqueFilterValues.ramType = new Set();
-                uniqueFilterValues.chipset = new Set();
-            } else if (category === 'ram') {
-                uniqueFilterValues.type = new Set();
-                uniqueFilterValues.size = new Set();
-                uniqueFilterValues.speed = new Set();
-            } else if (category === 'gpu') {
-                uniqueFilterValues.brand = new Set();
-                uniqueFilterValues.vram = new Set();
-            } else if (category === 'storage') {
-                uniqueFilterValues.type = new Set();
-                uniqueFilterValues.capacity = new Set();
-            } else if (category === 'psu') {
-                uniqueFilterValues.wattage = new Set();
-                uniqueFilterValues.rating = new Set();
-            } else if (category === 'case') {
-                uniqueFilterValues.formFactor = new Set(); // This is an array, special handling needed
-            }
-
-            // Dynamically generate filter checkboxes
-            for (const item of items) {
-                if (checkCompatibility(item, category)) { // Only add filter options for compatible items
-                    for (const prop in uniqueFilterValues) {
-                        if (item[prop] !== undefined) {
-                            if (Array.isArray(item[prop])) { // Handle array properties like formFactor
-                                item[prop].forEach(val => uniqueFilterValues[prop].add(val));
-                            } else {
-                                uniqueFilterValues[prop].add(item[prop]);
-                            }
-                        }
-                    }
+            const motherboardSelected = selectedComponents['motherboard'];
+            const ramButton = document.querySelector('button[data-category="ram"]');
+            if (motherboardSelected) {
+                ramButton.disabled = false;
+            } else {
+                ramButton.disabled = true;
+                if (selectedComponents['ram']) {
+                    selectedComponents['ram'] = null;
+                    document.getElementById('display-ram').innerHTML = `<span>No RAM Selected</span><span class="price-display"></span>`;
+                    document.getElementById('selected-ram-hidden').value = '';
                 }
             }
 
-            for (const prop in uniqueFilterValues) {
-                if (uniqueFilterValues[prop].size > 0) { // Only show filter group if there are options
-                    const filterGroupDiv = document.createElement('div');
-                    filterGroupDiv.classList.add('filter-group');
-                    filterGroupDiv.innerHTML = `<h4>${prop.charAt(0).toUpperCase() + prop.slice(1)}</h4>`;
+            updateTotalPrice();
+            updateProgressBar();
+        }
 
-                    const sortedValues = Array.from(uniqueFilterValues[prop]).sort((a, b) => {
-                        // Sort numbers numerically, strings alphabetically
-                        if (typeof a === 'number' && typeof b === 'number') {
-                            return a - b;
-                        }
-                        return String(a).localeCompare(String(b));
-                    });
+        // --- Compatibility Functions ---
+        function getCompatibleMotherboards(cpu) {
+            if (!cpu) return [];
+            return components.motherboard.filter(mb => mb.socket === cpu.socket);
+        }
 
-                    sortedValues.forEach(value => {
-                        const filterId = `filter-${category}-${prop}-${value}`;
-                        const checkbox = document.createElement('input');
-                        checkbox.type = 'checkbox';
-                        checkbox.id = filterId;
-                        checkbox.value = value;
-                        checkbox.dataset.filterProp = prop;
-                        checkbox.checked = activeModalFilters[prop] && activeModalFilters[prop].includes(String(value)); // Convert to string for consistent comparison
+        function getCompatibleRAMs(motherboard) {
+            if (!motherboard) return [];
+            return components.ram.filter(ram => ram.type === motherboard.ram_type);
+        }
+        // End Compatibility Functions
 
+        // Function to dynamically generate filters based on available data for the current category
+        function generateFilters(categoryData) {
+            filterContent.innerHTML = ''; // Clear previous filters
+            const filterableProperties = {};
+
+            // Determine filterable properties (e.g., socket, generation, cores for CPU)
+            if (currentCategory === 'cpu') {
+                filterableProperties.socket = [...new Set(categoryData.map(item => item.socket))].sort();
+                filterableProperties.generation = [...new Set(categoryData.map(item => item.generation))].sort();
+                filterableProperties.cores = [...new Set(categoryData.map(item => item.cores))].sort((a, b) => a - b);
+            } else if (currentCategory === 'motherboard') {
+                filterableProperties.socket = [...new Set(categoryData.map(item => item.socket))].sort();
+                filterableProperties.chipset = [...new Set(categoryData.map(item => item.chipset))].sort();
+                filterableProperties.ram_type = [...new Set(categoryData.map(item => item.ram_type))].sort();
+            } else if (currentCategory === 'ram') {
+                filterableProperties.capacity_gb = [...new Set(categoryData.map(item => item.capacity_gb))].sort((a, b) => a - b);
+                filterableProperties.type = [...new Set(categoryData.map(item => item.type))].sort();
+                filterableProperties.speed_mhz = [...new Set(categoryData.map(item => item.speed_mhz))].sort((a, b) => a - b);
+            } else if (currentCategory === 'gpu') {
+                filterableProperties.chipset = [...new Set(categoryData.map(item => item.chipset))].sort();
+                filterableProperties.vram_gb = [...new Set(categoryData.map(item => item.vram_gb))].sort((a, b) => a - b);
+                filterableProperties.series = [...new Set(categoryData.map(item => item.series))].sort();
+            } else if (currentCategory === 'storage') {
+                filterableProperties.type = [...new Set(categoryData.map(item => item.type))].sort();
+                filterableProperties.interface = [...new Set(categoryData.map(item => item.interface))].sort();
+                filterableProperties.capacity_gb = [...new Set(categoryData.map(item => item.capacity_gb))].sort((a, b) => a - b);
+            } else if (currentCategory === 'psu') {
+                filterableProperties.wattage = [...new Set(categoryData.map(item => item.wattage))].sort((a, b) => a - b);
+                filterableProperties.efficiency = [...new Set(categoryData.map(item => item.efficiency))].sort();
+            } else if (currentCategory === 'case') {
+                filterableProperties.type = [...new Set(categoryData.map(item => item.type))].sort();
+                filterableProperties.color = [...new Set(categoryData.map(item => item.color))].sort();
+            }
+
+            for (const prop in filterableProperties) {
+                if (filterableProperties[prop].length > 0) {
+                    const filterGroup = document.createElement('div');
+                    filterGroup.classList.add('filter-group');
+                    filterGroup.innerHTML = `<h4>${prop.replace(/_/g, ' ').toUpperCase()}</h4>`;
+                    filterableProperties[prop].forEach(value => {
                         const label = document.createElement('label');
-                        label.htmlFor = filterId;
-                        label.innerHTML = `<span>${value}</span>`; // Wrap value in span for better styling flexibility
-
-                        checkbox.addEventListener('change', (e) => {
-                            const filterProp = e.target.dataset.filterProp;
-                            const filterValue = String(e.target.value); // Ensure string for consistency
-
-                            if (!activeModalFilters[filterProp]) {
-                                activeModalFilters[filterProp] = [];
-                            }
-
-                            if (e.target.checked) {
-                                if (!activeModalFilters[filterProp].includes(filterValue)) {
-                                    activeModalFilters[filterProp].push(filterValue);
-                                }
-                            } else {
-                                activeModalFilters[filterProp] = activeModalFilters[filterProp].filter(v => v !== filterValue);
-                                if (activeModalFilters[filterProp].length === 0) {
-                                    delete activeModalFilters[filterProp]; // Remove empty filter array
-                                }
-                            }
-                            renderFilteredOptions(); // Re-render options based on new filters
-                        });
-
-                        filterGroupDiv.appendChild(checkbox);
-                        filterGroupDiv.appendChild(label);
+                        label.innerHTML = `
+                            <input type="checkbox" data-filter-property="${prop}" value="${value}" />
+                            ${value}
+                        `;
+                        filterGroup.appendChild(label);
                     });
-                    modalFiltersContainer.appendChild(filterGroupDiv);
+                    filterContent.appendChild(filterGroup);
                 }
             }
 
-            renderFilteredOptions(); // Initial render of options after filters are set up
+            // Add event listeners to new checkboxes
+            filterContent.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', filterAndDisplayOptions);
+            });
         }
 
-        /**
-         * Renders component options in the modal, applying search and filters.
-         * Separated from renderModalOptions to allow re-rendering after filter/search changes.
-         */
-        function renderFilteredOptions() {
-            modalOptionsContainer.innerHTML = ''; // Clear previous options
-            const category = currentModalCategory;
-            const items = components[category];
-            const searchTerm = modalSearchInput.value.toLowerCase();
+        // Function to filter and display options in the modal
+        function filterAndDisplayOptions() {
+            modalOptionsContainer.innerHTML = ''; // Clear existing options
+            const searchTerm = modalSearch.value.toLowerCase();
 
-            const fragment = document.createDocumentFragment();
+            let availableComponents = components[currentCategory];
 
-            items.forEach(item => {
-                // Apply search filter
-                const matchesSearch = item.name.toLowerCase().includes(searchTerm);
-                if (!matchesSearch) {
-                    return;
+            // Apply compatibility filters first
+            if (currentCategory === 'motherboard' && selectedComponents['cpu']) {
+                availableComponents = getCompatibleMotherboards(selectedComponents['cpu']);
+            } else if (currentCategory === 'ram' && selectedComponents['motherboard']) {
+                availableComponents = getCompatibleRAMs(selectedComponents['motherboard']);
+            }
+
+            // Get active filters
+            const activeFilters = {};
+            filterContent.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+                const prop = checkbox.dataset.filterProperty;
+                if (!activeFilters[prop]) {
+                    activeFilters[prop] = new Set();
                 }
+                activeFilters[prop].add(checkbox.value);
+            });
 
-                // Apply compatibility filter (e.g., CPU socket for Motherboard)
-                if (!checkCompatibility(item, category)) {
-                    return;
-                }
+            const filteredComponents = availableComponents.filter(component => {
+                const matchesSearch = component.name.toLowerCase().includes(searchTerm) ||
+                                      (component.brand && component.brand.toLowerCase().includes(searchTerm)); // Assuming 'brand' for general components
 
-                // Apply dynamic filters from sidebar
-                let matchesAllFilters = true;
-                for (const prop in activeModalFilters) {
-                    const filterValues = activeModalFilters[prop];
-                    if (filterValues.length > 0) {
-                        // If the item has this property and its value (or any of its values if it's an array)
-                        // is NOT in the active filter values, then it doesn't match this filter group.
-                        if (item[prop] === undefined) {
-                            matchesAllFilters = false;
-                            break;
+                if (!matchesSearch) return false;
+
+                // Apply dynamic filters
+                for (const prop in activeFilters) {
+                    if (activeFilters[prop].size > 0) { // Only apply if at least one checkbox is checked for this property
+                        let componentValue;
+                        // Special handling for properties that might be numbers in data but strings as filter values
+                        if (['cores', 'capacity_gb', 'speed_mhz', 'vram_gb', 'wattage'].includes(prop)) {
+                            componentValue = String(component[prop]);
+                        } else {
+                            componentValue = component[prop];
                         }
-                        if (Array.isArray(item[prop])) {
-                            // For array properties (like case formFactor), check if ANY of its values match
-                            const hasIntersection = item[prop].some(val => filterValues.includes(String(val)));
-                            if (!hasIntersection) {
-                                matchesAllFilters = false;
-                                break;
-                            }
-                        } else if (!filterValues.includes(String(item[prop]))) { // Convert item prop to string for consistent comparison
-                            matchesAllFilters = false;
-                            break;
+
+                        if (!activeFilters[prop].has(componentValue)) {
+                            return false; // Does not match selected filter
                         }
                     }
                 }
-                if (!matchesAllFilters) {
-                    return;
-                }
+                return true; // Passes all filters
+            });
 
-                // Create the component option element
+
+            if (filteredComponents.length === 0) {
+                modalOptionsContainer.innerHTML = '<p style="text-align: center; margin-top: 20px;">No components found matching your criteria.</p>';
+                return;
+            }
+
+            filteredComponents.forEach(component => {
                 const optionDiv = document.createElement('div');
                 optionDiv.classList.add('component-option');
-
-                const input = document.createElement('input');
-                input.type = 'radio';
-                input.name = `selected-${category}`;
-                input.id = `option-${item.id}`;
-                input.value = item.id;
-                input.checked = selectedParts[category] && selectedParts[category].id === item.id; // Pre-select if already chosen
-
-                const label = document.createElement('label');
-                label.htmlFor = `option-${item.id}`;
-                label.innerHTML = `
-                    <strong>${item.name}</strong> - $${item.price.toFixed(2)}
-                    ${item.socket ? ` (Socket: ${item.socket})` : ''}
-                    ${item.ramType ? ` (RAM Type: ${item.ramType})` : ''}
-                    ${item.size ? ` (${item.size}GB)` : ''}
-                    ${item.speed ? ` (${item.speed}MHz)` : ''}
-                    ${item.vram ? ` (${item.vram}GB VRAM)` : ''}
-                    ${item.capacity ? ` (${item.capacity / 1000}TB)` : ''}
-                    ${item.wattage ? ` (${item.wattage}W)` : ''}
-                    ${item.rating ? ` (${item.rating})` : ''}
-                    ${item.cores ? ` (${item.cores} Cores)` : ''}
-                    ${item.clock ? ` (${item.clock}GHz)` : ''}
+                optionDiv.innerHTML = `
+                    <input type="radio" id="${component.id}" name="selected-component" value="${component.id}" ${selectedComponents[currentCategory]?.id === component.id ? 'checked' : ''}>
+                    <label for="${component.id}">
+                        <strong>${component.name}</strong> - $${component.price.toFixed(2)}
+                        <br>
+                        ${getComponentDetailsHtml(component)}
+                    </label>
                 `;
+                modalOptionsContainer.appendChild(optionDiv);
 
-                // Add click listener to select the option
-                optionDiv.addEventListener('click', () => {
-                    input.checked = true; // Programmatically check the radio button
-                    selectedParts[category] = item;
-                    updateMainDisplay(category, item);
-                    updateTotalPrice();
-                    hideModal(); // Close the modal after selection
+                // Add event listener to the radio button itself
+                optionDiv.querySelector('input[type="radio"]').addEventListener('change', (event) => {
+                    if (event.target.checked) {
+                        selectComponent(currentCategory, component);
+                        modal.classList.remove('is-active'); // Close modal on selection
+                    }
                 });
-
-                optionDiv.appendChild(input);
-                optionDiv.appendChild(label);
-                fragment.appendChild(optionDiv);
             });
+        }
 
-            modalOptionsContainer.appendChild(fragment);
-
-            // If no results, display a message
-            if (modalOptionsContainer.children.length === 0) {
-                const noResults = document.createElement('p');
-                noResults.textContent = "No components match your criteria. Try adjusting filters or search.";
-                noResults.style.color = '#ccc';
-                noResults.style.textAlign = 'center';
-                noResults.style.marginTop = '20px';
-                modalOptionsContainer.appendChild(noResults);
+        // Helper function to format component details for display
+        function getComponentDetailsHtml(component) {
+            let details = [];
+            if (currentCategory === 'cpu') {
+                details.push(`Socket: ${component.socket}`);
+                details.push(`Gen: ${component.generation}`);
+                details.push(`Cores: ${component.cores}`);
+                details.push(`Clock: ${component.clock}GHz`);
+            } else if (currentCategory === 'motherboard') {
+                details.push(`Socket: ${component.socket}`);
+                details.push(`Chipset: ${component.chipset}`);
+                details.push(`RAM Type: ${component.ram_type}`);
+                details.push(`RAM Slots: ${component.ram_slots}`);
+            } else if (currentCategory === 'ram') {
+                details.push(`Capacity: ${component.capacity_gb}GB`);
+                details.push(`Type: ${component.type}`);
+                details.push(`Speed: ${component.speed_mhz}MHz`);
+                details.push(`CL: ${component.cas_latency}`);
+                details.push(`Modules: ${component.modules}`);
+            } else if (currentCategory === 'gpu') {
+                details.push(`VRAM: ${component.vram_gb}GB`);
+                details.push(`Chipset: ${component.chipset}`);
+                details.push(`Series: ${component.series}`);
+            } else if (currentCategory === 'storage') {
+                details.push(`Type: ${component.type}`);
+                details.push(`Interface: ${component.interface}`);
+                details.push(`Capacity: ${component.capacity_gb / 1000}TB`); // Display in TB
+            } else if (currentCategory === 'psu') {
+                details.push(`Wattage: ${component.wattage}W`);
+                details.push(`Efficiency: ${component.efficiency}`);
+                details.push(`Modular: ${component.modular ? 'Yes' : 'No'}`);
+            } else if (currentCategory === 'case') {
+                details.push(`Type: ${component.type}`);
+                details.push(`Color: ${component.color}`);
+                if (component.features && component.features.length > 0) {
+                    details.push(`Features: ${component.features.join(', ')}`);
+                }
             }
+            return details.join(' | ');
         }
 
+        // Function to handle component selection
+        function selectComponent(category, component) {
+            selectedComponents[category] = component;
 
-        // --- Modal Display Functions (Modified for transitions) ---
-        function showModal(category) {
-            currentModalCategory = category;
-            modalTitle.textContent = `Select ${category.charAt(0).toUpperCase() + category.slice(1)}`;
-            activeModalFilters = {}; // Reset filters when opening a new category
-            modalSearchInput.value = ''; // Clear search when opening
+            const displayElement = document.getElementById(`display-${category}`);
+            const hiddenInputElement = document.getElementById(`selected-${category}-hidden`);
 
-            // Ensure filters are collapsed on mobile when modal opens
-            if (window.innerWidth <= 768) {
-                filterHeader.classList.add('collapsed');
-                modalFiltersContainer.classList.remove('active');
-            } else {
-                 filterHeader.classList.remove('collapsed'); // Always expanded on desktop
-                 modalFiltersContainer.classList.add('active'); // Ensure content is visible on desktop
-            }
+            displayElement.innerHTML = `
+                <span>${component.name}</span>
+                <span class="price-display">$${component.price.toFixed(2)}</span>
+            `;
+            hiddenInputElement.value = component.name; // Store selected component name for form submission
 
-            renderModalOptions(); // Renders options and filters for the selected category
-
-            // Add the 'is-active' class to trigger CSS transitions
-            modal.classList.add('is-active');
-            // Optional: Prevent body scrolling when modal is open
-            document.body.style.overflow = 'hidden';
+            updateCategoryButtonStates(); // Update button states after selection
         }
 
-        function hideModal() {
-            // Remove the 'is-active' class to trigger CSS transitions
-            modal.classList.remove('is-active');
-            // Optional: Restore body scrolling
-            document.body.style.overflow = '';
-        }
-
-
-        // --- Event Listeners ---
-
-        // 1. Open modal buttons
+        // Event listeners for opening modals
         document.querySelectorAll('.open-selection-modal').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const category = e.target.dataset.category;
-                showModal(category);
+            button.addEventListener('click', (event) => {
+                currentCategory = event.target.dataset.category;
+                modalTitle.textContent = `Select ${currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1)}`;
+
+                let dataForFiltersAndOptions = components[currentCategory];
+
+                // Apply compatibility filters when opening the modal
+                if (currentCategory === 'motherboard' && selectedComponents['cpu']) {
+                    dataForFiltersAndOptions = getCompatibleMotherboards(selectedComponents['cpu']);
+                    if (dataForFiltersAndOptions.length === 0) {
+                        alert('No compatible motherboards found for your selected CPU.');
+                        return; // Prevent opening modal if no options
+                    }
+                } else if (currentCategory === 'ram' && selectedComponents['motherboard']) {
+                    dataForFiltersAndOptions = getCompatibleRAMs(selectedComponents['motherboard']);
+                     if (dataForFiltersAndOptions.length === 0) {
+                        alert('No compatible RAM found for your selected Motherboard.');
+                        return; // Prevent opening modal if no options
+                    }
+                }
+
+
+                // Reset search and filters when opening a new modal
+                modalSearch.value = '';
+                filterContent.innerHTML = ''; // Clear existing filters
+                filterHeader.classList.add('collapsed'); // Collapse filters by default on open (mobile-first)
+
+
+                generateFilters(dataForFiltersAndOptions); // Generate filters based on the filtered data
+                filterAndDisplayOptions(); // Display filtered options
+
+                modal.classList.add('is-active'); // Show modal
             });
         });
 
-        // 2. Close modal button (inside modal)
-        closeButton.addEventListener('click', hideModal);
+        // Event listener for closing modal
+        closeButton.addEventListener('click', () => {
+            modal.classList.remove('is-active');
+        });
 
-        // 3. Close modal when clicking outside of the modal-content
-        modal.addEventListener('click', (e) => {
-            // If the click target is the modal backdrop itself (not a child inside modal-content)
-            if (e.target === modal) {
-                hideModal();
+        // Close modal when clicking outside of modal-content
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.classList.remove('is-active');
             }
         });
 
-        // 4. Close modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('is-active')) {
-                hideModal();
-            }
-        });
+        // Event listener for search input
+        modalSearch.addEventListener('input', filterAndDisplayOptions);
 
-        // 5. Search input listener
-        modalSearchInput.addEventListener('input', renderFilteredOptions); // Re-render on search input
-
-        // 6. Filter accordion toggle listener
+        // Event listener for filter header (accordion for mobile)
         filterHeader.addEventListener('click', () => {
-            // The accordion behavior is now always toggled by JS, CSS media query handles initial state
             filterHeader.classList.toggle('collapsed');
-            modalFiltersContainer.classList.toggle('active');
-        });
-
-        // --- Initial Setup / Page Load ---
-        // Initialize displays and total price on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            for (const category in selectedParts) {
-                updateMainDisplay(category, selectedParts[category]);
-            }
-            updateTotalPrice();
-            updateDependencyButtons(); // Set initial button states
-            setupHamburgerMenu(); // Call the hamburger menu setup
+            filterContent.classList.toggle('active');
         });
 
 
-        // --- Hamburger Menu Logic ---
-        function setupHamburgerMenu() {
-            const hamburger = document.querySelector('.hamburger-menu');
-            const navWrapper = document.querySelector('.nav-wrapper');
+        // Hamburger menu functionality
+        const hamburgerMenu = document.querySelector('.hamburger-menu');
+        const navWrapper = document.querySelector('.nav-wrapper');
 
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active');
-                navWrapper.classList.toggle('active');
-            });
+        hamburgerMenu.addEventListener('click', () => {
+            hamburgerMenu.classList.toggle('active');
+            navWrapper.classList.toggle('active');
+        });
 
-            // Close mobile nav when a link is clicked (optional)
-            navWrapper.querySelectorAll('a').forEach(link => {
-                    // Prevent immediate close if click is on a descendant (e.g. text inside link)
-                    link.addEventListener('click', (event) => {
-                        // Check if the clicked element is actually the anchor tag itself or one of its children
-                        // This prevents closing if clicking on whitespace within the nav-wrapper but not directly on an 'a'
-                        if (event.target.closest('a')) {
-                            hamburger.classList.remove('active');
-                            navWrapper.classList.remove('active');
-                        }
-                    });
-                });
-        }
+        // Initial update when page loads
+        updateCategoryButtonStates(); // Set initial button states based on no selection
+        updateProgressBar();
+        updateTotalPrice();
 
-
-        // --- Progress Bar Logic ---
+        // Simulate scroll for progress bar
         window.addEventListener('scroll', () => {
-            const progressBar = document.getElementById('progress-bar');
-            if (!progressBar) return; // Exit if element not found
-
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
-            progressBar.style.width = scrolled + "%";
+            if (height > 0) { // Only update if scrollable
+                document.getElementById('progress-bar').style.width = scrolled + "%";
+            } else {
+                document.getElementById('progress-bar').style.width = "100%"; // If not scrollable, assume 100%
+            }
         });
+
     </script>
 </body>
 </html>
