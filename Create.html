@@ -11,8 +11,6 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Removed background-size: cover; from here, as it's typically for images, not gradients */
-            /* Removed backdrop-filter from here - it will be applied to the header, not body directly */
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
@@ -20,19 +18,19 @@
             scroll-behavior: smooth;
         }
 
-        /* Global Header Styles (apply to all screen sizes unless overridden by media query) */
+        /* Global Header Styles */
         header {
-            background-color: #38006b; /* Consistent dark purple */
+            background-color: #38006b;
             padding: 15px 20px;
             display: flex;
-            justify-content: space-between; /* Space out brand info and hamburger on desktop */
+            justify-content: space-between;
             align-items: center;
-            position: fixed; /* Keep it fixed at the top */
+            position: fixed;
             top: 0;
             width: 100%;
-            box-sizing: border-box; /* Include padding in width */
+            box-sizing: border-box;
             z-index: 1000;
-            backdrop-filter: blur(5px); /* Apply backdrop-filter here for desktop */
+            backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
         }
 
@@ -41,38 +39,32 @@
             font-size: 1.5em;
             font-weight: bold;
             flex-shrink: 0;
-            display: flex; /* Make brand-info a flex container */
+            display: flex;
             align-items: center;
-            gap: 10px; /* Space between @EazyVicx and slogan */
+            gap: 10px;
         }
 
-        .brand-info .youtube-handle { /* Use a span or adjust p margin */
-            margin: 0; /* Remove default paragraph margin */
-            color: inherit; /* Inherit color from parent */
+        .brand-info .youtube-handle {
+            margin: 0;
+            color: inherit;
         }
 
         .brand-info .slogan {
-            /* Changed from display: block to inline for desktop layout */
             display: inline;
-            font-size: 1em; /* Original 0.7em, consider 0.8em for readability */
+            font-size: 0.7em;
             font-weight: normal;
             color: #e0b0ff;
         }
 
         /* Hide hamburger by default on desktop */
         .hamburger-menu {
-            display: none; /* Hidden on desktop */
-        }
-
-        /* Navigation links on desktop */
-        .nav-wrapper {
-            /* No specific styling here for desktop, nav inside it handles layout */
+            display: none;
         }
 
         header nav {
             display: flex;
             justify-content: flex-end;
-            gap: 20px; /* Space between nav links */
+            gap: 20px;
         }
 
         header nav a {
@@ -80,26 +72,26 @@
             text-decoration: none;
             font-weight: bold;
             font-size: 1.1em;
-            white-space: nowrap; /* Prevent link text from wrapping */
-            padding: 5px 0; /* Add some vertical padding for tap target */
+            white-space: nowrap;
+            padding: 5px 0;
             transition: color 0.3s ease;
         }
 
         header nav a:hover,
         header nav a:focus {
-            color: #ffffff; /* Brighter white on hover */
+            color: #ffffff;
         }
 
         /* Body Background (specific to this page) */
         body {
-            background: linear-gradient(135deg, #0f002b, #1a003d); /* A slightly different dark gradient */
+            background: linear-gradient(135deg, #0f002b, #1a003d);
             background-size: 200% 200%;
             animation: gradientShift 5s ease infinite;
             position: relative;
             overflow-y: auto;
         }
 
-        body::before { /* Pseudo-element for the lines */
+        body::before {
             content: "";
             position: absolute;
             top: 0;
@@ -108,7 +100,7 @@
             height: 100%;
             background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(86, 45, 200, 0.05) 1px, rgba(86, 45, 200, 0.05) 2px),
                                 repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(86, 45, 200, 0.05) 1px, rgba(86, 45, 200, 0.05) 2px);
-            opacity: 0.4; /* Make the lines very subtle */
+            opacity: 0.4;
             z-index: 1;
         }
 
@@ -121,7 +113,7 @@
         /* Progress Bar */
         #progress-bar-container {
             position: fixed;
-            top: 0; /* Changed from 0 to align with the fixed header */
+            top: 0;
             left: 50%;
             transform: translateX(-50%);
             width: 80%;
@@ -146,13 +138,13 @@
 
         /* Main Content Area for PC Builder */
         .builder-container {
-            flex: 1; /* Allows it to take up remaining space */
-            padding-top: 100px; /* Space for fixed header (adjust if header height changes) */
+            flex: 1;
+            padding-top: 100px;
             padding-bottom: 50px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Align content to top */
+            justify-content: flex-start;
             color: white;
             animation: fadeIn 1s ease forwards;
             position: relative;
@@ -165,15 +157,16 @@
         }
 
         .builder-container h1 {
-            font-size: 3em;
-            margin-bottom: 30px;
+            font-size: 2.5em; /* Adjusted size */
+            margin-bottom: 40px; /* Increased space */
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            text-align: center; /* Centered */
         }
 
         /* Component Sections */
         .component-section {
             background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px); /* Keep this filter for component sections */
+            backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             padding: 25px 30px;
             border-radius: 12px;
@@ -210,12 +203,19 @@
             flex: 1 1 calc(50% - 15px);
             max-width: calc(50% - 15px);
             box-sizing: border-box;
+            opacity: 1; /* Default visible state */
+            pointer-events: auto; /* Default interactive state */
+            transition: opacity 0.3s ease; /* Transition for hiding/showing */
         }
 
-        .component-option:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(86, 45, 200, 0.6);
-            box-shadow: 0 0 10px rgba(86, 45, 200, 0.4);
+        /* Styles for disabled/hidden options */
+        .component-option.hidden {
+            display: none; /* Completely remove from layout */
+        }
+        .component-option.disabled {
+            opacity: 0.4;
+            pointer-events: none; /* Disable clicks */
+            cursor: not-allowed;
         }
 
         .component-option input[type="radio"] {
@@ -256,7 +256,7 @@
             cursor: pointer;
             font-size: 0.95em;
             line-height: 1.4;
-            color: white; /* Ensure label text is visible against dark backgrounds */
+            color: white;
         }
 
         /* Footer */
@@ -289,21 +289,13 @@
         /* --- Media Queries for Mobile Responsiveness --- */
 
         @media (max-width: 768px) {
-            /* Disable backdrop-filter for html, body background */
             html, body {
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
             }
 
-             .builder-container h1 {
-                font-size: 2.5em; /* Even smaller on mobile */
-                margin-bottom: 35px;
-                text-align: center;
-            }
-
-            /* Show hamburger menu on mobile */
             .hamburger-menu {
-                display: flex; /* Make it visible */
+                display: flex;
                 flex-direction: column;
                 justify-content: space-around;
                 width: 30px;
@@ -318,90 +310,85 @@
             .hamburger-menu .bar {
                 width: 100%;
                 height: 3px;
-                background-color: #ec03fc; /* Color of the bars */
+                background-color: #ec03fc;
                 border-radius: 5px;
                 transition: all 0.3s ease-in-out;
             }
 
-            /* Animation for closing the hamburger */
             .hamburger-menu.active .bar:nth-child(2) {
-                opacity: 0; /* Middle bar disappears */
+                opacity: 0;
             }
             .hamburger-menu.active .bar:nth-child(1) {
-                transform: translateY(11px) rotate(45deg); /* Top bar rotates to form 'X' */
+                transform: translateY(11px) rotate(45deg);
             }
             .hamburger-menu.active .bar:nth-child(3) {
-                transform: translateY(-11px) rotate(-45deg); /* Bottom bar rotates to form 'X' */
+                transform: translateY(-11px) rotate(-45deg);
             }
 
-            /* Header on mobile */
             header {
-                /* Remove fixed position and backdrop filter from here if you want it only from general rules */
-                /* Re-adjust padding for mobile */
                 padding: 10px 15px;
-                backdrop-filter: none; /* Add this line */
-                -webkit-backdrop-filter: none; /* Add this line */
+                backdrop-filter: none; /* Removing filter for mobile header for performance */
+                -webkit-backdrop-filter: none;
                 background-color: #38006b;
             }
 
             .brand-info {
-                font-size: 1.2em; /* Smaller font size for brand */
-                /* Adjust flex-direction if needed to stack brand components, otherwise keep as row */
+                font-size: 1.2em;
             }
             .brand-info .slogan {
-                font-size: 0.8em; /* Even smaller slogan */
+                font-size: 0.6em;
             }
 
-            /* Nav Wrapper on Mobile (hidden by default) */
             .nav-wrapper {
                 position: absolute;
-                top: 100%; /* Position below the header */
+                top: 100%;
                 left: 0;
                 width: 100%;
-                background-color: #38006b; /* Same as header background */
+                background-color: #38006b;
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-                max-height: 0; /* Hidden by default */
-                overflow: hidden; /* Hide overflow content */
-                transition: max-height 0.3s ease-out; /* Smooth slide transition */
-                display: flex; /* Use flex to control alignment of nav */
-                justify-content: center; /* Center nav links horizontally */
-                align-items: flex-start; /* Align nav items to the top */
-                flex-direction: column; /* Stack nav links vertically */
-                z-index: 999; /* Below hamburger, above other content */
+                height: 0; /* Use height for smoother transition */
+                overflow: hidden;
+                opacity: 0;
+                transition: height 0.3s ease-out, opacity 0.3s ease-out;
+                transform: translateY(-10px);
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                flex-direction: column;
+                z-index: 999;
             }
 
             .nav-wrapper.active {
-                max-height: 300px; /* Adjust based on number of links - should be enough to show all links */
+                height: 180px; /* Adjusted height for 3 links, customize as needed */
+                opacity: 1;
+                transform: translateY(0);
             }
 
-            /* Hide desktop navigation */
             header nav {
-                flex-direction: column; /* Stack links vertically */
-                width: 100%; /* Take full width of wrapper */
-                padding: 15px 0; /* Padding inside the dropdown */
-                gap: 0; /* Remove gap between stacked links */
+                flex-direction: column;
+                width: 100%;
+                padding: 15px 0;
+                gap: 0;
             }
 
             header nav a {
-                padding: 12px 20px; /* Increase tap target size for mobile */
-                text-align: center; /* Center the text in each link */
-                font-size: 1.1em; /* Ensure good readability */
-                width: 100%; /* Make links take full width of nav */
-                box-sizing: border-box; /* Include padding in width calculation */
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
+                padding: 12px 20px;
+                text-align: center;
+                font-size: 1.1em;
+                width: 100%;
+                box-sizing: border-box;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
             header nav a:last-child {
-                border-bottom: none; /* No border on the last link */
+                border-bottom: none;
             }
 
-            /* Component options (for 2-column to 1-column conversion) */
             .component-option {
-                flex: 1 1 100%; /* Single column layout on smaller screens */
+                flex: 1 1 100%;
                 max-width: 100%;
             }
         }
 
-        /* Small adjustments for very small screens if needed, e.g., 400px */
         @media (max-width: 400px) {
             .brand-info {
                 font-size: 1em;
@@ -409,7 +396,10 @@
             .brand-info .slogan {
                 font-size: 0.5em;
             }
-            /* You might further adjust nav font size or padding here if needed */
+            .builder-container h1 {
+                font-size: 2em;
+                margin-bottom: 25px;
+            }
         }
     </style>
 </head>
@@ -450,12 +440,6 @@
                     </div>
             </div>
 
-            <div id="gpu-selection" class="component-section">
-                <h3>Choose your GPU</h3>
-                <div class="options-container">
-                    </div>
-            </div>
-
             <div id="motherboard-selection" class="component-section">
                 <h3>Choose your Motherboard</h3>
                 <div class="options-container">
@@ -464,6 +448,12 @@
 
             <div id="ram-selection" class="component-section">
                 <h3>Choose your RAM</h3>
+                <div class="options-container">
+                    </div>
+            </div>
+
+            <div id="gpu-selection" class="component-section">
+                <h3>Choose your GPU</h3>
                 <div class="options-container">
                     </div>
             </div>
@@ -545,14 +535,9 @@
                 { id: 'cpu-i5-13500f', name: 'Intel Core i5-13400f', price: 134.00, socket: 'LGA1700' },
                 { id: 'cpu-i7-14700k', name: 'Intel Core i7-14700K', price: 380.00, socket: 'LGA1700' },
                 { id: 'cpu-i7-13700kf', name: 'Intel Core i7-13700KF', price: 299.00, socket: 'LGA1700' },
+
                 { id: 'cpu-r7-7800x3d', name: 'AMD Ryzen 7 7800X3D', price: 360.00, socket: 'AM5' },
                 { id: 'cpu-r9-7900x', name: 'AMD Ryzen 9 7900X', price: 420.00, socket: 'AM5' }
-            ],
-            gpu: [
-                { id: 'gpu-rtx4070s', name: 'NVIDIA RTX 4070 Super', price: 600.00 },
-                { id: 'gpu-rtx4080s', name: 'NVIDIA RTX 4080 Super', price: 900.00 },
-                { id: 'gpu-rx7800xt', name: 'AMD Radeon RX 7800 XT', price: 500.00 },
-                { id: 'gpu-rx7900xtx', name: 'AMD Radeon RX 7900 XTX', price: 950.00 }
             ],
             motherboard: [
                 { id: 'mobo-z790-p', name: 'MSI PRO Z790-P WiFi DDR5', price: 200.00, socket: 'LGA1700', ramType: 'DDR5' },
@@ -561,6 +546,12 @@
             ram: [
                 { id: 'ram-ddr5-32-6000', name: 'Corsair Vengeance 32GB (2x16GB) DDR5-6000', price: 100.00, type: 'DDR5' },
                 { id: 'ram-ddr5-64-6000', name: 'G.Skill Trident Z5 RGB 64GB (2x32GB) DDR5-6000', price: 200.00, type: 'DDR5' }
+            ],
+            gpu: [
+                { id: 'gpu-rtx4070s', name: 'NVIDIA RTX 4070 Super', price: 600.00 },
+                { id: 'gpu-rtx4080s', name: 'NVIDIA RTX 4080 Super', price: 900.00 },
+                { id: 'gpu-rx7800xt', name: 'AMD Radeon RX 7800 XT', price: 500.00 },
+                { id: 'gpu-rx7900xtx', name: 'AMD Radeon RX 7900 XTX', price: 950.00 }
             ],
             storage: [
                 { id: 'ssd-nvme-1tb', name: 'Samsung 990 Pro 1TB NVMe SSD', price: 120.00, type: 'NVMe' },
@@ -580,9 +571,9 @@
         // --- Global variables for tracking selections ---
         let selectedParts = {
             cpu: null,
+            motherboard: null, // Motherboard is dependent on CPU
+            ram: null,         // RAM is dependent on Motherboard
             gpu: null,
-            motherboard: null,
-            ram: null,
             storage: null,
             psu: null,
             case: null
@@ -591,35 +582,37 @@
         let currentTotalPrice = 0;
 
         // Function to render components
-        function renderComponents() {
-            const componentCategories = Object.keys(components);
+        function renderComponents(category, filterCondition = () => true) {
+            const container = document.querySelector(`#${category}-selection .options-container`);
+            if (!container) return;
 
-            componentCategories.forEach(category => {
-                const container = document.querySelector(`#${category}-selection .options-container`);
-                if (container) {
-                    container.innerHTML = ''; // Clear existing content
+            container.innerHTML = ''; // Clear existing content
 
-                    components[category].forEach(part => {
-                        const optionDiv = document.createElement('div');
-                        optionDiv.classList.add('component-option');
-                        optionDiv.innerHTML = `
-                            <input type="radio" id="${part.id}" name="${category}" value="${part.id}" data-price="${part.price}"
-                                ${part.socket ? `data-socket="${part.socket}"` : ''}
-                                ${part.ramType ? `data-ramtype="${part.ramType}"` : ''}
-                                ${part.wattage ? `data-wattage="${part.wattage}"` : ''}
-                                ${part.type ? `data-type="${part.type}"` : ''}
-                            >
-                            <label for="${part.id}">
-                                ${part.name} - $${part.price.toFixed(2)}
-                                ${part.socket ? ` (Socket: ${part.socket})` : ''}
-                                ${part.ramType ? ` (RAM: ${part.ramType})` : ''}
-                                ${part.wattage ? ` (${part.wattage}W)` : ''}
-                                ${part.type ? ` (${part.type})` : ''}
-                            </label>
-                        `;
-                        container.appendChild(optionDiv);
-                    });
+            components[category].forEach(part => {
+                const optionDiv = document.createElement('div');
+                optionDiv.classList.add('component-option');
+
+                // Apply filter condition
+                if (!filterCondition(part)) {
+                    optionDiv.classList.add('disabled'); // Add 'disabled' class for styling
                 }
+
+                optionDiv.innerHTML = `
+                    <input type="radio" id="${part.id}" name="${category}" value="${part.id}" data-price="${part.price}"
+                        ${part.socket ? `data-socket="${part.socket}"` : ''}
+                        ${part.ramType ? `data-ramtype="${part.ramType}"` : ''}
+                        ${part.wattage ? `data-wattage="${part.wattage}"` : ''}
+                        ${part.type ? `data-type="${part.type}"` : ''}
+                        ${!filterCondition(part) ? 'disabled' : ''} >
+                    <label for="${part.id}">
+                        ${part.name} - $${part.price.toFixed(2)}
+                        ${part.socket ? ` (Socket: ${part.socket})` : ''}
+                        ${part.ramType ? ` (RAM: ${part.ramType})` : ''}
+                        ${part.wattage ? ` (${part.wattage}W)` : ''}
+                        ${part.type ? ` (${part.type})` : ''}
+                    </label>
+                `;
+                container.appendChild(optionDiv);
             });
         }
 
@@ -634,6 +627,52 @@
             document.getElementById('total-price').textContent = currentTotalPrice.toFixed(2);
         }
 
+        // Function to apply filtering based on current selections
+        function applyFilters() {
+            const selectedCpu = selectedParts.cpu;
+            const selectedMotherboard = selectedParts.motherboard;
+
+            // Filter Motherboards based on CPU socket
+            renderComponents('motherboard', (mobo) => {
+                return !selectedCpu || mobo.socket === selectedCpu.socket;
+            });
+
+            // Filter RAM based on Motherboard RAM type
+            renderComponents('ram', (ram) => {
+                return !selectedMotherboard || ram.type === selectedMotherboard.ramType;
+            });
+
+            // Render other components without specific filters for now
+            renderComponents('cpu');
+            renderComponents('gpu');
+            renderComponents('storage');
+            renderComponents('psu');
+            renderComponents('case');
+
+            // --- IMPORTANT: Deselect incompatible parts ---
+            // If a selected motherboard becomes incompatible, deselect it and its dependents
+            if (selectedMotherboard && selectedCpu && selectedMotherboard.socket !== selectedCpu.socket) {
+                selectedParts.motherboard = null;
+                selectedParts.ram = null; // Ram is dependent on motherboard
+                document.getElementById('selected-motherboard').value = '';
+                document.getElementById('selected-ram').value = '';
+                // Rerender to clear selection
+                renderComponents('motherboard', (mobo) => mobo.socket === selectedCpu.socket);
+                renderComponents('ram', () => false); // All RAM options become invalid
+            }
+
+            // If selected RAM becomes incompatible
+            if (selectedMotherboard && selectedParts.ram && selectedParts.ram.type !== selectedMotherboard.ramType) {
+                selectedParts.ram = null;
+                document.getElementById('selected-ram').value = '';
+                // Rerender to clear selection
+                renderComponents('ram', (ram) => ram.type === selectedMotherboard.ramType);
+            }
+
+            updateTotalPrice();
+        }
+
+
         // Function to handle component selection
         function handleComponentSelection(event) {
             if (event.target.type === 'radio' && event.target.name in selectedParts) {
@@ -644,14 +683,22 @@
                 const selectedPartData = components[category].find(part => part.id === partId);
 
                 if (selectedPartData) {
-                    selectedParts[category] = selectedPartData;
-                    updateTotalPrice();
-
-                    // Update hidden input for form submission
-                    document.getElementById(`selected-${category}`).value = selectedPartData.name;
+                    // If a previously selected part in the same category is being re-selected,
+                    // or a new part is selected, update `selectedParts`
+                    if (selectedParts[category]?.id !== selectedPartData.id) {
+                        selectedParts[category] = selectedPartData;
+                        document.getElementById(`selected-${category}`).value = selectedPartData.name;
+                        applyFilters(); // Re-apply filters after a core component (CPU, Motherboard) is selected
+                    }
+                } else {
+                    // This case should ideally not happen if options are rendered correctly
+                    selectedParts[category] = null; // Clear selection if part not found
+                    document.getElementById(`selected-${category}`).value = '';
+                    applyFilters(); // Re-apply filters to ensure compatibility
                 }
             }
         }
+
 
         // --- All DOMContentLoaded related scripts combined ---
         document.addEventListener('DOMContentLoaded', function() {
@@ -665,16 +712,15 @@
             });
 
             // Component Builder Initialization
-            renderComponents();
+            applyFilters(); // Initial render and filter application
             document.querySelector('.builder-container').addEventListener('change', handleComponentSelection);
-            updateTotalPrice();
 
             // Hamburger Menu Functionality
             const hamburgerBtn = document.querySelector('.hamburger-menu');
             const navWrapper = document.querySelector('.nav-wrapper');
             const navLinks = document.querySelectorAll('.nav-wrapper a');
 
-            if (hamburgerBtn && navWrapper) { // Check if elements exist before adding listeners
+            if (hamburgerBtn && navWrapper) {
                 hamburgerBtn.addEventListener('click', function() {
                     hamburgerBtn.classList.toggle('active');
                     navWrapper.classList.toggle('active');
