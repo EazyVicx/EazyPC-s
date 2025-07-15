@@ -579,6 +579,19 @@
         }
 
         /* --- Media Queries for Mobile Responsiveness --- */
+        @media (min-width: 769px) {
+    .filter-header {
+        display: none; /* Hide the filter header on desktop */
+    }
+
+    /* Adjust the filter content's top border-radius when the header is hidden */
+    .filter-content {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        /* Ensure consistent padding if needed after removing the header's padding effect */
+        padding-top: 15px; /* Adjust as necessary to match desired top spacing */
+    }
+}
 
         @media (max-width: 768px) {
             html, body {
