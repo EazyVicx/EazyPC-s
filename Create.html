@@ -911,9 +911,12 @@
     <script>
         const components = {
             cpu: [
-                { id: 'cpu-intel-i9-14900k', name: 'Intel Core i9-14900K', price: 589.99, socket: 'LGA1700', generation: '14th Gen', cores: 24, threads: 32, tdp: 125, integratedGraphics: true },
+                { id: 'cpu-intel-i9-14900k', name: 'Intel Core i9-14900K', price: 428.99, socket: 'LGA1700', generation: '14th Gen', cores: 24, threads: 32, tdp: 125, integratedGraphics: true },
+                { id: 'cpu-intel-i9-14900kf', name: 'Intel Core i9-14900KF', price: 529.95, socket: 'LGA1700', generation: '14th Gen', cores: 24, threads: 32, tdp: 125, integratedGraphics: false },
                 { id: 'cpu-intel-i7-14700k', name: 'Intel Core i7-14700K', price: 399.99, socket: 'LGA1700', generation: '14th Gen', cores: 20, threads: 28, tdp: 125, integratedGraphics: true },
+                { id: 'cpu-intel-i7-14700kf', name: 'Intel Core i7-14700KF', price: 400.00, socket: 'LGA1700', generation: '14th Gen', cores: 20, threads: 28, tdp: 125, integratedGraphics: true },
                 { id: 'cpu-intel-i5-14600k', name: 'Intel Core i5-14600K', price: 299.99, socket: 'LGA1700', generation: '14th Gen', cores: 14, threads: 20, tdp: 125, integratedGraphics: true },
+                { id: 'cpu-intel-i5-14600kf', name: 'Intel Core i5-14600KF', price: 300.00, socket: 'LGA1700', generation: '14th Gen', cores: 14, threads: 20, tdp: 125, integratedGraphics: true },
                 { id: 'cpu-amd-ryzen-9-7950x3d', name: 'AMD Ryzen 9 7950X3D', price: 689.99, socket: 'AM5', generation: 'Zen 4', cores: 16, threads: 32, tdp: 120, integratedGraphics: false },
                 { id: 'cpu-amd-ryzen-7-7800x3d', name: 'AMD Ryzen 7 7800X3D', price: 369.99, socket: 'AM5', generation: 'Zen 4', cores: 8, threads: 16, tdp: 120, integratedGraphics: false },
                 { id: 'cpu-amd-ryzen-5-7600x', name: 'AMD Ryzen 5 7600X', price: 249.99, socket: 'AM5', generation: 'Zen 4', cores: 6, threads: 12, tdp: 105, integratedGraphics: false }
@@ -1315,8 +1318,8 @@
 
         // Initial update when page loads
         updateCategoryButtonStates(); // Set initial button states based on no selection
-        /*updateProgressBar();*/
-        /*updateTotalPrice();*/
+        updateProgressBar();
+        updateTotalPrice();
 
         // Simulate scroll for progress bar
         window.addEventListener('scroll', () => {
