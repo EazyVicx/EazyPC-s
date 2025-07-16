@@ -12,9 +12,7 @@
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
-            /* Changed overflow-y to hidden for the main content area. */
-            /* If you have content below the footer that you still want to scroll, adjust this. */
-            overflow-y: hidden;
+            overflow-y: hidden; /* Changed overflow-y to hidden for the main content area. */
             background-color: #13002b;
             opacity: 1;
             transition: opacity 1s ease;
@@ -128,9 +126,6 @@
             position: relative;
             flex: 1; /* Allows it to take up available space between header and footer */
             width: 100%;
-            /* Calculate height to fill viewport below header and above footer */
-            /* Using min-height: calc(100vh - 60px - [footer-height-approx]) for initial fill */
-            /* The flex: 1 on the container should handle dynamic height if footer height varies */
             min-height: calc(100vh - 60px); /* At least viewport height minus header */
             overflow: hidden; /* Crucial to prevent images from causing scroll */
             display: flex; /* Used to center the content overlay */
@@ -206,8 +201,6 @@
 
         /* Footer Styles - Removed scroll-snap alignment */
         footer {
-            /* Removed: scroll-snap-align: start; */
-            /* Removed: min-height: calc(100vh - 60px); */
             background-color: rgb(46, 5, 128);
             color: white;
             padding: 20px 0;
@@ -243,26 +236,30 @@
             html, body {
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
-                /* Allow scrolling on mobile if content exceeds one screen */
-                overflow-y: auto; 
+                overflow-y: auto; /* Allow scrolling on mobile if content exceeds one screen */
             }
 
             .slideshow-container {
-                /* On mobile, allow its height to be more flexible if content makes it taller */
                 min-height: calc(100vh - 60px); 
                 height: auto; /* Allow height to adjust to content */
-                display: block; /* Change to block to prevent content overlap in flex */
+                /* Reverted to flexbox for centering, but align to start */
+                display: flex; 
+                justify-content: center;
+                align-items: flex-start; /* Aligns content to the top */
+                padding-top: 20px; /* Add some padding from the header */
             }
 
             .slideshow-content-overlay {
                 padding: 20px;
                 max-width: 95%; /* Adjust max-width for smaller screens */
                 background: rgba(0, 0, 0, 0.5); /* Slightly less transparent on mobile for readability */
+                margin-top: 0; /* Ensure no extra margin pushes it down */
             }
 
             .slideshow-content-overlay h2 {
                 font-size: 2em;
                 margin-bottom: 15px;
+                color: #ec03fc; /* Vibrant purple for the Welcome sign */
             }
 
             .slideshow-content-overlay p {
@@ -279,9 +276,19 @@
                 margin-left: auto;
                 margin-right: auto;
                 margin-bottom: 10px; /* Space between stacked buttons */
+                background-color: #9032ed; /* Purple background */
+                border: 2px solid #9032ed; /* Matching purple border */
+                color: white; /* White text for contrast */
             }
             a.button-link:last-child {
                 margin-bottom: 0;
+            }
+
+            a.button-link:hover {
+                background-color: #7a28c5; /* Slightly darker purple on hover */
+                border-color: #7a28c5; /* Matching border color on hover */
+                color: white;
+                transform: scale(1.05);
             }
 
             /* Header Adjustments for Mobile */
@@ -476,7 +483,7 @@
                         clearInterval(slideInterval);
                     } else {
                         // Clear any existing interval before setting a new one to prevent duplicates
-                        clearInterval(slideInterval); 
+                        clearInterval(slideInterval);
                         slideInterval = setInterval(nextSlide, 4000);
                     }
                 }
