@@ -12,7 +12,9 @@
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
-            overflow-y: auto; /* Allow scrolling on main page content */
+            /* Changed overflow-y to hidden for the main content area. */
+            /* If you have content below the footer that you still want to scroll, adjust this. */
+            overflow-y: hidden;
             background-color: #13002b;
             opacity: 1;
             transition: opacity 1s ease;
@@ -96,16 +98,12 @@
         }
 
         /* === DESKTOP NAVIGATION DEFAULTS === */
-        /* These styles apply unless overridden by media queries */
-
-        /* Hamburger button hidden by default (desktop) */
         .hamburger-menu {
             display: none;
         }
 
-        /* Desktop navigation links - always visible on desktop */
         #main-nav {
-            display: flex; /* Show horizontal links on desktop */
+            display: flex;
             gap: 6px;
         }
 
@@ -125,106 +123,99 @@
             color: purple;
         }
 
-        /* The nav-wrapper itself doesn't need specific desktop styling,
-           as #main-nav is directly styled and visible within it. */
-        /* On desktop, this wrapper simply contains the desktop nav */
-
-
-        /* Section Wrapper */
-        .section-wrapper {
-            flex: 1;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            height: calc(100vh - 60px); /* Account for fixed header */
-            scroll-padding-top: 60px; /* Offset for header when snapping */
+        /* --- Slideshow Styles --- */
+        .slideshow-container {
+            position: relative;
+            flex: 1; /* Allows it to take up available space between header and footer */
+            width: 100%;
+            /* Calculate height to fill viewport below header and above footer */
+            /* Using min-height: calc(100vh - 60px - [footer-height-approx]) for initial fill */
+            /* The flex: 1 on the container should handle dynamic height if footer height varies */
+            min-height: calc(100vh - 60px); /* At least viewport height minus header */
+            overflow: hidden; /* Crucial to prevent images from causing scroll */
+            display: flex; /* Used to center the content overlay */
+            justify-content: center;
+            align-items: center;
             margin-top: 60px; /* Push content down below fixed header */
         }
 
-        /* Section Styles */
-        .section {
-            position: relative;
-            scroll-snap-align: start;
-            min-height: calc(100vh - 60px);
-            height: calc(100vh - 60px);
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transform: translateY(50px) scale(0.98);
-            transition: opacity 1s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .overlay {
+        .slide-image {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1;
+            object-fit: cover; /* Ensures images cover the container without distortion */
+            opacity: 0; /* Hidden by default */
+            transition: opacity 1s ease-in-out; /* Smooth fade effect */
         }
 
-        .content {
-            position: relative;
-            z-index: 2;
-            padding: 20px;
+        .slide-image.active {
+            opacity: 1; /* Show active image */
+        }
+
+        .slideshow-content-overlay {
+            position: relative; /* Stacks above images */
+            z-index: 2; /* Ensures it's above the images */
+            padding: 30px; /* Increased padding for better appearance */
             color: white;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.4); /* Semi-transparent background for readability */
+            border-radius: 12px;
+            max-width: 90%; /* Limit width on larger screens */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6); /* More prominent shadow */
+            backdrop-filter: blur(5px); /* Add a subtle blur to the content background */
+            -webkit-backdrop-filter: blur(5px);
         }
 
-        .section h2 {
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-            margin-bottom: 20px;
+        .slideshow-content-overlay h2 {
+            font-size: 2.8em; /* Slightly larger heading */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            margin-bottom: 25px; /* Increased margin */
+        }
+
+        .slideshow-content-overlay p {
+            font-size: 1.1em;
+            margin-bottom: 30px; /* Increased margin */
+            line-height: 1.5;
         }
 
         a.button-link {
             background: none;
-            border: 1px solid white;
+            border: 2px solid white; /* Thicker border */
             color: rgb(230, 230, 230);
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin: 10px;
+            padding: 12px 20px; /* Larger padding */
+            border-radius: 6px;
+            margin: 0 10px; /* Keep margin for spacing between buttons */
             text-decoration: none;
             display: inline-block;
-            transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+            transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            font-weight: bold; /* Make buttons bolder */
         }
 
         a.button-link:hover {
             background-color: rgba(255, 255, 255, 0.2);
             color: white;
             transform: scale(1.05);
+            border-color: #9032ed; /* Change border color on hover */
         }
 
         a.button-link:active {
             transform: scale(0.95);
         }
 
-        /* Footer Styles */
+        /* Footer Styles - Removed scroll-snap alignment */
         footer {
-            scroll-snap-align: start;
-            min-height: calc(100vh - 60px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            /* Removed: scroll-snap-align: start; */
+            /* Removed: min-height: calc(100vh - 60px); */
             background-color: rgb(46, 5, 128);
             color: white;
             padding: 20px 0;
             text-align: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 14px;
+            margin-top: auto; /* Pushes footer to the bottom in a flex column layout */
+            width: 100%; /* Ensure footer spans full width */
         }
 
         footer a {
@@ -245,32 +236,57 @@
             color: #ffffff;
         }
 
-        /* Background Images for Sections */
-        #section1 {
-            background-image: url("images/1.JPG");
-        }
-
-        #section2 {
-            background-image: url("images/3.JPG");
-        }
-
-        #section3 {
-            background-image: url("images/Jan. 2025 PC.PNG");
-        }
-
         /* ==================================== */
         /* MOBILE-SPECIFIC STYLES (Hamburger Menu) */
-        /* Applies when screen width is 600px or less */
         /* ==================================== */
         @media (max-width: 600px) {
             html, body {
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
+                /* Allow scrolling on mobile if content exceeds one screen */
+                overflow-y: auto; 
             }
 
-            /* Show the hamburger button on mobile */
+            .slideshow-container {
+                /* On mobile, allow its height to be more flexible if content makes it taller */
+                min-height: calc(100vh - 60px); 
+                height: auto; /* Allow height to adjust to content */
+                display: block; /* Change to block to prevent content overlap in flex */
+            }
+
+            .slideshow-content-overlay {
+                padding: 20px;
+                max-width: 95%; /* Adjust max-width for smaller screens */
+                background: rgba(0, 0, 0, 0.5); /* Slightly less transparent on mobile for readability */
+            }
+
+            .slideshow-content-overlay h2 {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+
+            .slideshow-content-overlay p {
+                font-size: 0.95em;
+                margin-bottom: 20px;
+            }
+
+            a.button-link {
+                padding: 10px 15px;
+                font-size: 0.9em;
+                margin: 5px; /* Adjust button spacing on mobile */
+                display: block; /* Stack buttons vertically on mobile */
+                width: calc(100% - 20px); /* Fill available width with padding */
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 10px; /* Space between stacked buttons */
+            }
+            a.button-link:last-child {
+                margin-bottom: 0;
+            }
+
+            /* Header Adjustments for Mobile */
             .hamburger-menu {
-                display: flex; /* IMPORTANT: This makes the hamburger bars visible */
+                display: flex;
                 flex-direction: column;
                 justify-content: space-around;
                 width: 30px;
@@ -286,75 +302,59 @@
             .hamburger-menu .bar {
                 width: 100%;
                 height: 3px;
-                background-color: #ec03fc; /* Ensure bars have a color */
+                background-color: #ec03fc;
                 border-radius: 5px;
                 transition: all 0.3s ease-in-out;
             }
 
-            /* Hamburger to X animation */
-            .hamburger-menu.active .bar:nth-child(2) {
-                opacity: 0;
-            }
-            .hamburger-menu.active .bar:nth-child(1) {
-                transform: translateY(11px) rotate(45deg);
-            }
-            .hamburger-menu.active .bar:nth-child(3) {
-                transform: translateY(-11px) rotate(-45deg);
-            }
+            .hamburger-menu.active .bar:nth-child(2) { opacity: 0; }
+            .hamburger-menu.active .bar:nth-child(1) { transform: translateY(11px) rotate(45deg); }
+            .hamburger-menu.active .bar:nth-child(3) { transform: translateY(-11px) rotate(-45deg); }
 
-            /* Hide the standard desktop navigation links on mobile */
-            #main-nav {
-                display: none; /* Hide desktop nav on mobile */
-            }
+            #main-nav { display: none; } /* Hide desktop nav on mobile */
 
-            /* Mobile Navigation Wrapper (the actual dropdown menu) */
             .nav-wrapper {
-                display: flex; /* Make it a flex container on mobile, even when hidden */
-                position: absolute; /* Position relative to the header */
-                top: 60px; /* Below the header */
-                right: 0; /* Align to the right */
-                width: 200px; /* INCREASED WIDTH */
-                /* min-width: 180px;  Removed as fixed width takes precedence */
+                display: flex;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 200px;
                 background-color: #38006b;
                 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-                max-height: 0; /* Initially hidden */
-                overflow: hidden; /* Hide overflowing content */
-                opacity: 0; /* Fade out effect */
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
                 transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
                 z-index: 999;
-                flex-direction: column; /* Stack links vertically */
-                align-items: stretch; /* Stretch links to fill wrapper width */
+                flex-direction: column;
+                align-items: stretch;
             }
 
             .nav-wrapper.active {
-                max-height: 200px; /* Adjust this value if you have more links */
+                max-height: 200px;
                 opacity: 1;
-                overflow-y: auto; /* Allow scrolling within the menu if content exceeds max-height */
+                overflow-y: auto;
             }
 
-            /* Styles for links inside the mobile menu */
             .nav-wrapper #main-nav {
-                display: flex; /* Make the actual nav element inside the wrapper visible */
+                display: flex;
                 flex-direction: column;
                 width: 100%;
-                padding: 0; /* Reset padding for the UL itself */
-                margin: 0; /* Reset margin for the UL itself */
-                list-style: none; /* Remove bullet points if any */
+                padding: 0;
+                margin: 0;
+                list-style: none;
             }
 
             .nav-wrapper #main-nav a {
-                padding: 15px 20px; /* INCREASED PADDING for taller links */
+                padding: 15px 20px;
                 text-align: left;
                 font-size: 1.1em;
                 width: 100%;
                 box-sizing: border-box;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
-            .nav-wrapper #main-nav a:last-child {
-                border-bottom: none;
-            }
+            .nav-wrapper #main-nav a:last-child { border-bottom: none; }
 
-            /* Header Adjustments for Mobile */
             header {
                 padding: 10px 15px;
                 backdrop-filter: none;
@@ -362,23 +362,8 @@
                 background-color: #38006b;
             }
 
-            .brand-info {
-                font-size: 1.2em;
-            }
-            .brand-info .slogan {
-                font-size: 0.6em;
-            }
-
-            /* General mobile adjustments */
-            .section h2 {
-                font-size: 2em;
-            }
-            .content {
-                padding: 15px;
-            }
-            a.button-link {
-                padding: 8px 12px;
-            }
+            .brand-info { font-size: 1.2em; }
+            .brand-info .slogan { font-size: 0.6em; }
         }
     </style>
 </head>
@@ -405,58 +390,38 @@
             <nav id="main-nav">
                 <a href="Contact-Us.html">Contact Us!</a>
                 <a href="Create.html">Create!</a>
-                </nav>
+            </nav>
         </div>
     </header>
 
-    <div class="section-wrapper">
-        <div id="section1" class="section">
-            <div class="overlay"></div>
-            <div class="content">
-                <h2>Welcome!</h2>
-                <p>Explore what EazyPC's has to offer! Contact us or create your own computer!</p>
-                <a href="Create.html" class="button-link">Create!</a>
-                <a href="Contact-Us.html" class="button-link">Contact Us</a>
-            </div>
-        </div>
+    <div class="slideshow-container">
+        <img src="images/1.JPG" class="slide-image active" alt="Gaming PC Build 1">
+        <img src="images/3.JPG" class="slide-image" alt="Gaming PC Build 2">
+        <img src="images/Jan. 2025 PC.PNG" class="slide-image" alt="January 2025 PC Build">
 
-        <div id="section2" class="section">
-            <div class="overlay"></div>
-            <div class="content">
-                <h2>Create!</h2>
-                <p>Create your own computer!</p>
-                <a href="Create.html" class="button-link">Create Your Own!</a>
-                <a href="#section1" class="button-link">Back to Welcome</a>
-            </div>
+        <div class="slideshow-content-overlay">
+            <h2>Welcome!</h2>
+            <p>Explore what EazyPC's has to offer! Contact us or create your own computer!</p>
+            <a href="Create.html" class="button-link">Create!</a>
+            <a href="Contact-Us.html" class="button-link">Contact Us</a>
         </div>
-
-        <div id="section3" class="section">
-            <div class="overlay"></div>
-            <div class="content">
-                <h2>Contact Us</h2>
-                <p>Ready to build your dream PC or need help? Get in touch or book a counselling session.</p>
-                <a href="Contact-Us.html" class="button-link">Go to Contact Us</a>
-                <a href="Create.html" class="button-link">Create Your Own!</a>
-            </div>
-        </div>
-
-        <footer>
-            <div style="margin-bottom: 10px;">
-                <a href="https://youtube.com/@EazyVicx" target="_blank">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
-                    @EazyVicx
-                </a>
-                |
-                <a href="https://youtube.com/@CDren" target="_blank">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
-                    @CDren8345
-                </a>
-            </div>
-            <div style="font-size: 12px; opacity: 0.7;">
-                Copyright to be formed.
-            </div>
-        </footer>
     </div>
+    <footer>
+        <div style="margin-bottom: 10px;">
+            <a href="https://youtube.com/@EazyVicx" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
+                @EazyVicx
+            </a>
+            |
+            <a href="https://youtube.com/@CDren" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube">
+                @CDren8345
+            </a>
+        </div>
+        <div style="font-size: 12px; opacity: 0.7;">
+            Copyright to be formed.
+        </div>
+    </footer>
 
     <script>
         window.addEventListener('load', () => {
@@ -469,23 +434,54 @@
             window.addEventListener('scroll', () => {
                 const scrollTop = window.scrollY || document.documentElement.scrollTop;
                 const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrollPercent = (scrollTop / scrollHeight) * 100;
+                const scrollPercent = (scrollHeight > 0) ? (scrollTop / scrollHeight) * 100 : 0; // Handle non-scrollable case
                 progressBar.style.width = scrollPercent + '%';
             });
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    } else {
-                        entry.target.classList.remove('visible');
+            // Removed IntersectionObserver for old sections
+
+            // --- Slideshow JavaScript ---
+            const slides = document.querySelectorAll('.slideshow-container .slide-image');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                    if (i === index) {
+                        slide.classList.add('active');
                     }
                 });
-            }, { threshold: 0.2 });
+            }
 
-            document.querySelectorAll('.section').forEach(section => {
-                observer.observe(section);
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            // Initialize the first slide if any exist
+            if (slides.length > 0) {
+                showSlide(currentSlide);
+            }
+
+            // Start auto-cycling (change image every 5 seconds)
+            let slideInterval;
+            if (slides.length > 1) { // Only cycle if there's more than one slide
+                slideInterval = setInterval(nextSlide, 5000); // 5000ms = 5 seconds
+            }
+
+            // Optional: Pause/Resume cycling when tab is not active to save resources
+            document.addEventListener('visibilitychange', () => {
+                if (slides.length > 1) {
+                    if (document.hidden) {
+                        clearInterval(slideInterval);
+                    } else {
+                        // Clear any existing interval before setting a new one to prevent duplicates
+                        clearInterval(slideInterval); 
+                        slideInterval = setInterval(nextSlide, 5000);
+                    }
+                }
             });
+            // --- End Slideshow JavaScript ---
 
             // --- Hamburger Menu JavaScript ---
             const hamburgerMenu = document.querySelector('.hamburger-menu');
@@ -497,7 +493,6 @@
                     mobileNavWrapper.classList.toggle('active');
                 });
 
-                // Optional: Close menu when a link inside it is clicked
                 mobileNavWrapper.querySelectorAll('a').forEach(link => {
                     link.addEventListener('click', () => {
                         if (hamburgerMenu.classList.contains('active')) {
