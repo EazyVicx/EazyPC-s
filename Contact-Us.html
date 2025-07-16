@@ -12,7 +12,7 @@
       padding: 0;
       height: 100%;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-size: cover;
+      /*background-size: cover;*/
       backdrop-filter: blur(5px);
       overflow-x: hidden;
       display: flex;
@@ -25,7 +25,7 @@
       opacity: 1;
     }
     
-  body { /* Apply this ID to your contact-us page's main container */
+  html: { /* Apply this ID to your contact-us page's main container */
     background: linear-gradient(45deg, #1a003d, #2b005e); /* Dark purple gradient */
     background-size: 200% 200%;
     animation: gradientShift 4s ease infinite; /* Subtle animated gradient shift */
@@ -33,7 +33,7 @@
     overflow: hidden; /* Clip the pattern if needed */
 }
 
-  body::before { /* Pseudo-element for the lines */
+  html::before { /* Pseudo-element for the lines */
     content: "";
     position: absolute;
     top: 0;
