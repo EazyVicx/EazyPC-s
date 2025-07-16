@@ -466,7 +466,7 @@
             // Start auto-cycling (change image every 5 seconds)
             let slideInterval;
             if (slides.length > 1) { // Only cycle if there's more than one slide
-                slideInterval = setInterval(nextSlide, 5000); // 5000ms = 5 seconds
+                slideInterval = setInterval(nextSlide, 4000); // 5000ms = 5 seconds
             }
 
             // Optional: Pause/Resume cycling when tab is not active to save resources
@@ -477,7 +477,7 @@
                     } else {
                         // Clear any existing interval before setting a new one to prevent duplicates
                         clearInterval(slideInterval); 
-                        slideInterval = setInterval(nextSlide, 5000);
+                        slideInterval = setInterval(nextSlide, 4000);
                     }
                 }
             });
