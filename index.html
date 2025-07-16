@@ -161,6 +161,8 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.6); /* More prominent shadow */
             backdrop-filter: blur(5px); /* Add a subtle blur to the content background */
             -webkit-backdrop-filter: blur(5px);
+            /* Added purple-ish outline */
+            border: 2px solid rgba(86, 45, 200, 0.6); /* Purple-ish border */
         }
 
         .slideshow-content-overlay h2 {
@@ -177,7 +179,7 @@
 
         a.button-link {
             background: none;
-            border: 2px solid white; /* Thicker border */
+            border: 2px solid rgba(86, 45, 200, 0.6); /* Changed to purple-ish border */
             color: rgb(230, 230, 230);
             padding: 12px 20px; /* Larger padding */
             border-radius: 6px;
@@ -192,7 +194,7 @@
             background-color: rgba(255, 255, 255, 0.2);
             color: white;
             transform: scale(1.05);
-            border-color: #9032ed; /* Change border color on hover */
+            border-color: #ec03fc; /* Change border color to hot pink on hover */
         }
 
         a.button-link:active {
@@ -240,13 +242,13 @@
             }
 
             .slideshow-container {
-                min-height: calc(100vh - 60px); 
+                min-height: calc(100vh - 60px);
                 height: auto; /* Allow height to adjust to content */
-                /* Reverted to flexbox for centering, but align to start */
-                display: flex; 
+                /* Reverted to flexbox for centering, but align to center */
+                display: flex;
                 justify-content: center;
-                align-items: flex-start; /* Aligns content to the top */
-                padding-top: 20px; /* Add some padding from the header */
+                align-items: center; /* Vertically center content */
+                padding-top: 80px; /* Add more padding from the header to push content down */
             }
 
             .slideshow-content-overlay {
@@ -254,12 +256,13 @@
                 max-width: 95%; /* Adjust max-width for smaller screens */
                 background: rgba(0, 0, 0, 0.5); /* Slightly less transparent on mobile for readability */
                 margin-top: 0; /* Ensure no extra margin pushes it down */
+                border: 2px solid rgba(86, 45, 200, 0.6); /* Keep the purple outline on mobile */
             }
 
             .slideshow-content-overlay h2 {
                 font-size: 2em;
                 margin-bottom: 15px;
-                color: #ec03fc; /* Vibrant purple for the Welcome sign */
+                color: #ec03fc; /* Hot pink for the Welcome sign as requested */
             }
 
             .slideshow-content-overlay p {
@@ -276,8 +279,8 @@
                 margin-left: auto;
                 margin-right: auto;
                 margin-bottom: 10px; /* Space between stacked buttons */
-                background-color: #9032ed; /* Purple background */
-                border: 2px solid #9032ed; /* Matching purple border */
+                background-color: #ec03fc; /* Hot pink background for mobile buttons */
+                border: 2px solid #ec03fc; /* Matching hot pink border for mobile buttons */
                 color: white; /* White text for contrast */
             }
             a.button-link:last-child {
@@ -285,8 +288,8 @@
             }
 
             a.button-link:hover {
-                background-color: #7a28c5; /* Slightly darker purple on hover */
-                border-color: #7a28c5; /* Matching border color on hover */
+                background-color: #d402e1; /* Slightly darker hot pink on hover for mobile */
+                border-color: #d402e1; /* Matching border color on hover for mobile */
                 color: white;
                 transform: scale(1.05);
             }
