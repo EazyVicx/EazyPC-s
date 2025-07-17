@@ -988,8 +988,8 @@
         <p>&copy; 2024 EazyPC. All rights reserved.</p>
     </footer>
 
-    <script>
-        
+   <script>
+
     const selectedComponents = {
         cpu: null,
         motherboard: null,
@@ -1065,8 +1065,8 @@
         debounceTimer = setTimeout(() => {
             renderOptions(currentCategory);
         }, 250); // Wait for 250ms of inactivity before rendering
-    });    
-        
+    });
+
     function updateDisplay(category, component) {
         const displayDiv = componentDisplayElements[category];
         const nameSpan = displayDiv.querySelector('span:first-child');
@@ -1081,9 +1081,8 @@
             priceSpan.textContent = '';
             hiddenInputElements[category].value = ''; // Clear hidden input value
         }
-        updateTotalPrice();
-        updateProgressBar();
-        updateCategoryButtonStates();
+        // Removed updateTotalPrice(), updateProgressBar(), and updateCategoryButtonStates() from here.
+        // These are now called explicitly after a component selection or a state change in updateCategoryButtonStates.
     }
 
     function updateTotalPrice() {
@@ -1109,13 +1108,21 @@
     }
 
     function updateCategoryButtonStates() {
+        let stateChanged = false; // Flag to indicate if any component was deselected
+
         // Motherboard depends on CPU
         if (selectedComponents.cpu) {
             categoryButtons.motherboard.disabled = false;
             categoryButtons.motherboard.textContent = selectedComponents.motherboard ? 'Change Motherboard' : 'Choose Motherboard';
         } else {
-            selectedComponents.motherboard = null; // Deselect if CPU is removed
-            updateDisplay('motherboard', null);
+            if (selectedComponents.motherboard) { // Only deselect if it was previously selected
+                selectedComponents.motherboard = null; // Deselect if CPU is removed
+                // Directly update display for motherboard without calling updateDisplay
+                componentDisplayElements.motherboard.querySelector('span:first-child').textContent = 'No Motherboard Selected';
+                componentDisplayElements.motherboard.querySelector('.price-display').textContent = '';
+                hiddenInputElements.motherboard.value = '';
+                stateChanged = true;
+            }
             categoryButtons.motherboard.disabled = true;
             categoryButtons.motherboard.textContent = 'Choose Motherboard';
         }
@@ -1125,8 +1132,14 @@
             categoryButtons.ram.disabled = false;
             categoryButtons.ram.textContent = selectedComponents.ram ? 'Change RAM' : 'Choose RAM';
         } else {
-            selectedComponents.ram = null; // Deselect if Motherboard is removed
-            updateDisplay('ram', null);
+            if (selectedComponents.ram) { // Only deselect if it was previously selected
+                selectedComponents.ram = null; // Deselect if Motherboard is removed
+                // Directly update display for RAM without calling updateDisplay
+                componentDisplayElements.ram.querySelector('span:first-child').textContent = 'No RAM Selected';
+                componentDisplayElements.ram.querySelector('.price-display').textContent = '';
+                hiddenInputElements.ram.value = '';
+                stateChanged = true;
+            }
             categoryButtons.ram.disabled = true;
             categoryButtons.ram.textContent = 'Choose RAM';
         }
@@ -1135,6 +1148,12 @@
         for (const category in categoryButtons) {
             if (category === 'motherboard' || category === 'ram') continue; // Handled above
             categoryButtons[category].textContent = selectedComponents[category] ? `Change ${category.charAt(0).toUpperCase() + category.slice(1)}` : `Choose ${category.charAt(0).toUpperCase() + category.slice(1)}`;
+        }
+
+        // If any component was deselected due to dependency, update total price and progress bar once
+        if (stateChanged) {
+            updateTotalPrice();
+            updateProgressBar();
         }
     }
 
@@ -1211,8 +1230,12 @@
             optionDiv.addEventListener('click', () => {
                 radioInput.checked = true;
                 selectedComponents[category] = component;
-                updateDisplay(category, component);
+                updateDisplay(category, component); // This updates the specific component's display
                 modal.classList.remove('is-active');
+                // After selecting a component, update button states and then the overall totals/progress
+                updateCategoryButtonStates();
+                updateTotalPrice();
+                updateProgressBar();
             });
 
             modalOptionsContainer.appendChild(optionDiv);
@@ -1364,7 +1387,7 @@ window.addEventListener('scroll', () => {
       const scrolled = (winScroll / height) * 100;
 
       // Use a reference to the element to avoid searching the DOM every time
-      const progressBar = document.getElementById('progress-bar'); 
+      const progressBar = document.getElementById('progress-bar');
       
       if (height > 0) {
         progressBar.style.width = scrolled + "%";
