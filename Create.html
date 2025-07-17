@@ -167,8 +167,7 @@
         /* Component Sections */
         .component-section {
             background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 25px 30px;
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
@@ -243,8 +242,7 @@
             align-items: center;
             z-index: 2000; /* Ensure high z-index for the modal backdrop */
             background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
 
             /* KEY TRANSITION PROPERTIES for the backdrop */
             opacity: 0;
@@ -291,6 +289,10 @@
             margin-top: 0;
             margin-bottom: 20px;
         }
+
+        .hidden {
+    display: none;
+}
 
         .close-button {
             color: #aaa;
@@ -1107,10 +1109,15 @@
         }
     });
 
-    modalSearchInput.addEventListener('input', () => {
-        renderOptions(currentCategory);
-    });
+    let debounceTimer;
 
+    modalSearchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimer); // Reset the timer
+        debounceTimer = setTimeout(() => {
+            renderOptions(currentCategory);
+        }, 250); // Wait for 250ms of inactivity before rendering
+    });    
+        
     function updateDisplay(category, component) {
         const displayDiv = componentDisplayElements[category];
         const nameSpan = displayDiv.querySelector('span:first-child');
@@ -1398,17 +1405,28 @@
     updateTotalPrice();
 
     // Simulate scroll for progress bar
-    window.addEventListener('scroll', () => {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        if (height > 0) { // Only update if scrollable
-            document.getElementById('progress-bar').style.width = scrolled + "%";
-        } else {
-            document.getElementById('progress-bar').style.width = "100%"; // If not scrollable, assume 100%
-        }
-    });
+   let isTicking = false;
 
+window.addEventListener('scroll', () => {
+  if (!isTicking) {
+    window.requestAnimationFrame(() => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+
+      // Use a reference to the element to avoid searching the DOM every time
+      const progressBar = document.getElementById('progress-bar'); 
+      
+      if (height > 0) {
+        progressBar.style.width = scrolled + "%";
+      } else {
+        progressBar.style.width = "100%";
+      }
+      isTicking = false;
+    });
+    isTicking = true;
+  }
+});
     // START OF NEW CODE FOR CUSTOMER DETAILS AND FORMSPREE
 
     // Helper function for email validation
