@@ -405,18 +405,46 @@
         </div>
     </header>
 
-    <div class="slideshow-container">
-        <img src="images/1.JPG" class="slide-image active" alt="Gaming PC Build 1">
-        <img src="images/3.JPG" class="slide-image" alt="Gaming PC Build 2">
-        <img src="images/Jan. 2025 PC.PNG" class="slide-image" alt="January 2025 PC Build">
+   <div class="slideshow-container">
+    <picture>
+        <source srcset="images/1-400w.webp 400w,
+                        images/1-600w.webp 600w,
+                        images/1-800w.webp 800w,
+                        images/1-1200w.webp 1200w"
+                sizes="(max-width: 600px) 100vw,   (max-width: 1200px) 100vw,
+                       1200px">
+        <img src="images/1-1200w.webp" class="slide-image active" alt="Gaming PC Build 1">
+    </picture>
 
-        <div class="slideshow-content-overlay">
-            <h2>Welcome!</h2>
-            <p>Explore what EazyPC's has to offer! Contact us or create your own computer!</p>
-            <a href="Create.html" class="button-link">Create!</a>
-            <a href="Contact-Us.html" class="button-link">Contact Us</a>
-        </div>
+    <picture>
+        <source srcset="images/3-400w.webp 400w,
+                        images/3-600w.webp 600w,
+                        images/3-800w.webp 800w,
+                        images/3-1200w.webp 1200w"
+                sizes="(max-width: 600px) 100vw,
+                       (max-width: 1200px) 100vw,
+                       1200px">
+        <img src="images/3-1200w.webp" class="slide-image" alt="Gaming PC Build 2">
+    </picture>
+
+    <picture>
+        <source srcset="images/jan-2025-pc-400w.webp 400w,
+                        images/jan-2025-pc-600w.webp 600w,
+                        images/jan-2025-pc-800w.webp 800w,
+                        images/jan-2025-pc-1200w.webp 1200w"
+                sizes="(max-width: 600px) 100vw,
+                       (max-width: 1200px) 100vw,
+                       1200px">
+        <img src="images/jan-2025-pc-1200w.webp" class="slide-image" alt="January 2025 PC Build">
+    </picture>
+
+    <div class="slideshow-content-overlay">
+        <h2>Welcome!</h2>
+        <p>Explore what EazyPC's has to offer! Contact us or create your own computer!</p>
+        <a href="Create.html" class="button-link">Create!</a>
+        <a href="Contact-Us.html" class="button-link">Contact Us</a>
     </div>
+</div>
     <footer>
         <div style="margin-bottom: 10px;">
             <a href="https://youtube.com/@EazyVicx" target="_blank">
