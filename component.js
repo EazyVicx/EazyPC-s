@@ -6,7 +6,6 @@ const components = {
             { id: 'cpu-intel-i7-14700kf', name: 'Intel Core i7-14700KF', price: 313.57, socket: 'LGA1700', generation: '14th Gen', cores: 20, threads: 28, tdp: 125, integratedGraphics: false },
             { id: 'cpu-intel-i5-14600k', name: 'Intel Core i5-14600K', price: 194.00, socket: 'LGA1700', generation: '14th Gen', cores: 14, threads: 20, tdp: 125, integratedGraphics: true },
             { id: 'cpu-intel-i5-14600kf', name: 'Intel Core i5-14600KF', price: 198.22, socket: 'LGA1700', generation: '14th Gen', cores: 14, threads: 20, tdp: 125, integratedGraphics: false },
-            { id: 'cpu-intel-i9-13900k', name: 'Intel Core i9-14900K', price: 434.00, socket: 'LGA1700', generation: '14th Gen', cores: 24, threads: 32, tdp: 125, integratedGraphics: true },
             { id: 'cpu-amd-ryzen-9-7950x3d', name: 'AMD Ryzen 9 7950X3D', price: 689.99, socket: 'AM5', generation: 'Zen 4', cores: 16, threads: 32, tdp: 120, integratedGraphics: false },
             { id: 'cpu-amd-ryzen-7-7800x3d', name: 'AMD Ryzen 7 7800X3D', price: 369.99, socket: 'AM5', generation: 'Zen 4', cores: 8, threads: 16, tdp: 120, integratedGraphics: false },
             { id: 'cpu-amd-ryzen-5-7600x', name: 'AMD Ryzen 5 7600X', price: 249.99, socket: 'AM5', generation: 'Zen 4', cores: 6, threads: 12, tdp: 105, integratedGraphics: false }
@@ -26,9 +25,9 @@ const components = {
             { id: 'ram-ddr5-6000-cl30-64gb', name: 'G.Skill Trident Z5 RGB 64GB (2 x 32GB) DDR5-6000 CL30', price: 219.99, type: 'DDR5', capacityGB: 64, speedMHz: 6000, casLatency: 30, kit: 2 }
         ],
         gpu: [
-            { id: 'gpu-rtx4090', name: 'NVIDIA GeForce RTX 4090', price: 1599.99, chipset: 'RTX 4090', memoryGB: 24, memoryType: 'GDDR6X', tdp: 450 },
-            { id: 'gpu-rtx4080s', name: 'NVIDIA GeForce RTX 4080 Super', price: 999.99, chipset: 'RTX 4080 Super', memoryGB: 16, memoryType: 'GDDR6X', tdp: 320 },
-            { id: 'gpu-rtx4070s', name: 'NVIDIA GeForce RTX 4070 Super', price: 599.99, chipset: 'RTX 4070 Super', memoryGB: 12, memoryType: 'GDDR6X', tdp: 220 },
+            { id: 'gpu-rtx5050', name: 'NVIDIA GeForce RTX 5050', price: 1599.99, chipset: 'RTX 5050', memoryGB: 24, memoryType: 'GDDR6X', tdp: 450 },
+            { id: 'gpu-rtx5060', name: 'NVIDIA GeForce RTX 5060', price: 999.99, chipset: 'RTX 5060', memoryGB: 16, memoryType: 'GDDR6X', tdp: 320 },
+            { id: 'gpu-rtx5060ti', name: 'NVIDIA GeForce RTX 5060 Ti', price: 599.99, chipset: 'RTX 5060 Ti', memoryGB: 12, memoryType: 'GDDR6X', tdp: 220 },
             { id: 'gpu-rx7900xtx', name: 'AMD Radeon RX 7900 XTX', price: 949.99, chipset: 'RX 7900 XTX', memoryGB: 24, memoryType: 'GDDR6', tdp: 355 },
             { id: 'gpu-rx7800xt', name: 'AMD Radeon RX 7800 XT', price: 499.99, chipset: 'RX 7800 XT', memoryGB: 16, memoryType: 'GDDR6', tdp: 263 }
         ],
