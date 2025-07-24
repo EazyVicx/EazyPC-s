@@ -544,6 +544,29 @@
             // --- End Hamburger Menu JavaScript ---
         });
     </script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyA7tz4JnQBberku02cny4P15eBR-PCtAko",
+    authDomain: "eazypc-s.firebaseapp.com",
+    projectId: "eazypc-s",
+    storageBucket: "eazypc-s.firebasestorage.app",
+    messagingSenderId: "450598561559",
+    appId: "1:450598561559:web:15c5fb1e1bee598b5e3952",
+    measurementId: "G-JHLK2ZNF01"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 
 </body>
 </html>
